@@ -30,9 +30,9 @@ app.use(cors());
 // body-parser
 app.use(bodyParser.json());
 
-// app.use(passport.initialize());
-// app.use(passport.session());
-// require('./config/passport')(passport);
+app.use(passport.initialize());
+app.use(passport.session());
+require('./config/passport')(passport);
 
 // set Static folder
 app.use(express.static(path.join(__dirname, 'public')));
