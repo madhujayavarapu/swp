@@ -11,7 +11,7 @@ const UserDetails = require('../models/userDetails');
 const Company = require('../models/company');
 
 
-router.post('/addUser', (req, res, next) => {
+router.post('/register', (req, res, next) => {
     let user = new User({
         username: req.body.username,
         password: req.body.password,
