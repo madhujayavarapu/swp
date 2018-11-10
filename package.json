@@ -1,0 +1,30 @@
+{
+  "name": "swp",
+  "version": "1.0.0",
+  "description": "SWP",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/madhujayavarapu/swp.git"
+  },
+  "dependencies": {
+    "bcryptjs": "*",
+    "body-parser": "*",
+    "cors": "*",
+    "express": "*",
+    "jsonwebtoken": "*",
+    "mongoose": "*",
+    "nodemon": "^1.18.4",
+    "passport": "*",
+    "passport-jwt": "*"
+  },
+  "author": "Madhu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/madhujayavarapu/swp/issues"
+  },
+  "homepage": "https://github.com/madhujayavarapu/swp#readme"
+}
