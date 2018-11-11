@@ -1,0 +1,30 @@
+<div class="container" style="margin-top: 10px">
+  <div class="card">
+    <div class="card-body">
+      <ul class="list-group">
+        <li class="list-group-item list-group-item-info mb-2" *ngFor="let company of requests">
+          <h2>
+            {{company.companyName}}
+            <span class="date pull-right"><strong>Established Date: </strong>{{ company.establishedAt | date: 'MMM dd, yyyy' }}</span>
+          </h2>
+          <p>{{ company.about }}</p>
+          <div class="row">
+            <div class="col">
+              <strong>Branches: </strong>{{ company.branches }}
+            </div>
+            <div class="col">
+              <strong>Awards: </strong>{{ company.awards }}
+            </div>
+            <div class="col">
+              <strong>Website: </strong><a href="http://{{company.website}}" target="blank">{{ company.website }}</a>
+            </div>
+            <div class="col">
+              <button class="btn btn-success btn-md pull-right" (click)="acceptRequest(company)"><strong>Accept</strong></button>
+              <button class="btn btn-danger btn-md pull-right"><strong>Reject</strong></button>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

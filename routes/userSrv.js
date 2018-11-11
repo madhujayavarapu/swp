@@ -10,21 +10,57 @@ const User = require('../models/user');
 const UserDetails = require('../models/userDetails');
 const Company = require('../models/company');
 
+const commonSrv = require('../services/common.service');
+
+
+function getUserByUsername(username){
+    User.getUserByUsername(username, (err, result) => {
+        if(err){
+            res.json({success:false, msg: "something went wrong"});e
+        }else{
+            if(!!user){
+                return user;
+            }else{
+                return false;
+            }
+        }
+    })
+}
+
+function formatUser(user){
+    let obj = {
+        username: user.username,
+        userId: user._id,
+        role: user.role
+    }
+    return obj;
+}
 
 router.post('/register', (req, res, next) => {
     let user = new User({
         username: req.body.username,
         password: req.body.password,
-        role: req.body.role
+        role: 3
     });
-    User.addUser(user, (err, result) => {
+    User.getUserByUsername(req.body.username, (err, result) => {
         if(err){
             console.log(err);
+            res.json({success: false, msg: "Something went wrong"});
+        }else{
+            if(!result){
+                User.addUser(user, (err, result) => {
+                    if(err){
+                        console.log(err);
+                    }
+                    res.json({
+                        success: true,
+                        "msg": "User added successfully"
+                    })
+                })
+            }else{
+                res.json({success:false, msg: "Username already exists"});
+            }
         }
-        res.json({
-            success: true,
-            "msg": "User added successfully"
-        })
     })
 })
 
@@ -83,7 +119,7 @@ router.post('/login', (req, res, next) => {
                     res.json({
                         success: true,
                         token: 'JWT '+token,
-                        user: user
+                        user: formatUser(user)
                     });
                 }
             })
@@ -119,6 +155,20 @@ router.post('/startupRequest', (req, res, next) => {
     })
 })
 
+router.post('/reqStatus', (req, res, next) => {
+    Company.getReqStatus(req.body.userId, (err, status) => {
+        if(err){
+            res.json({success: false, msg: "Something went wrong"});
+        }else{
+            if(status){
+                res.json({success: true, reqStatus: status});
+            }else{
+                res.json({success: true, msg: "No Requests"});
+            }
+        }
+    })
+})
+
 router.get('/viewStartupRequests', (req, res, next) => {
     Company.getStartupRequests((err,result) => {
         if(err){
@@ -151,15 +201,22 @@ router.get('/getCompaniesList', (req, res, next) => {
 
 router.post('/acceptStartupRequest', (req, res, next) => {
     let companyId = req.body.companyId;
+    let userId = req.body.userId;
     Company.acceptStartupRequest(companyId, (err,result) => {
         if(err){
             console.log(err);
             res.json({success:false,msg:"something went wrong"});
         }else{
             if(result){
-                res.json({success:true, msg: "Accepted request"});
+                let rr = commonSrv.changeUserRoleTo(2, userId);
+                // let notification = commonSrv.sendNotification("Congrats! Your request was accepted please login to manage your company..ALL THE BEST", userId);
+                if(rr){
+                    res.json({success:true, msg: "Accepted request"});
+                }else{
+                    res.json({success:false, msg: "Something wrong with updating user role"});
+                }
             }else{
-                res.json({success:true, msg: "Failed to accept"});
+                res.json({success:false, msg: "Failed to accept"});
             }
         }
     })

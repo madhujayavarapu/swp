@@ -7,7 +7,9 @@
   
     <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
       <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-
+        <!-- <li *ngIf="authSrv.isLoggedIn() && user.role == 3" class="nav-item">
+          <a class="nav-link" []="['/profile']">Profile</a>
+        </li> -->
       </ul>
       <ul class="navbar-nav my-2 my-lg-0">
         <li *ngIf="authSrv.isLoggedIn()" class="nav-item">
@@ -19,6 +21,11 @@
         <li class="nav-item" *ngIf="!authSrv.isLoggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
           <a class="nav-link" [routerLink]="['/register']">Register</a>
         </li>  
+
+        <!-- after login navbar option -->
+        <li class="nav-item" *ngIf="authSrv.isLoggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
+            <a class="nav-link" [routerLink]="['/profile']">Profile</a>
+        </li>
         <li class="nav-item" *ngIf="authSrv.isLoggedIn()">
           <a class="nav-link" (click)="onLogout()">Logout</a>
         </li> 
@@ -26,3 +33,36 @@
     </div>
   </div>
 </nav>
+<div *ngIf="authSrv.isLoggedIn()">
+  <nav class="navbar navbar-expand-lg bg-light rounded-0 m-0 p-0">
+    <ul class="nav nav-pills justify-content nav-fill nav-pills-rose">
+      <!-- normal user functionalities -->
+      <li class="nav-item" *ngIf="user.role == 3">
+        <a class="nav-link" [routerLink]="['/findJob']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" href="">Find Job</a>
+      </li>
+      <li class="nav-item" *ngIf="user.role == 3">
+        <a class="nav-link" [routerLink]="['/notifications']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" href="">Notifications</a>
+      </li>
+      <li class="nav-item" *ngIf="user.role == 3">
+        <a class="nav-link" [routerLink]="['/status']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" href="">Status of Requests</a>
+      </li>
+      <li class="nav-item" *ngIf="user.role == 3">
+        <a class="nav-link" [routerLink]="['/reqcompany']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" href="">Request Company</a>
+      </li>
+      <li class="nav-item" *ngIf="user.role == 3">
+        <a class="nav-link" [routerLink]="['/postproject']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" href="">Post Projects</a>
+      </li>
+
+      <!-- Admin Funcationalities -->
+      <li class="nav-item" *ngIf="user.role == 1">
+        <a class="nav-link" [routerLink]="['/reqcompanieslist']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" href="">Company Requests</a>
+      </li>
+      <li class="nav-item" *ngIf="user.role == 1">
+        <a class="nav-link" [routerLink]="['/projectreq']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" href="">Project Requests</a>
+      </li>
+      <li class="nav-item" *ngIf="user.role == 1">
+        <a class="nav-link" [routerLink]="['/companieslist']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" href="">Companies List</a>
+      </li>
+    </ul>
+  </nav>
+</div>

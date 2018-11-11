@@ -17,14 +17,14 @@ export class AuthService {
   ) { }
 
   storeUserData(token, userData){
-    localStorage.setItem('token_id',token);
+    localStorage.setItem('jwt_token',token);
     localStorage.setItem('user',JSON.stringify(userData));
     this.authToken = token;
     this.user = userData;
   }
 
   loadToken(){
-    const token = localStorage.getItem('token_id');
+    const token = localStorage.getItem('jwt_token');
     this.authToken = token;
   }
 
@@ -50,23 +50,34 @@ export class AuthService {
     localStorage.clear();
   }
 
-  registerUser(user): Observable<any>{
+  getHeaders(){
     let headers = new Headers();
     headers.append('Content-Type','application/json');
-    return this.http.post(this.url+"register",user,{headers:headers}).pipe((map((res) => res.json())));
+    return headers;
+  }
+
+  registerUser(user): Observable<any>{
+    return this.http.post(this.url+"register",user,{headers:this.getHeaders()}).pipe((map((res) => res.json())));
   }
 
   getUserDetailsByUserId(user): Observable<any>{
-    let headers = new Headers();
-    headers.append('Content-Type','application/json');
-    return this.http.post(this.url+"getUserDetails",user,{headers:headers}).pipe((map((res) => res.json())));
+    return this.http.post(this.url+"getUserDetails",user,{headers:this.getHeaders()}).pipe((map((res) => res.json())));
   }
 
   // for login
   authenticateUser(user): Observable<any>{
-    let headers = new Headers();
-    headers.append('Content-Type','application/json');
-    return this.http.post(this.url+"login",user,{headers: headers}).pipe((map((res) => res.json())));
+    return this.http.post(this.url+"login",user,{headers: this.getHeaders()}).pipe((map((res) => res.json())));
   }
 
+  sentCompanyRequest(requestData): Observable<any>{
+    return this.http.post(this.url+"startupRequest",requestData,{headers: this.getHeaders()}).pipe((map((res) => res.json())));
+  }
+
+  getCompanyRequests(): Observable<any>{
+    return this.http.get(this.url+"viewStartupRequests",{headers: this.getHeaders()}).pipe((map((res) => res.json())));
+  }
+
+  acceptCompanyRequest(postData): Observable<any>{
+    return this.http.post(this.url+"acceptStartupRequest",postData,{headers: this.getHeaders()}).pipe((map((res) => res.json())));
+  }
 }

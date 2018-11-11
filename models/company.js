@@ -55,3 +55,21 @@ module.exports.getCompaniesList = function(callback){
     var query = {isAccepted: true};
     Company.find(query, callback);
 }
+
+module.exports.getReqStatus = function(userId, callback){
+    var query = {isAccepted: false,createdBy: mongoose.Types.ObjectId(userId)};
+    // Company.find(query, callback);
+    Company.aggregate([
+        {
+            $match: query
+        },
+        {
+            $project: {
+                companyName: 1,
+                isAccepted: 1,
+                establishedAt: 1,
+                _id: 1
+            }
+        }
+    ]).exec(callback);
+}
