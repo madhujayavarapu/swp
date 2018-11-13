@@ -74,4 +74,19 @@ export class ValidateService {
     }
     return true;
   }
+
+  validateSendingOfferLetterForm(formData): boolean{
+    if(this.isEmpty(formData.username) || this.isEmpty(formData.salary) || formData.branch == "-1" || isNaN(parseInt(formData.salary))){
+      return false;
+    }
+    return true;
+  }
+
+  validatePostJobNotificationForm(formData): boolean{
+    if(this.isEmpty(formData.description) || this.isEmpty(formData.salary) || formData.branch == "-1" || formData.empRole == "-1" || 
+    isNaN(parseInt(formData.salary)) || this.isEmpty(formData.requirements)){
+      return false;
+    }
+    return true;
+  }
 }

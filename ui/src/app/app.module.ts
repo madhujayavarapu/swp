@@ -1,9 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { FlashMessagesModule, FlashMessagesService } from 'angular2-flash-messages';
+import { ToasterContainerComponent, ToasterModule, ToasterService, ToasterConfig } from 'angular2-toaster';
 
 import { AuthService } from './services/auth.service';
 import { ValidateService } from './services/validate.service';
@@ -20,6 +22,11 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { ReqcompanyComponent } from './components/reqcompany/reqcompany.component';
 import { StatusComponent } from './components/status/status.component';
 import { ReqcompanieslistComponent } from './components/reqcompanieslist/reqcompanieslist.component';
+import { EmployeesComponent } from './components/employees/employees.component';
+import { AddempComponent } from './components/addemp/addemp.component';
+import { HireempComponent } from './components/hireemp/hireemp.component';
+import { PostnotificationComponent } from './components/postnotification/postnotification.component';
+import { FindjobComponent } from './components/findjob/findjob.component';
 
 @NgModule({
   declarations: [
@@ -31,17 +38,25 @@ import { ReqcompanieslistComponent } from './components/reqcompanieslist/reqcomp
     ProfileComponent,
     ReqcompanyComponent,
     StatusComponent,
-    ReqcompanieslistComponent
+    ReqcompanieslistComponent,
+    EmployeesComponent,
+    AddempComponent,
+    HireempComponent,
+    PostnotificationComponent,
+    FindjobComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     HttpModule,
     FormsModule,
     RouterModule.forRoot(appRoutes),
-    FlashMessagesModule
+    FlashMessagesModule,
+    ToasterModule.forRoot()
   ],
   providers: [
     FlashMessagesService,
+    ToasterService,
     AuthService,
     ValidateService,
     UtilsService

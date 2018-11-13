@@ -3,18 +3,14 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand" href="#">Employee Management System</a>
+    <a class="navbar-brand" href="#"><Strong>Employee Management System</Strong></a>
   
     <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+      <!-- left side navbar -->
       <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-        <!-- <li *ngIf="authSrv.isLoggedIn() && user.role == 3" class="nav-item">
-          <a class="nav-link" []="['/profile']">Profile</a>
-        </li> -->
       </ul>
+      <!-- right side navbar -->
       <ul class="navbar-nav my-2 my-lg-0">
-        <li *ngIf="authSrv.isLoggedIn()" class="nav-item">
-            <p class="nav-username">Welcome - <strong class="bold-name">{{ username }}</strong></p>
-        </li>
         <li class="nav-item" *ngIf="!authSrv.isLoggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
             <a class="nav-link" [routerLink]="['/login']">Login</a>
         </li>
@@ -23,6 +19,9 @@
         </li>  
 
         <!-- after login navbar option -->
+        <li *ngIf="authSrv.isLoggedIn()" class="nav-item">
+            <p class="nav-username">Welcome - <strong class="bold-name">{{ username }}</strong></p>
+        </li>
         <li class="nav-item" *ngIf="authSrv.isLoggedIn()" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
             <a class="nav-link" [routerLink]="['/profile']">Profile</a>
         </li>
@@ -38,30 +37,58 @@
     <ul class="nav nav-pills justify-content nav-fill nav-pills-rose">
       <!-- normal user functionalities -->
       <li class="nav-item" *ngIf="user.role == 3">
-        <a class="nav-link" [routerLink]="['/findJob']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" href="">Find Job</a>
+        <a class="nav-link" [routerLink]="['/findJob']" [routerLinkActive]="['active']"
+         [routerLinkActiveOptions]="{exact:true}" href="">Find Job</a>
       </li>
       <li class="nav-item" *ngIf="user.role == 3">
-        <a class="nav-link" [routerLink]="['/notifications']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" href="">Notifications</a>
+        <a class="nav-link" [routerLink]="['/status']" [routerLinkActive]="['active']"
+         [routerLinkActiveOptions]="{exact:true}" href="">Status of Requests</a>
       </li>
       <li class="nav-item" *ngIf="user.role == 3">
-        <a class="nav-link" [routerLink]="['/status']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" href="">Status of Requests</a>
+        <a class="nav-link" [routerLink]="['/reqcompany']" [routerLinkActive]="['active']"
+         [routerLinkActiveOptions]="{exact:true}" href="">Request Company</a>
       </li>
       <li class="nav-item" *ngIf="user.role == 3">
-        <a class="nav-link" [routerLink]="['/reqcompany']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" href="">Request Company</a>
-      </li>
-      <li class="nav-item" *ngIf="user.role == 3">
-        <a class="nav-link" [routerLink]="['/postproject']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" href="">Post Projects</a>
+        <a class="nav-link" [routerLink]="['/postproject']" [routerLinkActive]="['active']"
+         [routerLinkActiveOptions]="{exact:true}" href="">Post Projects</a>
       </li>
 
       <!-- Admin Funcationalities -->
       <li class="nav-item" *ngIf="user.role == 1">
-        <a class="nav-link" [routerLink]="['/reqcompanieslist']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" href="">Company Requests</a>
+        <a class="nav-link" [routerLink]="['/reqcompanieslist']" [routerLinkActive]="['active']" 
+        [routerLinkActiveOptions]="{exact:true}" href="">Company Requests</a>
       </li>
       <li class="nav-item" *ngIf="user.role == 1">
-        <a class="nav-link" [routerLink]="['/projectreq']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" href="">Project Requests</a>
+        <a class="nav-link" [routerLink]="['/projectreq']" [routerLinkActive]="['active']"
+         [routerLinkActiveOptions]="{exact:true}" href="">Project Requests</a>
       </li>
       <li class="nav-item" *ngIf="user.role == 1">
-        <a class="nav-link" [routerLink]="['/companieslist']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}" href="">Companies List</a>
+        <a class="nav-link" [routerLink]="['/companieslist']" [routerLinkActive]="['active']"
+         [routerLinkActiveOptions]="{exact:true}" href="">Companies List</a>
+      </li>
+
+      <!-- Company Admin Functionalities -->
+      <li class="nav-item" *ngIf="user.role == 2">
+        <a class="nav-link" [routerLink]="['/employees']" [routerLinkActive]="['active']"
+         [routerLinkActiveOptions]="{exact:false}" href="">Manage Employees</a>
+      </li>
+      <li class="nav-item" *ngIf="user.role == 2">
+        <a class="nav-link" [routerLink]="['/projects']" [routerLinkActive]="['active']"
+         [routerLinkActiveOptions]="{exact:true}" href="">Manage Projects</a>
+      </li>
+      <li class="nav-item" *ngIf="user.role == 2">
+        <a class="nav-link" [routerLink]="['/info']" [routerLinkActive]="['active']"
+         [routerLinkActiveOptions]="{exact:true}" href="">Company Info</a>
+      </li>
+      <li class="nav-item" *ngIf="user.role == 2">
+        <a class="nav-link" [routerLink]="['/postjobnotification']" [routerLinkActive]="['active']"
+         [routerLinkActiveOptions]="{exact:true}" href="">Release Notification for Job</a>
+      </li>
+
+      <!-- Common Functionalites for all authenticated Users -->
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/notifications']" [routerLinkActive]="['active']"
+         [routerLinkActiveOptions]="{exact:true}" href="">Notifications</a>
       </li>
     </ul>
   </nav>

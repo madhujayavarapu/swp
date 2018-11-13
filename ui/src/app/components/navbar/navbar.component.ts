@@ -36,7 +36,8 @@ export class NavbarComponent implements OnInit {
 
   onLogout(){
     this.authSrv.logout();
-    this.utilsSrv.showFlashMsg("You are logged out","success");
+    // this.utilsSrv.showFlashMsg("You are logged out","success");
+    this.utilsSrv.showToastMsg("success","You are logged out",null);
     this.router.navigate(['/login']);
     return false;
   }

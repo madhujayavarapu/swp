@@ -35,16 +35,21 @@ export class LoginComponent implements OnInit {
       this.authSrv.authenticateUser(user).subscribe((res) => {
           if(!!res.success){
             this.authSrv.storeUserData(res.token,res.user);
-            this.utilsSrv.showFlashMsg("Login Successfully","success");
+            this.utilsSrv.showToastMsg("success","Login Successfully",null);
+            console.log(res.user);
+            
             this.router.navigate(['/profile']);
           }else{
-            this.utilsSrv.showFlashMsg(res.msg,"danger");
+            this.utilsSrv.showToastMsg("info","Result",res.msg);
+            this.utilsSrv.reloadCurrentState()
           }
         },(err) => {
-          this.router.navigate(['/login']);
+          this.utilsSrv.showToastMsg("info","error","Error");
+          this.utilsSrv.reloadCurrentState();
         })
     }else{
-      this.utilsSrv.showFlashMsg("Fill Details first","danger");
+      // this.utilsSrv.showFlashMsg("Fill Details first","danger");
+      this.utilsSrv.showToastMsg("warning","Fill Details First",null);
     }
   }
 }

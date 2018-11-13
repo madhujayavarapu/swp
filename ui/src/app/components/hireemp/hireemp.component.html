@@ -1,0 +1,36 @@
+<div class="container" style="margin-top: 10px">
+  <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8 mb-4">
+        <div class="card">
+          <div class="card-header bg-default">
+            <h3 class="pull-left" style="color:white">Fill The Details to Hire</h3>
+            <a class="btn btn-md btn-primary pull-right" href="employees/addEmp">Back to Requests</a>
+          </div>
+          <div class="card-body">
+            <form (submit)="sendOffer()">
+              <div class="md-form">
+                <i class="fa fa-user prefix grey-text"></i>
+                <input type="text" autocomplete="off" name="username" [(ngModel)]="username" placeholder="Enter Username" class="form-control">
+              </div>
+              <div class="md-form">
+                <i class="fa fa-lock prefix grey-text"></i>
+                <select class="form-control dropdown" name="branch" [(ngModel)]="branch">
+                  <option value="-1">Select Branch</option>
+                  <option value="hyderabad">Hyderabad</option>
+                  <option value="vizag">Vizag</option>
+                </select>
+              </div>
+              <div class="md-form">
+                <i class="fa fa-lock prefix grey-text"></i>
+                <input type="text" name="salary" [(ngModel)]="salary" placeholder="Enter Package" class="form-control">
+              </div>
+              <div class="text-center">
+                <button type="submit" class="btn btn-deep-orange">Hire</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

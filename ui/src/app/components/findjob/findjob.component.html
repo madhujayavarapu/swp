@@ -1,0 +1,37 @@
+<div class="container-fluid" style="margin-top: 10px">
+    <div class="card">
+      <div class="card-header bg-default">
+        <h4 class="pull-left" style="color:white">Available Jobs</h4>
+      </div>
+      <div class="card-body">
+        <ul class="list-group">
+          <li class="list-group-item list-group-item-default mb-2" *ngFor="let company of jobsList">
+            <div class="row">
+              <div class="col-md-12">
+                <h2><strong style="color:brown">{{company.companyName}}</strong>
+                  <span class="pull-right">
+                    <button class="btn btn-primary btn-md">View</button>
+                    <button class="btn btn-success btn-md" (click)="applyForThisJob(company)">Apply</button>
+                  </span>
+                </h2>
+                <p><strong>Job Description:- </strong>{{ company.aboutJob }}</p>
+                <div class="row">
+                  <div class="col"><strong>Location: </strong> {{company.location}}</div>
+                  <div class="col">
+                    <strong>Job Role:: </strong>
+                    <span *ngIf="company.jobRole == 'ud'">UI Developer</span>
+                    <span *ngIf="company.jobRole == 'bd'">Backend Developer</span>
+                    <span *ngIf="company.jobRole == 'tester'">Tester</span>
+                    <span *ngIf="company.jobRole == 'hr'">HR</span>
+                    <span *ngIf="company.jobRole == 'ba'">Bussiness Analyst</span>
+                  </div>
+                  <div class="col"><strong>Salary: </strong>{{company.salary}}</div>
+                  <div class="col"><strong>Requirements:- </strong> <span *ngFor="let x of company.requirements">{{x}} </span></div>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>

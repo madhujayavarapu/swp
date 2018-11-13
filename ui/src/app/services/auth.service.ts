@@ -80,4 +80,16 @@ export class AuthService {
   acceptCompanyRequest(postData): Observable<any>{
     return this.http.post(this.url+"acceptStartupRequest",postData,{headers: this.getHeaders()}).pipe((map((res) => res.json())));
   }
+
+  postJobNotifaction(postData): Observable<any>{
+    return this.http.post(this.url+"postJobNotification",postData,{headers: this.getHeaders()}).pipe((map((res) => res.json())));
+  }
+
+  getBranchesUnderCompany(postData): Observable<any>{
+    return this.http.post(this.url+"getBranchesUnderCompany",postData,{headers: this.getHeaders()}).pipe((map((res) => res.json())));
+  }
+
+  getAvailableJobs(): Observable<any>{
+    return this.http.get(this.url+"availableJobs",{headers: this.getHeaders()}).pipe((map((res) => res.json())));
+  }
 }

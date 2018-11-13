@@ -44,7 +44,7 @@ export class ReqcompanyComponent implements OnInit {
     if(this.validateSrv.validateCompanyRequest(requestData)){
       this.authSrv.sentCompanyRequest(requestData).subscribe((res) => {
         let type = res.success ? "success" : "danger";
-        this.utilsSrv.showFlashMsg(res.msg, type);
+        this.utilsSrv.showToastMsg(type, res.msg, null);
         if(!!res.success){
           this.router.navigate(['/notifications']);
         }
@@ -52,7 +52,7 @@ export class ReqcompanyComponent implements OnInit {
         this.utilsSrv.handleError(err);
       });
     }else{
-      this.utilsSrv.showFlashMsg("Fill Details First","danger");
+      this.utilsSrv.showToastMsg("warning","Fill Details First", null);
     }
   }
 

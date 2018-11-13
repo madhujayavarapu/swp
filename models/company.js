@@ -22,7 +22,8 @@ const companySchema = mongoose.Schema({
     },
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'user'
+        ref: 'user',
+        unique: true
     },
     establishedAt: {
         type: Date,
@@ -54,6 +55,29 @@ module.exports.acceptStartupRequest = function(companyId, callback){
 module.exports.getCompaniesList = function(callback){
     var query = {isAccepted: true};
     Company.find(query, callback);
+}
+
+module.exports.getCompanyIdOfUser = function(userId, callback){
+    var query = {createdBy: mongoose.Types.ObjectId(userId)};
+    // Company.findOne(query, {$project: {_id: 1}},callback);
+    Company.aggregate([
+        {$match: query},
+        {$project: {
+            _id: 1
+        }}
+    ]).exec(callback)
+}
+
+module.exports.getBranchesUnderCompany = function(companyId, callback){
+    var query = {_id: mongoose.Types.ObjectId(companyId)};
+    Company.aggregate([
+        {$match: query},
+        {$project: {
+            branches: 1,
+            companyName: 1,
+            _id: 0
+        }}
+    ]).exec(callback);
 }
 
 module.exports.getReqStatus = function(userId, callback){

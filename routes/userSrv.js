@@ -9,6 +9,7 @@ const dbConfig = require('../config/database');
 const User = require('../models/user');
 const UserDetails = require('../models/userDetails');
 const Company = require('../models/company');
+const JobNotification = require('../models/jobNotification');
 
 const commonSrv = require('../services/common.service');
 
@@ -33,6 +34,7 @@ function formatUser(user){
         userId: user._id,
         role: user.role
     }
+    obj.entityId = user.role == 2 ? user.entityId : "";
     return obj;
 }
 
@@ -116,11 +118,26 @@ router.post('/login', (req, res, next) => {
                     const token = jwt.sign(user.toJSON(), dbConfig.secret, {
                         expiresIn: 3600 // expires in 1 hour
                     })
-                    res.json({
-                        success: true,
-                        token: 'JWT '+token,
-                        user: formatUser(user)
-                    });
+                    if(user.role == 2){
+                        Company.getCompanyIdOfUser(user._id, (err, result) => {
+                            if(err){
+                                res.json({success:false,msg:"something went wrong"});
+                            }else{
+                                if(result){
+                                    user.entityId = result[0]._id;
+                                    res.json({success: true, token: 'JWT '+token,user: formatUser(user)});
+                                }else{
+                                    res.json({success: false, msg: "Failed to get Entity Id"});
+                                }
+                            }
+                        })
+                    }else{
+                        res.json({
+                            success: true,
+                            token: 'JWT '+token,
+                            user: formatUser(user)
+                        });
+                    }
                 }
             })
         }
@@ -217,6 +234,68 @@ router.post('/acceptStartupRequest', (req, res, next) => {
                 }
             }else{
                 res.json({success:false, msg: "Failed to accept"});
+            }
+        }
+    })
+})
+
+router.post('/getBranchesUnderCompany', (req, res, next) => {
+    let companyId = req.body.companyId;
+    Company.getBranchesUnderCompany(companyId, (err, result) => {
+        if(err){
+            res.json({success: false, msg: "Something went wrong"});
+        }else{
+            if(result){
+                res.json({success: true, data: result});
+            }else{
+                res.json({success: false, msg: "Failed to retrieve branches"});
+            }
+        }
+    })
+})
+
+router.post('/postJobNotification', (req, res, next) => {
+    let newJobNotification = new JobNotification({
+        companyId: req.body.companyId,
+        companyName: req.body.companyName,
+        salary: req.body.salary,
+        location: req.body.branch,
+        requirements: req.body.requirements,
+        aboutJob: req.body.description,
+        jobRole: req.body.empRole
+    })
+    JobNotification.checkNotificationExists(req.body.companyId, req.body.empRole, (err2, isExist) => {
+        if(err2){
+            res.json({success:false,msg:"something went wrong"});
+        }else{
+            if(isExist.length == 0){
+                JobNotification.postJobNotification(newJobNotification, (err, result) => {
+                    if(err){
+                        res.json({success:false,msg:"something went wrong"});
+                    }else{
+                        if(result){
+                            res.json({success: true, msg: "Successfully posted job notification"});
+                        }else{
+                            res.json({success: false, msg: "Failed to post notification..please try again"});
+                        }
+                    }
+                })
+            }else{
+                res.json({success: false, msg: "Already notification posted"});
+            }
+        }
+    })
+})
+
+router.get('/availableJobs', (req, res, next) => {
+    JobNotification.getJobNotifications((err, result) => {
+        if(err){
+            res.json({success: false, msg: "Something went wrong"});
+        }else{
+            if(result){
+                res.json({success: true, data: result});
+            }else{
+                res.json({success: false, msg: "Failed to retrieve jobs"});
             }
         }
     })
