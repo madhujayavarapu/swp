@@ -19,6 +19,8 @@ export class PostnotificationComponent implements OnInit {
   companyId: String;
   companyName: String;
   branches: String[] = [];
+  empType: String = "-1";
+  duration: String = "-1";
 
   constructor(
     private utilsSrv: UtilsService,
@@ -49,14 +51,19 @@ export class PostnotificationComponent implements OnInit {
   }
 
   postNotification(){
+    let keySkills = this.requirements != undefined ? this.requirements.split(',') : undefined;
     let postData = {
       empRole: this.empRole,
+      empType: this.empType,
+      duration: this.duration,
       branch: [this.branch],
-      requirements: [this.requirements.split(',')],
+      requirements: keySkills,
       description: this.description,
       salary: this.salary,
       companyId: this.companyId,
-      companyName: this.companyName
+      companyName: this.companyName,
+      postedBy: this.authSrv.getDetailsOfUser('username'),
+      postedAt: new Date()
     }
     
     if(this.validateSrv.validatePostJobNotificationForm(postData)){

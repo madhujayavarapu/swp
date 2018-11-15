@@ -1,0 +1,76 @@
+<div class="container-fluid" style="margin-top: 10px">
+    <div class="card">
+      <div class="card-header bg-default">
+        <h4>
+          <strong style="color: white">Released Job Notifications</strong>
+          <a class="btn btn-md btn-primary pull-right" href="jobs/post">Post Notification</a>
+        </h4>
+      </div>
+      <div class="card-body" style="overflow:scroll">
+        <ul class="list-group" *ngIf="data">
+          <div class="row">
+            <!-- <div class="col-md-2"> -->
+              <!-- <div class="card filter-container">
+                <p>Filters will come here</p>
+              </div> -->
+            <!-- </div> -->
+            <div class="col-md-12">
+              <li class="list-group-item list-group-item-default mb-2">
+                <div class="container">
+                  <div class="card mb-4" *ngFor="let company of notifications; let i = index">
+                    <div class="card-header bg-info">
+                      <h4>
+                        <span class="pull-right postedAt">
+                          <!-- <small>Posted On:- {{ company.postedAt | date: "MMM dd, yyyy" }}</small> -->
+                          <small>Posted :- {{ utilsSrv.getDiffBwDates(company.postedAt) }}</small>                        
+                        </span>
+                      </h4>
+                    </div>
+                    <div class="card-body">
+                      <p><strong class="heading">Job Description:- </strong>{{ company.aboutJob }}</p>
+                      <p><strong class="heading">Key Skills:- </strong> <span *ngFor="let x of company.requirements">{{x}} </span></p>
+                      <div class="row">
+                        <div class="col"><strong class="heading">Location: </strong> {{company.location}}</div>
+                        <div class="col">
+                          <strong class="heading">Job Role:: </strong>
+                          <span *ngIf="company.jobRole == 'ud'">UI Developer</span>
+                          <span *ngIf="company.jobRole == 'bd'">Backend Developer</span>
+                          <span *ngIf="company.jobRole == 'tester'">Tester</span>
+                          <span *ngIf="company.jobRole == 'hr'">HR</span>
+                          <span *ngIf="company.jobRole == 'ba'">Bussiness Analyst</span>
+                        </div>
+                        <div class="col">
+                          <strong class="heading">Job Type: </strong>
+                          <span *ngIf="company.jobType == 'full'">Full Time</span>
+                          <span *ngIf="company.jobType == 'internship'">Internship</span>
+                        </div>
+                        <div class="col" *ngIf="company.jobType == 'internship'">
+                          <strong class="heading">Duration: </strong> {{company.jobDuration}}
+                        </div>
+                        <div class="col"><strong class="heading">Salary: </strong>{{company.salary | currency:' ':false: '1.0-2'}}/-</div>
+                      </div>
+                    </div>
+                    <div class="card-footer">
+                      <div>
+                        <p>
+                          <small class="heading">Posted By:</small> {{company.postedBy}}
+                          <span class="pull-right">
+                            <button class="btn btn-primary btn-sm" (click)="appliedCandidates(company)">Applied Candidates</button>
+                            <button class="btn btn-info btn-sm">Update</button>
+                            <button class="btn btn-danger btn-sm">Delete</button>
+                          </span>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </div>
+          </div>
+        </ul>
+        <div class="center" *ngIf="!data">
+          <p>No Data To Display</p>
+        </div>
+      </div>
+    </div>
+  </div>

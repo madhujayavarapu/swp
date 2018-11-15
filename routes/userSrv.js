@@ -13,7 +13,6 @@ const JobNotification = require('../models/jobNotification');
 
 const commonSrv = require('../services/common.service');
 
-
 function getUserByUsername(username){
     User.getUserByUsername(username, (err, result) => {
         if(err){
@@ -262,9 +261,14 @@ router.post('/postJobNotification', (req, res, next) => {
         location: req.body.branch,
         requirements: req.body.requirements,
         aboutJob: req.body.description,
-        jobRole: req.body.empRole
+        jobRole: req.body.empRole,
+        jobType: req.body.empType,
+        jobDuration: req.body.duration,
+        postedBy: req.body.postedBy,
+        postedAt: req.body.postedAt,
+        applied: []
     })
-    JobNotification.checkNotificationExists(req.body.companyId, req.body.empRole, (err2, isExist) => {
+    JobNotification.checkNotificationExists(req.body.companyId, req.body.empRole, req.body.empType, (err2, isExist) => {
         if(err2){
             res.json({success:false,msg:"something went wrong"});
         }else{
@@ -287,8 +291,61 @@ router.post('/postJobNotification', (req, res, next) => {
     })
 })
 
-router.get('/availableJobs', (req, res, next) => {
-    JobNotification.getJobNotifications((err, result) => {
+router.post('/releasedJobNotifications', (req, res, next) => {
+    let companyId = req.body.companyId;
+    JobNotification.releasedJobNotification(companyId, (err, result) => {
+        if(err){
+            res.json({success: false, msg: "Something went wrong"});
+        }else{
+            if(result){
+                res.json({success: true, data: result});
+            }else{
+                res.json({success: false, msg:"Failed to retrieve jobs"});
+            }
+        }
+    })
+})
+
+router.post('/getApplicants', (req, res, next) => {
+    let jobId = req.body.jobId;
+    JobNotification.getApplicants(jobId, (err, result) => {
+        if(err){
+            res.json({success: false, msg: "something went wrong"});
+        }else{
+            if(result){
+                res.json({success: true, data: result});
+            }else{
+                res.json({success: false, msg: "Failed to retrieve applicants"});
+            }
+        }
+    })
+})
+
+router.post('/acceptApplicant', (req, res, next) => {
+    let companyId = req.body.companyId;
+    let userId = req.body.userId;
+    let jobId = req.body.jobId;
+})
+
+router.post('/applyForJob', (req, res, next) => {
+    let jobId = req.body.jobId;
+    let userId = req.body.userId;
+    JobNotification.applyForJob(userId, jobId, (err, result) => {
+        if(err){
+            res.json({success: true, msg: "something went wrong"});
+        }else{
+            if(result){
+                res.json({success: true, msg: "Applied For Job..Please wait for the response"});
+            }else{
+                res.json({success: false, msg: "Failed to apply for Job"});
+            }
+        }
+    })
+})
+
+router.post('/availableJobs', (req, res, next) => {
+    let userId = req.body.userId;
+    JobNotification.getJobNotifications(userId, (err, result) => {
         if(err){
             res.json({success: false, msg: "Something went wrong"});
         }else{
@@ -296,6 +353,21 @@ router.get('/availableJobs', (req, res, next) => {
                 res.json({success: true, data: result});
             }else{
                 res.json({success: false, msg: "Failed to retrieve jobs"});
+            }
+        }
+    })
+})
+
+router.post('/appliedJobs', (req, res, next) => {
+    let userId = req.body.userId;
+    JobNotification.getAppliedJobs(userId, (err, result) => {
+        if(err){
+            res.json({success: false, msg: "Something went wrong"});
+        }else{
+            if(result){
+                res.json({success: true, data: result});
+            }else{
+                res.json({success: false, msg: "You are not yet applied for any jobs"});
             }
         }
     })

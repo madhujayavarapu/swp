@@ -1,5 +1,9 @@
 const mongoose = require('mongoose');
 
+const User = require('./user');
+const UserDetails = require('./userDetails');
+const JobInfo = require('./companyInfo');
+
 const jobNotificationSchema = new mongoose.Schema({
     companyId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -8,6 +12,14 @@ const jobNotificationSchema = new mongoose.Schema({
     },
     salary: {
         type: Number,
+        required: true
+    },
+    jobType:{
+        type: String,
+        required: true
+    },
+    jobDuration: {
+        type: String,
         required: true
     },
     requirements: {
@@ -29,6 +41,17 @@ const jobNotificationSchema = new mongoose.Schema({
     companyName: {
         type: String,
         required: true
+    },
+    postedBy: {
+        type: String,
+        required: true
+    },
+    postedAt: {
+        type: Date,
+        required: true
+    },
+    applied: {
+        type: [mongoose.Schema.Types.ObjectId]
     }
 })
 
@@ -38,12 +61,58 @@ module.exports.postJobNotification = function(newJobNotification, callback){
     newJobNotification.save(callback);
 }
 
-module.exports.checkNotificationExists = function(companyId, jobRole, callback){
-    var query = {companyId: mongoose.Types.ObjectId(companyId), jobRole: jobRole};
+module.exports.checkNotificationExists = function(companyId, jobRole, jobType, callback){
+    var query = {companyId: mongoose.Types.ObjectId(companyId), jobRole: jobRole, jobType: jobType};
     JobNotification.find(query, callback);
 }
 
+module.exports.releasedJobNotification = function(companyId, callback){
+    var query = {companyId: mongoose.Types.ObjectId(companyId)};
+    JobNotification.find(query, callback);
+}
 
-module.exports.getJobNotifications = function(callback){
-    JobNotification.find(callback);
+module.exports.getApplicants = function(jobId, callback){
+    var query = {_id: mongoose.Types.ObjectId(jobId)};
+    JobNotification.aggregate([
+        {$match: query},
+        {$project: {
+            _id: 1,
+            applied: 1
+        }},
+        {$unwind: "$applied"},
+        {
+            $lookup: {
+                from: 'users',
+                localField: 'applied',
+                foreignField: '_id',
+                as: "userinfo" 
+            }
+        },
+        {
+            $project: {
+                _id: 1,
+                applied: 1,
+                "userinfo.username": 1
+            }
+        }
+    ]).exec(callback);
+}
+
+// module.exports.acceptApplicants = function(jobId, companyId, userId,  callback){
+    
+// }
+
+module.exports.applyForJob = function(userId, jobId, callback){
+    var query = {_id: mongoose.Types.ObjectId(jobId),applied: {$nin: [mongoose.Types.ObjectId(userId)]}};
+    JobNotification.findOneAndUpdate(query, {$push: {applied: userId}},callback);
+}
+
+module.exports.getJobNotifications = function(userId, callback){
+    var query = {applied: {$nin: [mongoose.Types.ObjectId(userId)]}};
+    JobNotification.find(query, callback);
+}
+
+module.exports.getAppliedJobs = function(userId, callback){
+    var query = {applied: {$in: [mongoose.Types.ObjectId(userId)]}};
+    JobNotification.find(query, callback);
 }

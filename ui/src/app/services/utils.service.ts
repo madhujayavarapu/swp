@@ -36,6 +36,32 @@ export class UtilsService {
     }
   }
 
+  getDiffBwDates(date){
+    var tempDate = new Date(date);
+    var currentDate = new Date();
+    var milliseconds = currentDate.getTime() - tempDate.getTime();
+    var time;
+
+    const oneDay = 1000*60*60*24;
+    const hours = 1000*60*60;
+    const minute = 1000*60;
+
+    if(milliseconds > oneDay){
+      time = Math.ceil(milliseconds/oneDay);
+      return time+" days ago";
+    }else{
+      if(milliseconds > hours){
+        return Math.ceil(milliseconds/hours)+" hours ago";
+      }else{ 
+        return Math.ceil(milliseconds/minute)+" minutes ago"; 
+      }
+    }
+  }
+
+  formatNumber(number){
+    return number;
+  }
+
   reloadCurrentState(){
     window.location.reload();
   }

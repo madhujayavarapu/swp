@@ -2,6 +2,8 @@
 @import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css);
 @import url(https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.4.3/css/mdb.min.css);
 
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
 /* loader css */
 #loader {
     position: absolute;
@@ -55,6 +57,9 @@
     font-size: 18px; 
 }
 
+body{
+    background-color: gainsboro;
+}
 
 /* added css for forms */
 .hm-gradient {
@@ -145,3 +150,7 @@
 /* .md-form prefix~select{
     margin-left: 3rem;
 } */
+
+.heading{
+    color: gray;
+}

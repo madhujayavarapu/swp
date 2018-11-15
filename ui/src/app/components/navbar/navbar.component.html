@@ -81,8 +81,8 @@
          [routerLinkActiveOptions]="{exact:true}" href="">Company Info</a>
       </li>
       <li class="nav-item" *ngIf="user.role == 2">
-        <a class="nav-link" [routerLink]="['/postjobnotification']" [routerLinkActive]="['active']"
-         [routerLinkActiveOptions]="{exact:true}" href="">Release Notification for Job</a>
+        <a class="nav-link" [routerLink]="['jobs']" [routerLinkActive]="['active']"
+         [routerLinkActiveOptions]="{exact:false}" href="">Job Notifications</a>
       </li>
 
       <!-- Common Functionalites for all authenticated Users -->

@@ -85,11 +85,23 @@ export class AuthService {
     return this.http.post(this.url+"postJobNotification",postData,{headers: this.getHeaders()}).pipe((map((res) => res.json())));
   }
 
+  releasedJobNotifications(postData): Observable<any>{
+    return this.http.post(this.url+"releasedJobNotifications",postData,{headers: this.getHeaders()}).pipe((map((res) => res.json())));
+  }
+
   getBranchesUnderCompany(postData): Observable<any>{
     return this.http.post(this.url+"getBranchesUnderCompany",postData,{headers: this.getHeaders()}).pipe((map((res) => res.json())));
   }
 
-  getAvailableJobs(): Observable<any>{
-    return this.http.get(this.url+"availableJobs",{headers: this.getHeaders()}).pipe((map((res) => res.json())));
+  getAvailableJobs(postData): Observable<any>{
+    return this.http.post(this.url+"availableJobs",postData, {headers: this.getHeaders()}).pipe((map((res) => res.json())));
+  }
+
+  applyForJob(postData): Observable<any>{
+    return this.http.post(this.url+"applyForJob",postData,{headers:this.getHeaders()}).pipe((map((res) => res.json())));
+  }
+
+  getAppliedCandidateForjob(postData): Observable<any>{
+    return this.http.post(this.url+"getApplicants",postData,{headers:this.getHeaders()}).pipe((map((res) => res.json())));
   }
 }

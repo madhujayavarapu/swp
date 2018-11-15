@@ -6,6 +6,7 @@ import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { FlashMessagesModule, FlashMessagesService } from 'angular2-flash-messages';
 import { ToasterContainerComponent, ToasterModule, ToasterService, ToasterConfig } from 'angular2-toaster';
+import {MatDialogModule} from '@angular/material';
 
 import { AuthService } from './services/auth.service';
 import { ValidateService } from './services/validate.service';
@@ -27,6 +28,9 @@ import { AddempComponent } from './components/addemp/addemp.component';
 import { HireempComponent } from './components/hireemp/hireemp.component';
 import { PostnotificationComponent } from './components/postnotification/postnotification.component';
 import { FindjobComponent } from './components/findjob/findjob.component';
+import { ReleasednotificationsComponent } from './components/releasednotifications/releasednotifications.component';
+import { ApplicantslistComponent } from './components/applicantslist/applicantslist.component';
+import { AcceptjobrequestComponent } from './components/acceptjobrequest/acceptjobrequest.component';
 
 @NgModule({
   declarations: [
@@ -43,13 +47,20 @@ import { FindjobComponent } from './components/findjob/findjob.component';
     AddempComponent,
     HireempComponent,
     PostnotificationComponent,
-    FindjobComponent
+    FindjobComponent,
+    ReleasednotificationsComponent,
+    ApplicantslistComponent,
+    AcceptjobrequestComponent
+  ],
+  entryComponents:[
+    AcceptjobrequestComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpModule,
     FormsModule,
+    MatDialogModule,
     RouterModule.forRoot(appRoutes),
     FlashMessagesModule,
     ToasterModule.forRoot()

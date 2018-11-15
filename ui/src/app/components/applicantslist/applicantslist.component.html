@@ -1,0 +1,32 @@
+<div class="container-fluid" style="margin-top: 10px;">
+  <div class="card">
+    <div class="card-header bg-default">
+      <h4>
+        <strong style="color:white">Applicants List</strong>
+        <a class="btn btn-primary btn-md pull-right" href="jobs/released">Released Notifications</a>
+      </h4>
+    </div>
+    <div class="card-body">
+      <ul class="list-group" *ngIf="data">
+        <li class="list-group-item list-group-item-default mb-2" *ngFor="let applicant of applicantsList">
+          <h4>
+            <strong>{{ applicant.userinfo[0].username }}</strong>
+            <button class="btn btn-info btn-md pull-right">View Profile</button>
+            <button class="btn btn-warning btn-md pull-right">Reject</button>
+            <button class="btn btn-success btn-md pull-right" (click)="openDialog(applicant)">Accept</button>
+          </h4>
+          <!-- <p></p> -->
+          <div class="row">
+            <div class="col"><strong>Key</strong> Value</div>
+            <div class="col"><strong>Key</strong> Value</div>            
+          </div>
+        </li>
+      </ul>
+      <ul class="list-group" *ngIf="!data">
+        <li class="list-group-item list-group-item-default mb-2">
+          <p class="center">No Data</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
