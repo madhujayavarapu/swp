@@ -1,8 +1,89 @@
-<h1 mat-dialog-title>Hi {{data._id}}</h1>
-<div mat-dialog-content>
-  <p>What's your favorite animal?</p>
-</div>
-<div mat-dialog-actions>
-  <button  (click)="onNoClick()">No Thanks</button>
-  <button [mat-dialog-close]="data.animal" cdkFocusInitial>Ok</button>
-</div>
+<!-- <div class="card">
+  <div class="card-header">
+    <h4>
+      Fill the details
+      <a class="pull-right" (click)="close()"><strong>&times;</strong></a>
+    </h4>
+  </div>
+  <div class="card-body">
+    <div class="container">
+
+    </div>
+  </div>
+  <div class="card-footer">
+    <button class="btn btn-success btn-md pull-right" (click)="hire()">Hire</button>
+    <button class="btn btn-primary btn-md pull-right" (click)="close()" >Close</button>
+  </div>
+</div> -->
+
+<!-- <div class="modal">
+  <div class="modal-dialog"> -->
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Confirm Job Details</h4>
+        <button class="close" (click)="close()">&times;</button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        <div class="container">
+          <p class="note">*Note:- You can only change employee name..</p>
+          <form>
+            <div class="md-form">
+              <i class="fas fa-coins prefix grey-text"></i>
+              <input type="text" autocomplete="off" name="username" [(ngModel)]="username" placeholder="Username" class="form-control">
+            </div>
+            <div class="md-form">
+              <i class="fas fa-user-tie prefix grey-text"></i>
+              <select class="form-control dropdown" name="empRole" [disabled]="true" [(ngModel)]="empRole">
+                <option value="-1">Select Role</option>
+                <option value="ud">UI Developer</option>
+                <option value="bd">Backend Developer</option>
+                <option value="tester">Tester</option>
+                <option value="hr">HR</option>
+                <option value="ba">Bussiness Analyst</option>
+              </select>
+            </div>
+            <div class="md-form">
+              <i class="fas fa-arrow-alt-circle-right prefix grey-text"></i>
+              <select class="form-control dropdown" name="empType" [disabled]="true" [(ngModel)]="empType">
+                <option value="-1">Select Employement Type</option>
+                <option value="full">Full Time</option>
+                <option value="internship">Internship</option>
+              </select>
+            </div>
+            <div class="md-form" *ngIf="empType=='internship'">
+              <i class="fas fa-business-time prefix grey-text"></i>
+              <select class="form-control dropdown" name="duration" [disabled]="true" [(ngModel)]="duration">
+                <option value="-1">Select Internship Duration</option>
+                <option value="3m">3 Months</option>
+                <option value="6m">6 Months</option>
+                <option value="1y">1 year</option>
+              </select>
+            </div>
+            <div class="md-form">
+              <i class="fas fa-map-marker-alt prefix grey-text"></i>
+              <select class="form-control dropdown" name="branch" [disabled]="true" [(ngModel)]="branch">
+                <option value="-1">Select Branch</option>
+                <option value="{{branch}}" *ngFor="let branch of branches">{{branch}}</option>
+              </select>
+            </div>
+            <div class="md-form">
+              <i class="fas fa-coins prefix grey-text"></i>
+              <input type="text" autocomplete="off" name="salary" [disabled]="true" [(ngModel)]="salary" placeholder="Salary per month" class="form-control">
+            </div>
+          </form>
+        </div>
+      </div>
+      
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button class="btn btn-success btn-md pull-right" (click)="hire()">Hire For this Post</button>
+        <button class="btn btn-danger btn-md pull-right" (click)="close()">Close</button>
+      </div>
+
+    </div>
+  <!-- </div>
+</div> -->

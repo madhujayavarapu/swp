@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const User = require('./user');
 const UserDetails = require('./userDetails');
-const JobInfo = require('./companyInfo');
+const Employee = require('./employee');
 
 const jobNotificationSchema = new mongoose.Schema({
     companyId: {
@@ -98,9 +98,18 @@ module.exports.getApplicants = function(jobId, callback){
     ]).exec(callback);
 }
 
-// module.exports.acceptApplicants = function(jobId, companyId, userId,  callback){
-    
-// }
+module.exports.acceptApplicants = function(jobId, userId,  callback){
+    JobNotification.update(
+        {_id:mongoose.Types.ObjectId(jobId)},
+        {$pull: {applied: mongoose.Types.ObjectId(userId)}},
+        callback
+    )
+}
+
+module.exports.getJobDetailsById = function(jobId, callback){
+    var query = {_id: mongoose.Types.ObjectId(jobId)};
+    JobNotification.findById(query,{jobType:1, jobRole: 1, salary: 1, jobDuration: 1, location: 1 }, {$unwind: "location"}, callback);
+} 
 
 module.exports.applyForJob = function(userId, jobId, callback){
     var query = {_id: mongoose.Types.ObjectId(jobId),applied: {$nin: [mongoose.Types.ObjectId(userId)]}};

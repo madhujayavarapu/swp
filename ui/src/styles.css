@@ -147,6 +147,10 @@ body{
     /* margin-right: 3rem; */
 }
 
+.note{
+    color: #ff3547;
+}
+
 /* .md-form prefix~select{
     margin-left: 3rem;
 } */

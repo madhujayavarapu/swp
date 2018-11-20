@@ -104,4 +104,12 @@ export class AuthService {
   getAppliedCandidateForjob(postData): Observable<any>{
     return this.http.post(this.url+"getApplicants",postData,{headers:this.getHeaders()}).pipe((map((res) => res.json())));
   }
+
+  getJobDetails(postData): Observable<any>{
+    return this.http.post(this.url+"getJobDetails",postData,{headers:this.getHeaders()}).pipe((map((res) => res.json()))); 
+  }
+
+  HireApplicant(postData): Observable<any>{
+    return this.http.post(this.url+"acceptApplicant",postData,{headers:this.getHeaders()}).pipe((map((res) => res.json()))); 
+  }
 }

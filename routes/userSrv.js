@@ -9,6 +9,7 @@ const dbConfig = require('../config/database');
 const User = require('../models/user');
 const UserDetails = require('../models/userDetails');
 const Company = require('../models/company');
+const Employee = require('../models/employee');
 const JobNotification = require('../models/jobNotification');
 
 const commonSrv = require('../services/common.service');
@@ -188,7 +189,6 @@ router.post('/reqStatus', (req, res, next) => {
 router.get('/viewStartupRequests', (req, res, next) => {
     Company.getStartupRequests((err,result) => {
         if(err){
-            console.log(err);
             res.json({success:false,msg:"something went wrong"});
         }else{
             if(result){
@@ -322,9 +322,67 @@ router.post('/getApplicants', (req, res, next) => {
 })
 
 router.post('/acceptApplicant', (req, res, next) => {
-    let companyId = req.body.companyId;
-    let userId = req.body.userId;
+    let newEmp = new Employee({
+        jobRole: req.body.empRole,
+        jobType: req.body.empType,
+        jobDuration: req.body.duration,
+        salary: req.body.salary,
+        joiningDate: req.body.joiningDate,
+        companyId: req.body.companyId,
+        userId: req.body.userId,
+        branch: req.body.branch,
+        empName: req.body.empName
+    });
+
     let jobId = req.body.jobId;
+    let userId = req.body.userId;
+
+    Employee.addEmployee(newEmp, (err, result) => {
+        if(err){
+            res.json({success: false, msg: "Something went wrong"});
+        }else{
+            if(result){
+                JobNotification.acceptApplicants(jobId, userId, (err2, isDeleted) => {
+                    if(err2){
+                        res.json({success: false, msg: "Something went wrong while deleting from job notification"});
+                    }else{
+                        if(isDeleted){
+                            User.changeUserRole(5, userId, (rr, updated) => {
+                                if(rr){
+                                    res.json({success:false, msg: "Something wrong with updating user role fgh"});
+                                }else{
+                                    if(updated){
+                                        res.json({success: true, msg: "Hired Employee"});
+                                    }else{
+                                        res.json({success:false, msg: "Something wrong with updating user role"});
+                                    }
+                                }
+                            })
+                        }else{
+                            res.json({success: false, msg: "failed to delete from job notification"});
+                        }
+                    }
+                })
+            }else{
+                res.json({success: false, msg: "Failed to Hire Employee"});
+            }
+        }
+    })
+})
+
+router.post('/getJobDetails', (req, res, next) => {
+    let jobId = req.body.jobId;
+    JobNotification.getJobDetailsById(jobId, (err, result) => {
+        if(err){
+            res.json({success: false, msg: "Something went wrong"});
+        }else{
+            if(result){
+                res.json({success: true, data: result});
+            }else{
+                res.json({success: false, msg: "Job Not Found"});
+            }
+        }
+    })
 })
 
 router.post('/applyForJob', (req, res, next) => {

@@ -31,8 +31,12 @@ export class ApplicantslistComponent implements OnInit {
 
   openDialog(company): void {
     const dialogRef = this.dialog.open(AcceptjobrequestComponent, {
-      width: '250px',
-      data: company
+      width: '75%',
+      data: {
+        "jobId": company._id,
+        "userId": company.applied,
+        "username": company.userinfo[0].username
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {

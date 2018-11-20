@@ -41,7 +41,7 @@ module.exports.comparePassword = function(usrPassword, hash, callback){
 
 module.exports.changeUserRole = function(userId, newRole, callback){
     var query = {_id: mongoose.Types.ObjectId(userId)};
-    User.findOneAndUpdate(query,{role: newRole},callback);
+    User.findOneAndUpdate(query,{$set: {role: newRole}},callback);
 }
 
 module.exports.getUserById = function(userId, callback){
