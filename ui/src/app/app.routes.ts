@@ -32,5 +32,5 @@ export const appRoutes:Routes = [
     { path: 'jobs/applicants/:jobId',component: ApplicantslistComponent},
     {path: 'dashboard',component: DashboardComponent},
 
-    {path: '**',redirectTo:'dashboard', pathMatch:'full'}
+    {path: '**',redirectTo:'login', pathMatch:'full'}
 ]

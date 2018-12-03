@@ -9,6 +9,7 @@ export interface dataObject{
   username: String;
   userId: String;
   jobId: String;
+  userRole: String;
 }
 
 @Component({
@@ -26,6 +27,7 @@ export class AcceptjobrequestComponent implements OnInit {
   branches: any[];
   username: String;
   companyId: String;
+  userRole: String;
   jobId: String;
   companyName: String;
 
@@ -41,6 +43,7 @@ export class AcceptjobrequestComponent implements OnInit {
 
   ngOnInit() {
     this.username = this.data.username;
+    this.userRole = this.data.userRole;
     this.jobId = this.data.jobId;
     this.companyId = this.authSrv.getDetailsOfUser('entityId');
     this.getBranchesUnderThisCompany();
@@ -53,7 +56,6 @@ export class AcceptjobrequestComponent implements OnInit {
     }
     this.authSrv.getJobDetails(postData).subscribe((res) => {
       if(res.success){
-        console.log(res);
         this.empRole = res.data.jobRole;
         this.empType = res.data.jobType;
         this.duration = res.data.jobDuration;
@@ -88,7 +90,6 @@ export class AcceptjobrequestComponent implements OnInit {
   }
 
   hire(){
-
     let jobDetails = {
       empRole: this.empRole,
       empType: this.empType,
@@ -99,20 +100,20 @@ export class AcceptjobrequestComponent implements OnInit {
       empName: this.username,
       userId: this.data.userId,
       salary: this.salary,
-      jobId: this.jobId
+      jobId: this.jobId,
+      userRole: this.userRole
     }
 
 
     this.authSrv.HireApplicant(jobDetails).subscribe((res) =>{
       if(res.success){
-        
         this.utilsSrv.showToastMsg("success","Hired Applicant",null);
-        // this.utilsSrv.reloadCurrentState();
+        this.close();
       }else{
         this.utilsSrv.showToastMsg("info", res.msg, null);
+        this.close();
       }
     },(err)=> {
-      
       this.utilsSrv.handleError(err);
     })
     

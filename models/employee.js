@@ -42,6 +42,10 @@ const EmployeeSchema = mongoose.Schema({
 const Employee = module.exports = mongoose.model('employees',EmployeeSchema);
 
 module.exports.addEmployee = function(newEmp, callback){
-
     newEmp.save(callback);
+}
+
+module.exports.getEmpUnderCompany = function(companyId, callback){
+    var query = {companyId: mongoose.Types.ObjectId(companyId)};
+    Employee.find(query,callback);
 }

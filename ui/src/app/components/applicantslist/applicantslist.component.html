@@ -8,11 +8,12 @@
     </div>
     <div class="card-body">
       <ul class="list-group" *ngIf="data">
+        <div id="loader" [ngStyle]="{'display': throbber}"></div>
         <li class="list-group-item list-group-item-default mb-2" *ngFor="let applicant of applicantsList">
           <h4>
             <strong>{{ applicant.userinfo[0].username }}</strong>
             <button class="btn btn-info btn-md pull-right">View Profile</button>
-            <button class="btn btn-warning btn-md pull-right">Reject</button>
+            <button class="btn btn-warning btn-md pull-right" (click)="rejectApplicant(applicant)">Reject</button>
             <button class="btn btn-success btn-md pull-right" (click)="openDialog(applicant)">Accept</button>
           </h4>
           <!-- <p></p> -->

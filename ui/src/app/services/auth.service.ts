@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Http,Headers } from '@angular/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { URL } from '../url';
+// import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root'
@@ -10,10 +12,10 @@ export class AuthService {
 
   authToken: any;
   user: any;
-  url:String = "http://localhost:3000/users/";
 
   constructor(
     private http: Http
+    // private jwtHelper: JwtHelperService
   ) { }
 
   storeUserData(token, userData){
@@ -36,6 +38,11 @@ export class AuthService {
     return userDetails[key];
   }
 
+  // isAuthenticated(): boolean{
+  //   const token = localStorage.getItem('jwt_token');
+  //   return !this.jwtHelper.isTokenExpired(token);
+  // }
+
   isLoggedIn(){
     this.loadToken();
     if(!!this.authToken){
@@ -57,59 +64,67 @@ export class AuthService {
   }
 
   registerUser(user): Observable<any>{
-    return this.http.post(this.url+"register",user,{headers:this.getHeaders()}).pipe((map((res) => res.json())));
+    return this.http.post(URL+"users/register",user,{headers:this.getHeaders()}).pipe((map((res) => res.json())));
   }
 
   getUserDetailsByUserId(user): Observable<any>{
-    return this.http.post(this.url+"getUserDetails",user,{headers:this.getHeaders()}).pipe((map((res) => res.json())));
+    return this.http.post(URL+"users/getUserDetails",user,{headers:this.getHeaders()}).pipe((map((res) => res.json())));
   }
 
   // for login
   authenticateUser(user): Observable<any>{
-    return this.http.post(this.url+"login",user,{headers: this.getHeaders()}).pipe((map((res) => res.json())));
+    return this.http.post(URL+"users/login",user,{headers: this.getHeaders()}).pipe((map((res) => res.json())));
   }
 
   sentCompanyRequest(requestData): Observable<any>{
-    return this.http.post(this.url+"startupRequest",requestData,{headers: this.getHeaders()}).pipe((map((res) => res.json())));
+    return this.http.post(URL+"users/startupRequest",requestData,{headers: this.getHeaders()}).pipe((map((res) => res.json())));
   }
 
   getCompanyRequests(): Observable<any>{
-    return this.http.get(this.url+"viewStartupRequests",{headers: this.getHeaders()}).pipe((map((res) => res.json())));
+    return this.http.get(URL+"users/viewStartupRequests",{headers: this.getHeaders()}).pipe((map((res) => res.json())));
   }
 
   acceptCompanyRequest(postData): Observable<any>{
-    return this.http.post(this.url+"acceptStartupRequest",postData,{headers: this.getHeaders()}).pipe((map((res) => res.json())));
+    return this.http.post(URL+"users/acceptStartupRequest",postData,{headers: this.getHeaders()}).pipe((map((res) => res.json())));
   }
 
   postJobNotifaction(postData): Observable<any>{
-    return this.http.post(this.url+"postJobNotification",postData,{headers: this.getHeaders()}).pipe((map((res) => res.json())));
+    return this.http.post(URL+"users/postJobNotification",postData,{headers: this.getHeaders()}).pipe((map((res) => res.json())));
   }
 
   releasedJobNotifications(postData): Observable<any>{
-    return this.http.post(this.url+"releasedJobNotifications",postData,{headers: this.getHeaders()}).pipe((map((res) => res.json())));
+    return this.http.post(URL+"users/releasedJobNotifications",postData,{headers: this.getHeaders()}).pipe((map((res) => res.json())));
   }
 
   getBranchesUnderCompany(postData): Observable<any>{
-    return this.http.post(this.url+"getBranchesUnderCompany",postData,{headers: this.getHeaders()}).pipe((map((res) => res.json())));
+    return this.http.post(URL+"users/getBranchesUnderCompany",postData,{headers: this.getHeaders()}).pipe((map((res) => res.json())));
   }
 
   getAvailableJobs(postData): Observable<any>{
-    return this.http.post(this.url+"availableJobs",postData, {headers: this.getHeaders()}).pipe((map((res) => res.json())));
+    return this.http.post(URL+"users/availableJobs",postData, {headers: this.getHeaders()}).pipe((map((res) => res.json())));
   }
 
   applyForJob(postData): Observable<any>{
-    return this.http.post(this.url+"applyForJob",postData,{headers:this.getHeaders()}).pipe((map((res) => res.json())));
+    return this.http.post(URL+"users/applyForJob",postData,{headers:this.getHeaders()}).pipe((map((res) => res.json())));
   }
 
   getAppliedCandidateForjob(postData): Observable<any>{
-    return this.http.post(this.url+"getApplicants",postData,{headers:this.getHeaders()}).pipe((map((res) => res.json())));
+    return this.http.post(URL+"users/getApplicants",postData,{headers:this.getHeaders()}).pipe((map((res) => res.json())));
   }
 
   getJobDetails(postData): Observable<any>{
-    return this.http.post(this.url+"getJobDetails",postData,{headers:this.getHeaders()}).pipe((map((res) => res.json()))); 
+    return this.http.post(URL+"users/getJobDetails",postData,{headers:this.getHeaders()}).pipe((map((res) => res.json()))); 
   }
 
   HireApplicant(postData): Observable<any>{
-    return this.http.post(this.url+"acceptApplicant",postData,{headers:this.getHeaders()}).pipe((map((res) => res.json()))); 
+    return this.http.post(URL+"users/acceptApplicant",postData,{headers:this.getHeaders()}).pipe((map((res) => res.json()))); 
+  }
+
+  rejectApplicant(postData): Observable<any>{
+    return this.http.post(URL+"users/rejectApplicant",postData,{headers:this.getHeaders()}).pipe((map((res) => res.json())));
+  }
+
+  getEmpUnderCompany(postData): Observable<any>{
+    return this.http.post(URL+"users/getEmpUnderCompany",postData,{headers: this.getHeaders()}).pipe((map((res) => res.json())));
   }
 }

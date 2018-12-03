@@ -11,8 +11,27 @@ module.exports.changeUserRoleTo = function(newRole, userId){
         if(err){
             return false;
         }
-        return true;
+        else{
+            if(result){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        // return true;
     })
+}
+
+module.exports.generateResponse = function(success, msg, data){
+    var response = {};
+    response.success = success;
+    if(msg != null){
+        response.msg = msg;
+    }
+    if(data != null){
+        response.data = data;
+    }
+    return response;
 }
 
 module.exports.sendNotification = function(msg, userId){
@@ -20,14 +39,11 @@ module.exports.sendNotification = function(msg, userId){
 }
 
 module.exports.checkNotificationExists = function(companyId, jobRole){
-    console.log(companyId, jobRole," are the inputs");
     
     JobNotification.checkNotificationExists(companyId, jobRole, (err, result) => {
         if(err){
             return false;
         }else{
-            console.log("check notifications exists");
-            console.log(result.length);
             if(result.length == 0){
                 return true;
             }else{

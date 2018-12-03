@@ -31,7 +31,7 @@ export class FindjobComponent implements OnInit {
     this.authSrv.getAvailableJobs(postData).subscribe((res) => {
       if(res.success){
         this.jobsList = res.data;
-        this.data = true;
+        this.data = this.jobsList.length == 0 ? false : true;
       }else{
         this.utilsSrv.showToastMsg("warning","Find Jobs",res.msg);
         this.data = false;
@@ -50,13 +50,14 @@ export class FindjobComponent implements OnInit {
     this.authSrv.applyForJob(postData).subscribe((res) => {
       if(res.success){
         this.utilsSrv.showToastMsg("success","Apply for Job", res.msg);
-        this.utilsSrv.reloadCurrentState();
+        this.getAvailableJobs();
       }else{
         this.utilsSrv.showToastMsg("warning","Apply for Job", res.msg);
-        this.utilsSrv.reloadCurrentState();
+        this.getAvailableJobs();
       }
     },(err) => {
       this.utilsSrv.showToastMsg("warning","Apply For Job","Something went wrong");
+      this.getAvailableJobs();
     })
   }
 

@@ -92,7 +92,8 @@ module.exports.getApplicants = function(jobId, callback){
             $project: {
                 _id: 1,
                 applied: 1,
-                "userinfo.username": 1
+                "userinfo.username": 1,
+                "userinfo.role": 1
             }
         }
     ]).exec(callback);

@@ -13,6 +13,7 @@ const Employee = require('../models/employee');
 const JobNotification = require('../models/jobNotification');
 
 const commonSrv = require('../services/common.service');
+const adminSrv = require('../services/admin.service');
 
 function getUserByUsername(username){
     User.getUserByUsername(username, (err, result) => {
@@ -224,13 +225,18 @@ router.post('/acceptStartupRequest', (req, res, next) => {
             res.json({success:false,msg:"something went wrong"});
         }else{
             if(result){
-                let rr = commonSrv.changeUserRoleTo(2, userId);
-                // let notification = commonSrv.sendNotification("Congrats! Your request was accepted please login to manage your company..ALL THE BEST", userId);
-                if(rr){
-                    res.json({success:true, msg: "Accepted request"});
-                }else{
-                    res.json({success:false, msg: "Something wrong with updating user role"});
-                }
+                User.changeUserRole(userId, 2, (error, isUpdated) => {
+                    if(err){
+                        res.json(commonSrv.generateResponse(false, "Something went wrong", null));
+                    }
+                    else{
+                        if(isUpdated){
+                            res.json(commonSrv.generateResponse(true, "Accepted Company Request", null));
+                        }else{
+                            res.json(commonSrv.generateResponse(false, "Something wrong with updating user role", null));
+                        }
+                    }
+                })
             }else{
                 res.json({success:false, msg: "Failed to accept"});
             }
@@ -331,40 +337,64 @@ router.post('/acceptApplicant', (req, res, next) => {
         companyId: req.body.companyId,
         userId: req.body.userId,
         branch: req.body.branch,
-        empName: req.body.empName
+        empName: req.body.empName,
+        userRole: req.body.userRole
     });
 
     let jobId = req.body.jobId;
     let userId = req.body.userId;
+    let userRole = req.body.userRole;
 
-    Employee.addEmployee(newEmp, (err, result) => {
+    if(userRole === 3){
+        Employee.addEmployee(newEmp, (err, result) => {
+            if(err){
+                res.json({success: false, msg: "Something went wrong"});
+            }else{
+                if(result){
+                    JobNotification.acceptApplicants(jobId, userId, (err2, isDeleted) => {
+                        if(err2){
+                            res.json({success: false, msg: "Something went wrong while deleting from job notification"});
+                        }else{
+                            if(isDeleted){
+                                // let notification = commonSrv.sendNotification("Congrats! Your request was accepted please login to manage your company..ALL THE BEST", userId);
+                                User.changeUserRole(userId, 5, (err, result) => {
+                                    if(err){
+                                        res.json(commonSrv.generateResponse(false,"Something went wrong with updating user role",null))
+                                    }
+                                    else{
+                                        if(result){
+                                            res.json(commonSrv.generateResponse(true,"Rejected Applicant",null));
+                                        }else{
+                                            res.json(commonSrv.generateResponse(false,"Failed to Reject Applicant",null));
+                                        }
+                                    }
+                                });
+                            }else{
+                                res.json({success: false, msg: "failed to delete from job notification"});
+                            }
+                        }
+                    })
+                }else{
+                    res.json({success: false, msg: "Failed to Hire Employee"});
+                }
+            }
+        })
+    }else{
+        res.json(commonSrv.generateResponse(false,"Already Hired by some other company",null));
+    }
+})
+
+router.post('/rejectApplicant', (req, res, next) => {
+    let jobId = req.body.jobId;
+    let userId = req.body.userId;
+    JobNotification.acceptApplicants(jobId, userId, (err, result) => {
         if(err){
-            res.json({success: false, msg: "Something went wrong"});
+            res.json(commonSrv.generateResponse(false, "Something went wrong",null));
         }else{
             if(result){
-                JobNotification.acceptApplicants(jobId, userId, (err2, isDeleted) => {
-                    if(err2){
-                        res.json({success: false, msg: "Something went wrong while deleting from job notification"});
-                    }else{
-                        if(isDeleted){
-                            User.changeUserRole(5, userId, (rr, updated) => {
-                                if(rr){
-                                    res.json({success:false, msg: "Something wrong with updating user role fgh"});
-                                }else{
-                                    if(updated){
-                                        res.json({success: true, msg: "Hired Employee"});
-                                    }else{
-                                        res.json({success:false, msg: "Something wrong with updating user role"});
-                                    }
-                                }
-                            })
-                        }else{
-                            res.json({success: false, msg: "failed to delete from job notification"});
-                        }
-                    }
-                })
+                res.json(commonSrv.generateResponse(true, "Rejected Applicant",null));
             }else{
-                res.json({success: false, msg: "Failed to Hire Employee"});
+                res.json(commonSrv.generateResponse(false, "Failed to Reject Applicant..Please try again",null));
             }
         }
     })
@@ -426,6 +456,21 @@ router.post('/appliedJobs', (req, res, next) => {
                 res.json({success: true, data: result});
             }else{
                 res.json({success: false, msg: "You are not yet applied for any jobs"});
+            }
+        }
+    })
+})
+
+router.post('/getEmpUnderCompany', (req, res, next) => {
+    let companyId = req.body.companyId;
+    Employee.getEmpUnderCompany(companyId, (err, emps) => {
+        if(err){
+            res.json({success: false, msg: "something went wrong"});
+        }else{
+            if(emps){
+                res.json({success: true, data: emps});
+            }else{
+                res.json({success: false, msg: "Failed to fetch employees"});
             }
         }
     })

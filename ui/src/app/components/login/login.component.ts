@@ -37,8 +37,15 @@ export class LoginComponent implements OnInit {
             this.authSrv.storeUserData(res.token,res.user);
             this.utilsSrv.showToastMsg("success","Login Successfully",null);
             console.log(res.user);
-            
-            this.router.navigate(['/profile']);
+            if(res.user.role == 3){
+              this.router.navigate(['/findJob']);
+            }else if(res.user.role == 1){
+              this.router.navigate(['/reqcompanieslist']);
+            }else if(res.user.role == 2){
+              this.router.navigate(['/jobs']);
+            }else{
+              this.router.navigate(['/profile']);
+            }
           }else{
             this.utilsSrv.showToastMsg("info","Result",res.msg);
             this.utilsSrv.reloadCurrentState()
@@ -48,7 +55,6 @@ export class LoginComponent implements OnInit {
           this.utilsSrv.reloadCurrentState();
         })
     }else{
-      // this.utilsSrv.showFlashMsg("Fill Details first","danger");
       this.utilsSrv.showToastMsg("warning","Fill Details First",null);
     }
   }

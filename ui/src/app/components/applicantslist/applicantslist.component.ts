@@ -15,6 +15,7 @@ export class ApplicantslistComponent implements OnInit {
   jobId: String;
   applicantsList: any[];
   data: Boolean = false;
+  throbber = "none";
 
   constructor(
     private router: Router,
@@ -35,40 +36,57 @@ export class ApplicantslistComponent implements OnInit {
       data: {
         "jobId": company._id,
         "userId": company.applied,
-        "username": company.userinfo[0].username
+        "username": company.userinfo[0].username,
+        "userRole": company.userinfo[0].role
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      this.getApplicants();
     });
   }
 
-  acceptApplicant(user){
+  rejectApplicant(user){
+    this.throbber = "block";
     let postData = {
       userId: user.applied,
-      companyId: this.authSrv.getDetailsOfUser('entityId'),
       jobId: user._id
     }
-    console.log(postData);
-
+    this.authSrv.rejectApplicant(postData).subscribe((res) => {
+      if(res.success){
+        this.utilsSrv.showToastMsg("success",res.msg,null);
+        this.getApplicants();
+        this.throbber = "none";
+      }else{
+        this.utilsSrv.showToastMsg("danger",res.msg,null);
+        this.getApplicants();
+        this.throbber = "none";
+      }
+    },(err) => {
+      this.utilsSrv.handleError(err);
+      this.throbber = "none";
+    })
   }
 
   getApplicants(){
     let postData = {
       jobId: this.jobId
     };
+    this.throbber = "block";
     this.authSrv.getAppliedCandidateForjob(postData).subscribe((res) => {
       if(res.success){
         this.applicantsList = res.data;
         this.data = this.applicantsList.length == 0 ? false : true;
+        this.throbber = "none";
       }else{
         this.data = false;
         this.utilsSrv.showToastMsg("warning",res.msg,null);
+        this.throbber = "none";
       }
     },(err) => {
       this.data = false
       this.utilsSrv.handleError(err);
+      this.throbber = "none";
     });
   }
 

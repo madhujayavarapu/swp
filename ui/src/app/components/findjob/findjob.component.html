@@ -15,8 +15,7 @@
                   <div class="card-header bg-info">
                     <h4><strong style="color:white">{{company.companyName}}</strong>
                       <span class="pull-right postedAt">
-                        <small>Posted On:- {{ company.postedAt | date: "MMM dd, yyyy" }}</small>
-                        <!-- <small>PostedAt:- {{ company.postedAt - currentDate }}</small>                         -->
+                        <small>Posted :- {{ utilsSrv.getDiffBwDates(company.postedAt) }}</small>                       -->
                       </span>
                     </h4>
                   </div>
@@ -62,9 +61,11 @@
           </div>
         </div>
       </ul>
-      <div class="center" *ngIf="!data">
-        <p>No Data To Display</p>
-      </div>
+      <ul class="list-group" *ngIf="!data">
+        <li class="list-group-item list-group-item-default mb-2">
+          <p class="center">No Data</p>
+        </li>
+      </ul>
     </div>
   </div>
 </div>

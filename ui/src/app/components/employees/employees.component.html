@@ -6,26 +6,26 @@
     </div>
     <div class="card-body">
       <ul class="list-group">
-        <li class="list-group-item list-group-item-default mb-2">
+        <li class="list-group-item list-group-item-default mb-2" *ngFor="let emp of employees">
           <div class="row">
             <div class="col-md-2">
               <img src="data:image/png;base64,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"
                width="100%" height="100px" alt="profile"/>
             </div>
             <div class="col-md-10">
-              <h2>Emp Name
+              <h2>{{emp.empName}}
                 <span class="pull-right">
                   <button class="btn btn-primary btn-md">View</button>
                   <button class="btn btn-warning btn-md">Edit</button>
-                  <button class="btn btn-danger btn-md">Delete</button>
+                  <button class="btn btn-danger btn-md">Fire</button>
                 </span>
               </h2>
               <p>sub-title</p>
               <div class="row">
-                <div class="col"><strong>Branch: </strong> Value</div>
-                <div class="col"><strong>Role: </strong> Value</div>
-                <div class="col"><strong>Gender: </strong> Value</div>
-                <div class="col"><strong>Salary: </strong> Value</div>
+                <div class="col"><strong>Branch: </strong>{{emp.branch}} </div>
+                <div class="col"><strong>Role: </strong>{{emp.jobRole}} </div>
+                <div class="col"><strong>Job Type: </strong>{{emp.jobType}} </div>
+                <div class="col"><strong>Salary: </strong>{{emp.salary}} </div>
               </div>
             </div>
           </div>

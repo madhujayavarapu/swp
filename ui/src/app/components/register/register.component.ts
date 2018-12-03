@@ -36,23 +36,23 @@ export class RegisterComponent implements OnInit {
       if(this.password == this.cpassword){
         this.authSrv.registerUser(user).subscribe((res) => {
           if(!!res.success){
-            this.utilsSrv.showFlashMsg(res.msg,"success");
+            this.utilsSrv.showToastMsg("success",res.msg,null);
             this.router.navigate(['/login']);
           }else{
-            this.utilsSrv.showFlashMsg(res.msg,"danger");
-            this.router.navigate(['/register']);
+            this.utilsSrv.showToastMsg("danger",res.msg,null);
+            this.utilsSrv.reloadCurrentState();
           }
         },(err) => {
-          this.utilsSrv.showFlashMsg(err.msg,"danger");
-          this.router.navigate(['/register']);
+          this.utilsSrv.showToastMsg("warning",err.msg, null);
+          this.utilsSrv.reloadCurrentState();
         })
       }else{
-        this.utilsSrv.showFlashMsg("Password doesn't match","danger");
-        this.router.navigate(['/register']);
+        this.utilsSrv.showToastMsg("warning","Password doesn't match",null);
+        this.utilsSrv.reloadCurrentState();
       }
     }else{
-      this.utilsSrv.showFlashMsg("Fill Details First","danger");
-      this.router.navigate(['/register']);
+      this.utilsSrv.showToastMsg("danger","Fill Details First",null);
+      this.utilsSrv.reloadCurrentState();
     }
   }
 
