@@ -21,7 +21,6 @@ mongoose.connection.on('error', (err) => {
     console.log("Database Error "+err);   
 })
 
-
 const app = express();
 
 // CORS INIT
@@ -38,14 +37,16 @@ require('./config/passport')(passport);
 app.use(express.static(path.join(__dirname, 'public')));
 
 const userSrv = require('./routes/userSrv');
+const locationSrv = require('./routes/locationSrv');
+const fileUploadSrv = require('./routes/fileUploadSrv');
 
 app.get('/',(req, res) => {
     res.send("Invalid route");
 })
 
 app.use('/users',userSrv);
-// app.use('/emp',employeeSrv);
-// app.use('/company',companySrv);
+app.use('/location',locationSrv);
+app.use('/file',fileUploadSrv);
 
 // Start Server
 app.listen(PORT, () => {

@@ -1,3 +1,292 @@
-<p>
-  profile works!
-</p>
+<div class="container-fluid">
+  <mat-horizontal-stepper [linear]="isLinear" #stepper>
+    <!-- Personal Details Form -->
+    <mat-step [stepControl]="personalDetailsForm">
+      <div class="container">
+        <form class="example-form" [formGroup]="personalDetailsForm">
+          <ng-template matStepLabel>Personal Details</ng-template>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Enter First name" formControlName="firstName" required>
+          </mat-form-field>
+          <br/>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Enter Last name" formControlName="lastName" required>
+          </mat-form-field><br/>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Enter Mail" formControlName="mail" required>
+          </mat-form-field><br/>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Enter Mobile Number" formControlName="phone" required>
+          </mat-form-field><br/>
+          <mat-radio-group formControlName="gender" required>
+            <mat-radio-button value="male">Male</mat-radio-button>
+            <mat-radio-button value="female">Female</mat-radio-button>
+          </mat-radio-group><br/><br/>
+          <div class="row">
+            <div class="col">
+              <mat-form-field class="example-full-width" disabled>
+                <input matInput placeholder="Country" formControlName="state">
+              </mat-form-field>
+            </div>
+            <div class="col">
+              <mat-form-field class="example-full-width">
+                <mat-select placeholder="State" formControlName="district" name="district">
+                  <mat-option *ngFor="let district of districts" [value]="district.abbr">
+                    {{district.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Mandal" formControlName="mandal" required>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Village" formControlName="village" required>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Pincode" maxlength="6" formControlName="pincode" required>
+              </mat-form-field>
+            </div>
+          </div>
+          <mat-form-field color="accent">
+            <input matInput [max]="maxDate" disabled [matDatepicker]="picker" formControlName="dob" placeholder="Date Of Birth" required>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker disabled="false"></mat-datepicker>
+          </mat-form-field>
+          <div>
+            <button class="btn btn-primary btn-md pull-right" matStepperNext>Save & Continue</button>
+          </div>
+        </form>
+      </div>
+    </mat-step>
+
+    <!-- Education Details Form -->
+    <mat-step [stepControl]="educationalDetailsForm">
+      <div class="container">
+        <form class="example-form" [formGroup]="educationalDetailsForm">
+          <ng-template matStepLabel>Education Details</ng-template>
+
+          <div class="education-forms">
+            <mat-card class="example-card">
+              <mat-card-header>
+                <mat-card-title>10th Details</mat-card-title>
+                <!-- <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
+              </mat-card-header>
+              <mat-card-content>
+                <div class="row">
+                  <div class="col-md-3">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="School" formControlName="sscSchool" required>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-3">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="Board" formControlName="sscBoard" required>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-3">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="Percentage" formControlName="sscPercentage" required>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-3">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="Passed Year" formControlName="sscPassedYear" required>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <!-- <button class="btn btn-md btn-primary pull-right pb-10">Submit</button> -->
+              </mat-card-content>
+            </mat-card>
+          </div>
+
+          <div class="education-forms">
+            <mat-card class="example-card">
+              <mat-card-header>
+                <mat-card-title>12th Details</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <div class="row">
+                  <div class="col-md-6">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="Intermediate" formControlName="pucType" required>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-6">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="Branch" formControlName="pucBranch" required>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-4">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="College" formControlName="pucClg" required>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-4">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="Percentage" formControlName="pucPercentage" required>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-4">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="Passed Year" formControlName="pucPassedYear" required>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <!-- <button class="btn btn-md btn-primary pull-right pb-10">Submit</button> -->
+              </mat-card-content>
+            </mat-card>
+          </div>
+          
+          <div class="education-forms">
+            <mat-card class="example-card">
+              <mat-card-header>
+                <mat-card-title>UG Details</mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <div class="row">
+                  <div class="col-md-6">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="Under Graduation Type" formControlName="ugType" required>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-6">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="Branch" formControlName="ugBranch" required>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-4">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="College" formControlName="ugClg" required>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-4">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="Percentage" formControlName="ugPercentage" required>
+                    </mat-form-field>
+                  </div>
+                  <div class="col-md-4">
+                    <mat-form-field class="example-full-width">
+                      <input matInput placeholder="Passed Year" formControlName="ugPassedYear" required>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <!-- <button class="btn btn-md btn-primary pull-right pb-10">Submit</button> -->
+              </mat-card-content>
+            </mat-card>
+          </div>
+
+          <div>
+            <button class="btn btn-info btn-md pull-right" matStepperNext>Next</button>
+            <button class="btn btn-default btn-md pull-right" matStepperPrevious>Back</button>
+          </div>
+        </form>
+      </div>
+    </mat-step>
+
+    <!-- Technical Details Form -->
+    <mat-step [stepControl]="technicalFormGroup">
+      <div class="container">
+        <form [formGroup]="technicalFormGroup">
+          <ng-template matStepLabel>Technical Details</ng-template>
+          <div>
+            <ng-multiselect-dropdown
+              [placeholder]="'Key Skills'"
+              [data]="dropdownList"
+              formControlName="keySkills"
+              [settings]="dropdownSettings"
+              ></ng-multiselect-dropdown>
+              <!-- (onSelect)="onItemSelect($event)"
+              (onSelectAll)="onSelectAll($event)"
+            
+            </ng-multiselect-dropdown> -->
+          </div><br/>
+          <p style="color:red">*Add projects and Certificates also here..</p>
+          <div>
+            <button class="btn btn-info btn-md pull-right" matStepperNext>Next</button>
+            <button class="btn btn-default btn-md pull-right" matStepperPrevious>Back</button>
+          </div>
+        </form>
+      </div>
+    </mat-step>
+
+    <!-- Experience -->
+    <mat-step [stepControl]="experienceForm">
+      <div class="container">
+        <form [formGroup]="experienceForm">
+          <ng-template matStepLabel>Experience</ng-template>
+          <mat-form-field class="example-full-width">
+            <mat-select placeholder="Select Type" (selectionChange)="expTypeChanged($event.value)" formControlName="expType">
+              <mat-option *ngFor="let type of expType" [value]="type.value">
+                {{type.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div [hidden]="!showExperienceForm">
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Enter Company Name" formControlName="companyName" required>
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Role" formControlName="role" required>
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+              <mat-select placeholder="Select Duration" formControlName="companyDuration">
+                <!-- <mat-option value="-1">Select Duration</mat-option> -->
+                <mat-option value="less than 1"><1 yr</mat-option>
+                <mat-option value="1-2">1-2 yrs</mat-option>
+                <mat-option value="2-4">2-4 yrs</mat-option>
+                <mat-option value=">4">>4 yrs</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div>
+            <button class="btn btn-info btn-md pull-right" matStepperNext>Next</button>
+            <button class="btn btn-default btn-md pull-right" matStepperPrevious>Back</button>
+          </div>
+        </form>
+      </div>
+    </mat-step>
+
+    <!-- Upload Resume -->
+    <mat-step [stepControl]="resumeForm">
+      <div class="container">
+        <form [formGroup]="resumeForm">
+          <ng-template matStepLabel>Resume</ng-template>
+
+          <input type="file" formControlName="resume" (change)="uploadResume($event)" placeholder="Upload Resume">
+
+          <!-- <button class="btn btn-danger btn-md" (click)="uploadResume()" >Upload</button> -->
+
+          <div>
+            <button class="btn btn-info btn-md pull-right" matStepperNext>Next</button>
+            <button class="btn btn-default btn-md pull-right" matStepperPrevious>Back</button>
+          </div>
+        </form>
+      </div>
+    </mat-step>
+
+    <!-- Submit Details -->
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      <div class="container">
+        You are now done.
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button (click)="stepper.reset()">Reset</button>
+          <button class="btn btn-primary" (click)="updateProfile()">Submit</button>
+        </div>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+</div>

@@ -67,7 +67,7 @@ router.post('/register', (req, res, next) => {
     })
 })
 
-router.post('/addUserDetails', (req, res, next) => {
+router.post('/addUserDetails', passport.authenticate('jwt',{session: false}), (req, res, next) => {
 
     // let personalDetails = new 
     let userDetails = new UserDetails({
@@ -86,7 +86,7 @@ router.post('/addUserDetails', (req, res, next) => {
     })
 })
 
-router.post('/getUserDetails', (req, res, next) => {
+router.post('/getUserDetails',passport.authenticate('jwt',{session: false}), (req, res, next) => {
     let userId = req.body.userId;
 
     User.getUserDetailsById(userId, (err, user) => {
@@ -145,7 +145,7 @@ router.post('/login', (req, res, next) => {
     });
 })
 
-router.post('/startupRequest', (req, res, next) => {
+router.post('/startupRequest',passport.authenticate('jwt',{session: false}), (req, res, next) => {
     var date = new Date();
     // var currentDate = ('0'+date.getDate()).slice(-2)+('0'+(date.getMonth()-1)).slice(-2)+date.getFullYear();
     let newCompany = new Company({
@@ -173,7 +173,7 @@ router.post('/startupRequest', (req, res, next) => {
     })
 })
 
-router.post('/reqStatus', (req, res, next) => {
+router.post('/reqStatus',passport.authenticate('jwt',{session: false}), (req, res, next) => {
     Company.getReqStatus(req.body.userId, (err, status) => {
         if(err){
             res.json({success: false, msg: "Something went wrong"});
@@ -187,7 +187,7 @@ router.post('/reqStatus', (req, res, next) => {
     })
 })
 
-router.get('/viewStartupRequests', (req, res, next) => {
+router.get('/viewStartupRequests',passport.authenticate('jwt',{session: false}), (req, res, next) => {
     Company.getStartupRequests((err,result) => {
         if(err){
             res.json({success:false,msg:"something went wrong"});
@@ -201,7 +201,7 @@ router.get('/viewStartupRequests', (req, res, next) => {
     })
 })
 
-router.get('/getCompaniesList', (req, res, next) => {
+router.get('/getCompaniesList',passport.authenticate('jwt',{session: false}), (req, res, next) => {
     Company.getCompaniesList((err,result) => {
         if(err){
             console.log(err);
@@ -216,7 +216,7 @@ router.get('/getCompaniesList', (req, res, next) => {
     })
 })
 
-router.post('/acceptStartupRequest', (req, res, next) => {
+router.post('/acceptStartupRequest',passport.authenticate('jwt',{session: false}), (req, res, next) => {
     let companyId = req.body.companyId;
     let userId = req.body.userId;
     Company.acceptStartupRequest(companyId, (err,result) => {
@@ -244,7 +244,7 @@ router.post('/acceptStartupRequest', (req, res, next) => {
     })
 })
 
-router.post('/getBranchesUnderCompany', (req, res, next) => {
+router.post('/getBranchesUnderCompany',passport.authenticate('jwt',{session: false}), (req, res, next) => {
     let companyId = req.body.companyId;
     Company.getBranchesUnderCompany(companyId, (err, result) => {
         if(err){
@@ -259,7 +259,7 @@ router.post('/getBranchesUnderCompany', (req, res, next) => {
     })
 })
 
-router.post('/postJobNotification', (req, res, next) => {
+router.post('/postJobNotification',passport.authenticate('jwt',{session: false}), (req, res, next) => {
     let newJobNotification = new JobNotification({
         companyId: req.body.companyId,
         companyName: req.body.companyName,
@@ -297,7 +297,7 @@ router.post('/postJobNotification', (req, res, next) => {
     })
 })
 
-router.post('/releasedJobNotifications', (req, res, next) => {
+router.post('/releasedJobNotifications',passport.authenticate('jwt',{session: false}), (req, res, next) => {
     let companyId = req.body.companyId;
     JobNotification.releasedJobNotification(companyId, (err, result) => {
         if(err){
@@ -312,7 +312,7 @@ router.post('/releasedJobNotifications', (req, res, next) => {
     })
 })
 
-router.post('/getApplicants', (req, res, next) => {
+router.post('/getApplicants',passport.authenticate('jwt',{session: false}), (req, res, next) => {
     let jobId = req.body.jobId;
     JobNotification.getApplicants(jobId, (err, result) => {
         if(err){
@@ -327,7 +327,7 @@ router.post('/getApplicants', (req, res, next) => {
     })
 })
 
-router.post('/acceptApplicant', (req, res, next) => {
+router.post('/acceptApplicant',passport.authenticate('jwt',{session: false}), (req, res, next) => {
     let newEmp = new Employee({
         jobRole: req.body.empRole,
         jobType: req.body.empType,
@@ -380,11 +380,11 @@ router.post('/acceptApplicant', (req, res, next) => {
             }
         })
     }else{
-        res.json(commonSrv.generateResponse(false,"Already Hired by some other company",null));
+        res.json(commonSrv.generateResponse(false,"Please hire Unemployed Person",null));
     }
 })
 
-router.post('/rejectApplicant', (req, res, next) => {
+router.post('/rejectApplicant',passport.authenticate('jwt',{session: false}), (req, res, next) => {
     let jobId = req.body.jobId;
     let userId = req.body.userId;
     JobNotification.acceptApplicants(jobId, userId, (err, result) => {
@@ -400,7 +400,7 @@ router.post('/rejectApplicant', (req, res, next) => {
     })
 })
 
-router.post('/getJobDetails', (req, res, next) => {
+router.post('/getJobDetails',passport.authenticate('jwt',{session: false}), (req, res, next) => {
     let jobId = req.body.jobId;
     JobNotification.getJobDetailsById(jobId, (err, result) => {
         if(err){
@@ -415,7 +415,7 @@ router.post('/getJobDetails', (req, res, next) => {
     })
 })
 
-router.post('/applyForJob', (req, res, next) => {
+router.post('/applyForJob',passport.authenticate('jwt',{session: false}), (req, res, next) => {
     let jobId = req.body.jobId;
     let userId = req.body.userId;
     JobNotification.applyForJob(userId, jobId, (err, result) => {
@@ -431,7 +431,7 @@ router.post('/applyForJob', (req, res, next) => {
     })
 })
 
-router.post('/availableJobs', (req, res, next) => {
+router.post('/availableJobs', passport.authenticate('jwt',{session: false}), (req, res, next) => {
     let userId = req.body.userId;
     JobNotification.getJobNotifications(userId, (err, result) => {
         if(err){

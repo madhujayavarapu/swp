@@ -36,7 +36,6 @@ export class LoginComponent implements OnInit {
           if(!!res.success){
             this.authSrv.storeUserData(res.token,res.user);
             this.utilsSrv.showToastMsg("success","Login Successfully",null);
-            console.log(res.user);
             if(res.user.role == 3){
               this.router.navigate(['/findJob']);
             }else if(res.user.role == 1){

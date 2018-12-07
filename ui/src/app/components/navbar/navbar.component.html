@@ -1,3 +1,4 @@
+<div class="fixed-top">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="padding:8px">
   <div class="container-fluid">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,8 +34,8 @@
     </div>
   </div>
 </nav>
-<div *ngIf="authSrv.isLoggedIn()">
-  <nav class="navbar navbar-expand-lg bg-light rounded-0 m-0 p-0">
+<!-- <div  style="margin-top:70px"> -->
+  <nav *ngIf="authSrv.isLoggedIn()" class="navbar navbar-expand-lg bg-light fixed rounded-0 m-0 p-0">
     <ul class="nav nav-pills justify-content nav-fill nav-pills-rose">
       <!-- normal user functionalities -->
       <li class="nav-item" *ngIf="user.role == 3">

@@ -1,16 +1,23 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
+import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+
 import { FlashMessagesModule, FlashMessagesService } from 'angular2-flash-messages';
 import { ToasterContainerComponent, ToasterModule, ToasterService, ToasterConfig } from 'angular2-toaster';
-import {MatDialogModule} from '@angular/material';
+import {MatDialogModule, MatFormFieldModule, MatStepperModule,MatSelectModule,MatCardModule,
+  MatButtonModule,MatInputModule,MatDatepickerModule,MatNativeDateModule,MatRadioModule } from '@angular/material';
+
+import { AuthGuard } from './guards/auth.guard';
 
 import { AuthService } from './services/auth.service';
 import { ValidateService } from './services/validate.service';
 import { UtilsService } from './services/utils.service';
+import { LocationService } from './services/location.service';
 
 import { appRoutes } from './app.routes';
 
@@ -53,24 +60,40 @@ import { AcceptjobrequestComponent } from './components/acceptjobrequest/acceptj
     AcceptjobrequestComponent
   ],
   entryComponents:[
-    AcceptjobrequestComponent
+    AcceptjobrequestComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpModule,
     FormsModule,
+    MultiselectDropdownModule,
+    NgMultiSelectDropDownModule.forRoot(),
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatRadioModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatInputModule,
+    MatCardModule,
+    MatButtonModule,
     MatDialogModule,
+    MatStepperModule,
     RouterModule.forRoot(appRoutes),
     FlashMessagesModule,
     ToasterModule.forRoot()
   ],
   providers: [
+    MatDatepickerModule,    
     FlashMessagesService,
     ToasterService,
     AuthService,
+    AuthGuard,
     ValidateService,
-    UtilsService
+    UtilsService,
+    LocationService
   ],
   bootstrap: [AppComponent]
 })

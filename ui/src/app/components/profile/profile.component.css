@@ -1,0 +1,24 @@
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+.example-form {
+  /* min-width: 150px; */
+  /* max-width: 500px; */
+  width: 100%;
+}
+
+.example-card {
+  width: 100%;
+}
+.education-forms{
+  padding-bottom: 15px;
+}
+  
+.example-full-width {
+  width: 100%;
+}
+
+.mat-radio-button ~ .mat-radio-button {
+  padding-right: 16px;
+}
+.mat-accent{
+  padding-right: 50px;
+}

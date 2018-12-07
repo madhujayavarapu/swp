@@ -158,3 +158,6 @@ body{
 .heading{
     color: gray;
 }
+.mat-horizontal-content-container{
+    height: 100vh;
+}

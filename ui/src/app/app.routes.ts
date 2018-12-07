@@ -1,4 +1,6 @@
-import { Routes } from '@angular/router';
+import { Routes, CanActivate } from '@angular/router';
+import { AuthGuard } from './guards/auth.guard';
+
 import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { RegisterComponent } from './components/register/register.component';
@@ -16,21 +18,21 @@ import { ApplicantslistComponent } from './components/applicantslist/applicantsl
  
 export const appRoutes:Routes = [
     {path: '', redirectTo:'login', pathMatch:'full'},
-    {path: 'login',component:LoginComponent},
+    {path: 'login', component:LoginComponent},
     {path: 'register',component: RegisterComponent},
-    {path: 'profile',component: ProfileComponent},
-    {path: 'reqcompany', component: ReqcompanyComponent},
-    {path: 'status', component: StatusComponent},   
-    { path: 'reqcompanieslist', component: ReqcompanieslistComponent},
-    { path: 'employees', component: EmployeesComponent},
-    { path: 'employees/addEmp', component:AddempComponent },
-    { path: 'employees/hire', component:HireempComponent },
-    { path: 'jobs', redirectTo: 'jobs/post', pathMatch: 'full'},
-    { path: 'jobs/post', component: PostnotificationComponent},
-    { path: 'findJob', component: FindjobComponent },
-    { path: 'jobs/released', component: ReleasednotificationsComponent},
-    { path: 'jobs/applicants/:jobId',component: ApplicantslistComponent},
-    {path: 'dashboard',component: DashboardComponent},
+    {path: 'profile',canActivate: [AuthGuard],component: ProfileComponent, data: {"roles": [1,2,3,5]}},
+    {path: 'reqcompany',canActivate: [AuthGuard], component: ReqcompanyComponent,  data: {"roles": [3]}},
+    {path: 'status',canActivate: [AuthGuard], component: StatusComponent,  data: {"roles": [1,2,3,5]}},
+    { path: 'reqcompanieslist',canActivate: [AuthGuard], component: ReqcompanieslistComponent,  data: {"roles": [1]}},
+    { path: 'employees',canActivate: [AuthGuard], component: EmployeesComponent,  data: {"roles": [2]}},
+    { path: 'employees/addEmp',canActivate: [AuthGuard], component:AddempComponent,  data: {"roles": [2]}},
+    { path: 'employees/hire',canActivate: [AuthGuard], component:HireempComponent, data: {"roles": [2]} },
+    { path: 'jobs',canActivate: [AuthGuard], redirectTo: 'jobs/post', pathMatch: 'full', data: {"roles": [2]}},
+    { path: 'jobs/post',canActivate: [AuthGuard], component: PostnotificationComponent, data: {"roles": [2]}},
+    { path: 'findJob',canActivate: [AuthGuard], component: FindjobComponent, data: {"roles": [3]}},
+    { path: 'jobs/released',canActivate: [AuthGuard], component: ReleasednotificationsComponent, data: {"roles": [2]}},
+    { path: 'jobs/applicants/:jobId',canActivate: [AuthGuard],component: ApplicantslistComponent, data: {"roles": [2]}},
+    {path: 'dashboard',canActivate: [AuthGuard], component: DashboardComponent, data: {"roles": [1,2,3,5]}},
 
     {path: '**',redirectTo:'login', pathMatch:'full'}
 ]
