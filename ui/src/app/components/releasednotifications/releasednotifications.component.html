@@ -9,11 +9,6 @@
       <div class="card-body" style="overflow:scroll">
         <ul class="list-group" *ngIf="data">
           <div class="row">
-            <!-- <div class="col-md-2"> -->
-              <!-- <div class="card filter-container">
-                <p>Filters will come here</p>
-              </div> -->
-            <!-- </div> -->
             <div class="col-md-12">
               <li class="list-group-item list-group-item-default mb-2">
                 <div class="container">
@@ -56,8 +51,8 @@
                           <small class="heading">Posted By:</small> {{company.postedBy}}
                           <span class="pull-right">
                             <button class="btn btn-primary btn-sm" (click)="appliedCandidates(company)">Applied Candidates</button>
-                            <button class="btn btn-info btn-sm">Update</button>
-                            <button class="btn btn-danger btn-sm">Delete</button>
+                            <button class="btn btn-info btn-sm" (click)="editPost(company)">Update</button>
+                            <button class="btn btn-danger btn-sm" (click)="deletePost(company)">Delete</button>
                           </span>
                         </p>
                       </div>

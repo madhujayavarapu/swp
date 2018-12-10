@@ -41,6 +41,16 @@ export class ReleasednotificationsComponent implements OnInit {
     })
   }
 
+  editPost(company){
+    console.log(company);
+    console.log("edit post");
+  }
+
+  deletePost(company){
+    console.log("delete post", company);
+    
+  }
+
   appliedCandidates(company){
     this.router.navigate(['jobs/applicants',company._id]);
   }

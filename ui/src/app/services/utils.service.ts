@@ -42,19 +42,31 @@ export class UtilsService {
     var milliseconds = currentDate.getTime() - tempDate.getTime();
     var time;
 
-    const oneDay = 1000*60*60*24;
-    const hours = 1000*60*60;
     const minute = 1000*60;
-
-    if(milliseconds > oneDay){
-      time = Math.ceil(milliseconds/oneDay);
-      return time+" days ago";
+    const hour = 1000*60*60;
+    const oneDay = 1000*60*60*24;
+    const oneWeek = oneDay*7;
+    const month = oneWeek*4;
+    const year = month*12;
+    
+    if(milliseconds >= year){
+      var suffix = milliseconds < (year*2) ? "year ago" : "years ago";
+      return Math.floor(milliseconds/year)+" "+suffix;
+    }else if(milliseconds >= month){
+      var suffix = milliseconds < (month*2) ? "month ago" : "months ago";
+      return Math.floor(milliseconds/year)+" "+suffix;
+    }else if(milliseconds >= oneWeek){
+      var suffix = milliseconds < (oneWeek*2) ? "week ago" : "weeks ago";
+      return Math.floor(milliseconds/oneWeek)+" "+suffix; 
+    }else if(milliseconds >= oneDay){
+      var suffix = milliseconds < (oneDay*2) ? "day ago" : "days ago";
+      return Math.ceil(milliseconds/oneDay)+" "+suffix;
+    }else if(milliseconds >= hour){
+      var suffix = milliseconds < (hour*2) ? "hour ago" : "hours ago";
+      return Math.floor(milliseconds/hour)+" "+suffix;
     }else{
-      if(milliseconds > hours){
-        return Math.ceil(milliseconds/hours)+" hours ago";
-      }else{ 
-        return Math.ceil(milliseconds/minute)+" minutes ago"; 
-      }
+      var suffix = milliseconds < (minute*2) ? "minute ago" : "minutes ago";
+      return Math.ceil(milliseconds/minute)+" "+suffix; 
     }
   }
 
