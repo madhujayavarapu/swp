@@ -476,4 +476,164 @@ router.post('/getEmpUnderCompany', (req, res, next) => {
     })
 })
 
+router.post('/getUserProfileData', (req, res, next) => {
+    let userId = req.body.userId;
+    UserDetails.getUserDetails(userId, (err, userDetails) => {
+        if(err){
+        //    return commonSrv.generateResponse(false,"Something went wrong",null);
+            return res.json({success: false,msg: "Something went wrong"});
+        }else{
+            if(userDetails){
+            //    return commonSrv.generateResponse(true, "Profile Data", userDetails)
+              return res.json({success: true, msg: "Profile Data", data: userDetails})
+            }else{
+            //    return commonSrv.generateResponse(false, "Failed to Fetch User Info", null);
+              return res.json({success: false, msg: "Failed to fetch user details"});
+            }
+        }
+    })
+})
+
+router.post('/updatePersonalDetails', (req, res, next) => {
+    let userId = req.body.userId;
+    if(req.body.type == "PersonalDetails"){
+        let personalDetails = req.body.personalDetails;
+        UserDetails.updatePersonalDetails(userId, personalDetails, (err, isUpdated) => {
+            if(err){
+                return res.json({success: false, msg: "something went wrong"});
+            }else{
+                if(isUpdated){
+                    return res.json({success: true, msg: "Profile Updated"});
+                }else{
+                    return res.json({success: false, msg: "Failed to Update Profile"});
+                }
+            }
+        })
+    }else if(req.body.type == "Skills"){
+        let technicalSkills = req.body.technicalSkills;
+        UserDetails.updateTechnicalSkills(userId, technicalSkills, (err, isUpdated) => {
+            if(err){
+                return res.json({success: false, msg: "something went wrong"});
+            }else{
+                if(isUpdated){
+                    return res.json({success: true, msg: "Profile Updated"});
+                }else{
+                    return res.json({success: false, msg: "Failed to Update Profile"});
+                }
+            }
+        })
+    }else if(req.body.type == "Experience"){
+        let experience = req.body.experience;
+        UserDetails.updateExperience(userId, experience, (err, isUpdated) => {
+            if(err){
+                return res.json({success: false, msg: "something went wrong"});
+            }else{
+                if(isUpdated){
+                    return res.json({success: true, msg: "Profile Updated"});
+                }else{
+                    return res.json({success: false, msg: "Failed to Update Profile"});
+                }
+            }
+        }) 
+    }else{
+       return res.json({success: false, msg: "service not yet done for this"});
+    }
+   
+})
+
+router.post('/addExperience', (req, res, next) => {
+    let userId = req.body.userId;
+    let experience = req.body.experience;
+    UserDetails.addExperience(userId, experience, (err, isAdded) => {
+        if(err){
+            return res.json({success: false, msg: "Something went wrong"});
+        }else{
+            if(isAdded){
+                return res.json({success: true, msg: "Profile Updated Successfully"});
+            }else{
+                return res.json({success: false, msg: "Failed To add Experience"});
+            }
+        }
+    })
+})
+
+router.post('/updateExperience', (req, res, next) => {
+    let userId = req.body.userId;
+    let expId = req.body.expId;
+    let exp = req.body.exp;
+    UserDetails.updateExperienceDetails(userId, expId, exp, (err, isUpdated) => {
+        if(err){
+            return res.json({success: false, msg: "something went wrong"});
+        }else{
+            if(isUpdated){
+                return res.json({success: true, msg: "Profile Updated"});
+            }else{
+                return res.json({success: false, msg: "Failed to Update Profile"});
+            }
+        }
+    })
+})
+
+router.post('/deleteExperience', (req, res, next) => {
+    let userId = req.body.userId;
+    let expId = req.body.expId;
+    UserDetails.deleteExperience(userId, expId, (err, isDeleted) => {
+        if(err){
+            return res.json({success: false, msg: "something went wrong"});
+        }else{
+            if(isDeleted){
+                return res.json({success: true, msg: "Deleted Experience"});
+            }else{
+                return res.json({success: false, msg: "Failed to Delete Experience"});
+            }
+        }
+    })
+})
+
+router.post('/updateEducation', (req, res, next) => {
+    let userId = req.body.userId;
+    let updatedDetails = req.body.updatedDetails;
+    let type = req.body.type;
+
+    if(type == "SSC"){
+        UserDetails.updateSSC(userId, updatedDetails, (err, isUpdated) => {
+            if(err){
+              return res.json({success: false,msg: "Something went wrong"});  
+            }else{
+                if(isUpdated){
+                    return res.json({success: true, msg: "Profile Updated"});
+                }else{
+                    return res.json({success: false, msg: "Failed to Update Profile"});
+                }
+            }
+        })
+    }else if(type == "PUC"){
+        UserDetails.updatePUC(userId, updatedDetails, (err, isUpdated) => {
+            if(err){
+              return res.json({success: false,msg: "Something went wrong"});  
+            }else{
+                if(isUpdated){
+                    return res.json({success: true, msg: "Profile Updated"});
+                }else{
+                    return res.json({success: false, msg: "Failed to Update Profile"});
+                }
+            }
+        })
+    }else if(type == "UG"){
+        UserDetails.updateUG(userId, updatedDetails, (err, isUpdated) => {
+            if(err){
+              return res.json({success: false,msg: "Something went wrong"});  
+            }else{
+                if(isUpdated){
+                    return res.json({success: true, msg: "Profile Updated"});
+                }else{
+                    return res.json({success: false, msg: "Failed to Update Profile"});
+                }
+            }
+        })
+    }else{
+        return res.json({success: false, msg: "Type not matched"});
+    }
+})
+
 module.exports = router;

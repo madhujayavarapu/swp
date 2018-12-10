@@ -9,7 +9,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 import { FlashMessagesModule, FlashMessagesService } from 'angular2-flash-messages';
 import { ToasterContainerComponent, ToasterModule, ToasterService, ToasterConfig } from 'angular2-toaster';
-import {MatDialogModule, MatFormFieldModule, MatStepperModule,MatSelectModule,MatCardModule,
+import {MatDialogModule, MatFormFieldModule, MatStepperModule,MatSelectModule,MatCardModule,MatExpansionModule,
   MatButtonModule,MatInputModule,MatDatepickerModule,MatNativeDateModule,MatRadioModule } from '@angular/material';
 
 import { AuthGuard } from './guards/auth.guard';
@@ -38,6 +38,7 @@ import { FindjobComponent } from './components/findjob/findjob.component';
 import { ReleasednotificationsComponent } from './components/releasednotifications/releasednotifications.component';
 import { ApplicantslistComponent } from './components/applicantslist/applicantslist.component';
 import { AcceptjobrequestComponent } from './components/acceptjobrequest/acceptjobrequest.component';
+import { EditprofileComponent } from './components/editprofile/editprofile.component';
 
 @NgModule({
   declarations: [
@@ -57,11 +58,13 @@ import { AcceptjobrequestComponent } from './components/acceptjobrequest/acceptj
     FindjobComponent,
     ReleasednotificationsComponent,
     ApplicantslistComponent,
-    AcceptjobrequestComponent
+    AcceptjobrequestComponent,
+    EditprofileComponent
   ],
   entryComponents:[
     AcceptjobrequestComponent,
-    ProfileComponent
+    ProfileComponent,
+    EditprofileComponent
   ],
   imports: [
     BrowserModule,
@@ -77,6 +80,7 @@ import { AcceptjobrequestComponent } from './components/acceptjobrequest/acceptj
     MatDatepickerModule,
     MatNativeDateModule,
     MatInputModule,
+    MatExpansionModule,
     MatCardModule,
     MatButtonModule,
     MatDialogModule,

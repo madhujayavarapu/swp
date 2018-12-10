@@ -18,8 +18,4 @@ export class LocationService {
   getCountriesListInInd(): Observable<any>{
     return this.http.get(URL+"location/getCountriesUnderIND",{headers: this.authService.getHeaders(true)}).pipe((map((res) => res.json())));
   }
-
-  // getMandals
-
-
 }

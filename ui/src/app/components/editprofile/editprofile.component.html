@@ -1,0 +1,194 @@
+<div class="modal-content" style="margin-top:50px">
+  <div class="modal-header">
+    <h5 class="modal-title">{{data.type}}</h5>
+    <button class="close" (click)="close()">&times;</button>
+  </div>
+
+  <div class="modal-body">
+    <div class="container">
+      <form *ngIf="showPersonalDetailsForm">
+        <div class="md-form">
+          <input type="text" name="firstName" [(ngModel)]="firstName" placeholder="Enter First Name" class="form-control">
+        </div>
+        <div class="md-form">
+          <input type="text" name="lastName" [(ngModel)]="lastName" placeholder="Enter Last Name" class="form-control">
+        </div>
+        <mat-radio-group name="gender" [(ngModel)]="gender" required>
+          <mat-radio-button value="male">Male</mat-radio-button>
+          <mat-radio-button value="female">Female</mat-radio-button>
+        </mat-radio-group>
+        <div class="md-form">
+          <input type="text" name="mail" [(ngModel)]="mail" placeholder="Enter Mail" class="form-control">
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="md-form">
+              <input type="text" name="phone" [(ngModel)]="phone" placeholder="Enter Mobile Number" class="form-control">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field color="accent">
+              <input matInput [max]="maxDate" [matDatepicker]="picker" name="dob" [(ngModel)]="dob" placeholder="Date Of Birth" required>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker disabled="false"></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-3">
+            <div class="md-form">
+              <input type="text" name="country" [(ngModel)]="country" placeholder="Enter Country" class="form-control">
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="md-form">
+              <input type="text" name="state" [(ngModel)]="state" placeholder="Enter State" class="form-control">
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="md-form">
+              <input type="text" name="district" [(ngModel)]="district" placeholder="Enter District" class="form-control">
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="md-form">
+              <input type="text" name="mandal" [(ngModel)]="mandal" placeholder="Enter Mandal" class="form-control">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="md-form">
+              <input type="text" name="village" [(ngModel)]="village" placeholder="Enter Village" class="form-control">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="md-form">
+              <input type="text" name="pincode" [(ngModel)]="pincode" placeholder="Enter Pincode" class="form-control">
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-success btn-md pull-right" (click)="updateProfile()">Submit</button>
+        <button class="btn btn-danger btn-md pull-right" (click)="close()">Close</button>
+      </form>
+      <form *ngIf="showSkillsForm">
+        <ng-multiselect-dropdown
+        [name] = "keySkills"
+        [placeholder]="'Key Skills'"
+        [data]="dropdownList"
+        [(ngModel)] ="keySkills"
+        [settings]="data.settings"
+        ></ng-multiselect-dropdown>
+        <br/>
+        <button class="btn btn-md btn-primary pull-right" (click)="updateProfile()">Update</button>
+        <button class="btn btn-md btn-danger pull-right" (click)="close()">Close</button>
+      </form>
+
+      <!-- edit Experience Form -->
+      <form *ngIf="data.type == 'Experience' && firstExperience">
+        <div class="md-form">
+          <select class="form-control dropdown" name="expType" (change)="changedExpType()" [(ngModel)]="expType">
+            <option value="fresher">Fresher</option>
+            <option value="experienced">Experienced</option>
+          </select>
+        </div>
+        <div *ngIf="isExperienced">
+          <div class="md-form">
+            <input type="text" name="companyName" [(ngModel)]="companyName" placeholder="Enter Company Name" class="form-control">
+          </div>
+          <div class="md-form">
+            <input type="text" name="role" [(ngModel)]="role" placeholder="Enter Role" class="form-control">
+          </div>
+          <div class="md-form">
+            <!-- <input type="text" name="companyDuration" [(ngModel)]="companyDuration" placeholder="Duration" class="form-control"> -->
+            <select class="form-control dropdown" name="companyDuration" [(ngModel)]="companyDuration">
+              <option value="-1">Select Duration</option>
+              <option value="less than 1"> Less Than 1 yr</option>
+              <option value="1-2">1-2 yrs</option>
+              <option value="2-4">2-4 yrs</option>
+              <option value=">4">>4 yrs</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn btn-md btn-primary pull-right" (click)="updateProfile()">Update</button>
+        <button class="btn btn-md btn-danger pull-right" (click)="close()">Close</button>
+      </form>
+
+      <form *ngIf="data.type == 'Experience' && !firstExperience">
+        <div class="md-form">
+          <input type="text" name="companyName" [(ngModel)]="companyName" placeholder="Enter Company Name" class="form-control">
+        </div>
+        <div class="md-form">
+          <input type="text" name="role" [(ngModel)]="role" placeholder="Enter Role" class="form-control">
+        </div>
+        <div class="md-form">
+          <select class="form-control dropdown" name="companyDuration" [(ngModel)]="companyDuration">
+            <option value="-1">Select Duration</option>
+            <option value="less than 1"> Less Than 1 yr</option>
+            <option value="1-2">1-2 yrs</option>
+            <option value="2-4">2-4 yrs</option>
+            <option value=">4">>4 yrs</option>
+          </select>
+        </div>
+        <button class="btn btn-md btn-primary pull-right" (click)="updateExperience()">Update</button>
+        <!-- <button class="btn btn-danger btn-md pull-right" (click)="deleteExperience()">Delete</button> -->
+        <button class="btn btn-md btn-warning pull-right" (click)="close()">Close</button>
+      </form>
+
+      <form *ngIf="addExperienceForm">
+        <div class="md-form">
+          <input type="text" name="companyName" [(ngModel)]="companyName" placeholder="Enter Company Name" class="form-control">
+        </div>
+        <div class="md-form">
+          <input type="text" name="role" [(ngModel)]="role" placeholder="Enter Role" class="form-control">
+        </div>
+        <div class="md-form">
+          <select class="form-control dropdown" name="companyDuration" [(ngModel)]="companyDuration">
+            <option value="-1">Select Duration</option>
+            <option value="less than 1"> Less Than 1 yr</option>
+            <option value="1-2">1-2 yrs</option>
+            <option value="2-4">2-4 yrs</option>
+            <option value=">4">>4 yrs</option>
+          </select>
+        </div>
+        <button class="btn btn-md btn-primary pull-right" (click)="addExperience()">Update</button>
+        <button class="btn btn-md btn-warning pull-right" (click)="close()">Close</button>
+      </form>
+
+      <form *ngIf="educationForm">
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="School" name="clg" [(ngModel)]="clg" required>
+        </mat-form-field><br/>
+        <div *ngIf="data.type == 'SSC'">
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Board" name="board" [(ngModel)]="board" required>
+          </mat-form-field><br/>
+        </div>
+        <div *ngIf="data.type == 'PUC' || data.type == 'UG'">
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Type" name="type" [(ngModel)]="type" required>
+          </mat-form-field><br/>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Branch" name="branch" [(ngModel)]="branch" required>
+          </mat-form-field><br/>
+        </div>
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Percentage" name="percentage" [(ngModel)]="percentage" required>
+        </mat-form-field><br/>
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Passed Year" name="passedYear" [(ngModel)]="passedYear" required>
+        </mat-form-field><br/>
+        <button class="btn btn-md btn-primary pull-right" (click)="updateEducation()">Update</button>
+        <button class="btn btn-md btn-danger pull-right" (click)="close()">Close</button>
+      </form>
+
+      <form *ngIf="resumeForm">
+        <div class="md-form">
+          <input type="file" name="resume" [(ngModel)]="resume" accept=".docx,.pdf" (change)="fileChanged($event)" placeholder="Upload Resume">
+        </div>
+        <button class="btn btn-md btn-primary pull-right" (click)="uploadResume()">Update</button>
+        <button class="btn btn-md btn-danger pull-right" (click)="close()">Close</button>
+      </form>
+    </div>
+  </div>
+</div>

@@ -147,4 +147,32 @@ export class AuthService {
   uploadProfileDetails(formData): Observable<any>{
     return this.http.post(URL+"file/updateProfile",formData).pipe((map((res) => res.json())));
   }
+
+  getProfileData(postData): Observable<any>{
+    return this.http.post(URL+"users/getUserProfileData",postData,{headers: this.getHeaders(true)}).pipe((map((res) => res.json())));
+  }
+
+  updatePersonalDetails(postData): Observable<any>{
+    return this.http.post(URL+"users/updatePersonalDetails",postData,{headers: this.getHeaders(true)}).pipe((map((res) => res.json())));    
+  }
+
+  addExperienceToProfile(postData): Observable<any>{
+    return this.http.post(URL+"users/addExperience",postData,{headers: this.getHeaders(true)}).pipe((map((res) => res.json())));        
+  }
+
+  updateExperience(postData): Observable<any>{
+    return this.http.post(URL+"users/updateExperience",postData,{headers: this.getHeaders(true)}).pipe((map((res) => res.json())));        
+  }
+
+  deleteExperience(postData): Observable<any>{
+    return this.http.post(URL+"users/deleteExperience",postData,{headers: this.getHeaders(true)}).pipe((map((res) => res.json())));            
+  }
+
+  updateEducation(postData): Observable<any>{
+    return this.http.post(URL+"users/updateEducation",postData,{headers: this.getHeaders(true)}).pipe((map((res) => res.json())));                
+  }
+
+  uploadResume(formData): Observable<any>{
+    return this.http.post(URL+"file/uploadResume",formData).pipe((map((res) => res.json())));    
+  }
 }

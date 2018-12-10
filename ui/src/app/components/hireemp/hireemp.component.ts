@@ -32,7 +32,6 @@ export class HireempComponent implements OnInit {
       branch: this.branch,
       salary: this.salary,
     }
-    console.log(postData);
     if(this.validateSrv.validateSendingOfferLetterForm(postData)){
       this.utilsSrv.showFlashMsg("Proceed to send offer letter", "success");
     }else{

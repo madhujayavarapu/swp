@@ -3,6 +3,10 @@ import {FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
 import { LocationService } from '../../services/location.service';
 import { IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts } from 'angular-2-dropdown-multiselect';
 import { AuthService } from '../../services/auth.service';
+import { UtilsService } from '../../services/utils.service';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { EditprofileComponent } from '../editprofile/editprofile.component';
+import { RESUMEURL } from '../../url';
 
 @Component({
   selector: 'app-profile',
@@ -10,7 +14,11 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  isLinear = false;
+  isLinear = true;
+  panelOpenState = false;
+  userId;
+  isProfileSubmitted: Boolean = false;
+  profileData: Object;
   personalDetailsForm: FormGroup;
   educationalDetailsForm: FormGroup;
   experienceForm: FormGroup;
@@ -21,7 +29,8 @@ export class ProfileComponent implements OnInit {
   showExperienceForm: Boolean = false;
   districts: any[];
   dropdownList = [];
-  fileList: FileList
+  fileList: FileList;
+  // throb: String = "none";
   dropdownSettings = {
     singleSelection: false,
     idField: 'id',
@@ -36,12 +45,31 @@ export class ProfileComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private locationSrv: LocationService,
-    private authSrv: AuthService
+    private authSrv: AuthService,
+    private utilsSrv: UtilsService,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit() {
     this.inItData();
+    this.userId = this.authSrv.getDetailsOfUser('userId');
+    this.getUserProfile();
     this.getCountriesInInd();
+  }
+
+  editData(details, detailsType): void {
+    const dialogRef = this.dialog.open(EditprofileComponent, {
+      width: '75%',
+      height: "90vh",
+      data: {
+        type: detailsType,
+        data: details,
+        settings: this.dropdownSettings
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.getUserProfile();
+    });
   }
 
   getCountriesInInd(){
@@ -53,12 +81,47 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  getValueFromObject(data,key){    
+    let dataKey = Object.keys(data)[0];
+    if(key == 'key'){
+      return dataKey;
+    }else{
+      return data[dataKey][key];
+    }
+  }
+
+  formatResumeFilePath(data){
+    var resume = data.resume;
+    // resume = resume.split('/');
+    // resume = resume.slice(-1).join();
+    resume = RESUMEURL+resume;
+    data.resume = resume;
+    return data;
+  }
+
+  getUserProfile(){
+    let postData = {
+      userId: this.userId
+    }
+    this.authSrv.getProfileData(postData).subscribe((res) => {
+      if(res.success && res.data.length != 0){
+        this.isProfileSubmitted = true;
+        this.profileData = this.formatResumeFilePath(res.data[0]);
+      }else{
+        this.isProfileSubmitted = false;
+      }
+    },(err) => {
+      this.utilsSrv.handleError(err);
+    })
+  }
+
   inItData(){
     this.maxDate = new Date();
     this.personalDetailsForm = this.formBuilder.group({
       firstName: "",
       lastName: "",
-      state: new FormControl({ value: 'INDIA', disabled: true }),
+      country: new FormControl({ value: 'INDIA', disabled: true }),
+      state: "",
       district: "",
       mandal: "",
       village: "",
@@ -66,7 +129,7 @@ export class ProfileComponent implements OnInit {
       gender: "",
       mail: "",
       phone: "",
-      dob: new FormControl({value:'', disabled: true})
+      dob: new FormControl({value:''})
     });
     this.educationalDetailsForm = this.formBuilder.group({
       sscPercentage: "",
@@ -128,18 +191,44 @@ export class ProfileComponent implements OnInit {
     this.fileList = event.target.files;
   }
 
+  formatEducationDetails(educationDetails){
+    let ssc = {
+      "school": educationDetails.sscSchool,
+      "percentage": educationDetails.sscPercentage,
+      "board": educationDetails.sscBoard,
+      "passedYear": educationDetails.sscPassedYear
+    };
+    let puc = {
+      "clg": educationDetails.pucClg,
+      "branch": educationDetails.pucBranch,
+      "percentage": educationDetails.pucPercentage,
+      "type": educationDetails.pucType,
+      "passedYear": educationDetails.pucPassedYear
+    };
+    let ug = {
+      "clg": educationDetails.ugClg,
+      "branch": educationDetails.ugBranch,
+      "percentage": educationDetails.ugPercentage,
+      "type": educationDetails.ugType,
+      "passedYear": educationDetails.ugPassedYear
+    };
 
+    let educationInfo = {
+      "ssc": ssc,
+      "puc": puc,
+      "ug": ug
+    }
+    return educationInfo;
+  }
 
   updateProfile(){
-    let userId = this.authSrv.getDetailsOfUser('userId');
-    console.log(this.fileList);
-    
     if(this.fileList.length > 0){
-
+      this.personalDetailsForm.value.country = "INDIA";
       let personalInfo = JSON.stringify(this.personalDetailsForm.value);
       let technicalInfo = JSON.stringify(this.technicalFormGroup.value);
       let experienceInfo = JSON.stringify(this.experienceForm.value);
-      let educationInfo = JSON.stringify(this.educationalDetailsForm.value);
+      let educationInfo = JSON.stringify(this.formatEducationDetails(this.educationalDetailsForm.value));
+
       const file: File = this.fileList[0];
       const formData: FormData = new FormData();
       formData.append('resume', file, file.name);
@@ -147,13 +236,18 @@ export class ProfileComponent implements OnInit {
       formData.append('educationalInfo', educationInfo);
       formData.append('technicalInfo', technicalInfo);
       formData.append('experienceInfo',experienceInfo);
-      formData.append('userId',userId);
-      console.log(formData);
+      formData.append('userId',this.userId);
       
       this.authSrv.uploadProfileDetails(formData).subscribe((res) => {
-        console.log(res);
+        if(res.success){
+          this.isProfileSubmitted = true;
+          this.getUserProfile();
+          this.utilsSrv.showToastMsg("success","Profile","Submitted");
+        }else{
+          this.utilsSrv.showToastMsg("warning",res.msg,null);
+        }
       },(err) => {
-        console.log(err);
+        this.utilsSrv.handleError(err);
       })
     }else{
       let postData = {
@@ -162,7 +256,6 @@ export class ProfileComponent implements OnInit {
         technicalInfo: this.technicalFormGroup.value,
         experinceInfo: this.experienceForm.value
       }
-      console.log(postData);
     }
   }
 

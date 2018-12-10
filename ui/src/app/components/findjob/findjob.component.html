@@ -15,7 +15,7 @@
                   <div class="card-header bg-info">
                     <h4><strong style="color:white">{{company.companyName}}</strong>
                       <span class="pull-right postedAt">
-                        <small>Posted :- {{ utilsSrv.getDiffBwDates(company.postedAt) }}</small>                       -->
+                        <small>Posted :- {{ utilsSrv.getDiffBwDates(company.postedAt) }}</small>
                       </span>
                     </h4>
                   </div>
@@ -41,8 +41,7 @@
                         <strong class="heading">Duration: </strong> {{company.jobDuration}}
                       </div>
                       <div class="col"><strong class="heading">Salary: </strong>{{company.salary | currency:' ':false: '1.0-2'}}/-</div>
-                      <!-- <div class="col"><small class="heading">Posted By: {{company.postedBy}}</small></div> -->
-                      </div>
+                    </div>
                   </div>
                   <div class="card-footer">
                     <div>

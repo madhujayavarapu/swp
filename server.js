@@ -35,6 +35,7 @@ require('./config/passport')(passport);
 
 // set Static folder
 app.use(express.static(path.join(__dirname, 'public')));
+app.use("/resume/", express.static(__dirname + '/uploads/resumes'));
 
 const userSrv = require('./routes/userSrv');
 const locationSrv = require('./routes/locationSrv');
