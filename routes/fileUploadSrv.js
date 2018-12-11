@@ -1,4 +1,6 @@
 const express = require('express');
+const passport = require('passport');
+const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const fs = require('fs');
 const router = express.Router();
@@ -53,7 +55,7 @@ const upload = multer({
 // })
 const UserDetails = require('../models/userDetails');
 
-router.post('/updateProfile', upload.single('resume'), (req, res, next) => {
+router.post('/updateProfile', passport.authenticate('jwt',{session: false}),  upload.single('resume'), (req, res, next) => {
     // console.log(req.file);
     if(req.file == undefined){
        return res.json({success: false, message: "file format wrong"});
@@ -89,7 +91,7 @@ router.post('/updateProfile', upload.single('resume'), (req, res, next) => {
     }
 })
 
-router.post('/uploadResume', upload.single('resume'), (req, res, next) => {
+router.post('/uploadResume', passport.authenticate('jwt',{session: false}),  upload.single('resume'), (req, res, next) => {
     if(req.file == undefined){
         return res.json({success: false, msg: "file format wrong..only accepts .pdf and .docx"});
     }else{

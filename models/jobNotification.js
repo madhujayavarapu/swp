@@ -82,9 +82,9 @@ module.exports.getApplicants = function(jobId, callback){
         {$unwind: "$applied"},
         {
             $lookup: {
-                from: 'users',
+                from: 'userdetails',
                 localField: 'applied',
-                foreignField: '_id',
+                foreignField: 'userId',
                 as: "userinfo" 
             }
         },
@@ -92,8 +92,13 @@ module.exports.getApplicants = function(jobId, callback){
             $project: {
                 _id: 1,
                 applied: 1,
-                "userinfo.username": 1,
-                "userinfo.role": 1
+                "userinfo.technicalSkills": 1,
+                "userinfo.resume": 1,
+                "userinfo.personalDetails.firstName": 1,
+                "userinfo.personalDetails.lastName": 1,
+                "userinfo.personalDetails.mail": 1,
+                "userinfo.personalDetails.phone": 1,
+                "userinfo.experience": 1
             }
         }
     ]).exec(callback);

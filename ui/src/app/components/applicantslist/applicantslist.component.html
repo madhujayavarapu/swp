@@ -1,4 +1,4 @@
-<div class="container-fluid" style="margin-top: 10px;">
+<!-- <div class="container-fluid" style="margin-top: 10px;">
   <div class="card">
     <div class="card-header bg-default">
       <h4>
@@ -11,15 +11,18 @@
         <div id="loader" [ngStyle]="{'display': throbber}"></div>
         <li class="list-group-item list-group-item-default mb-2" *ngFor="let applicant of applicantsList">
           <h4>
-            <strong>{{ applicant.userinfo[0].username }}</strong>
-            <button class="btn btn-info btn-md pull-right">View Profile</button>
+            <b>
+              {{ applicant.userinfo[0].username }}
+            </b>
+            <button class="btn btn-info btn-md pull-right" (click)="viewProfile(applicant)">View Profile</button>
             <button class="btn btn-warning btn-md pull-right" (click)="rejectApplicant(applicant)">Reject</button>
             <button class="btn btn-success btn-md pull-right" (click)="openDialog(applicant)">Accept</button>
           </h4>
-          <!-- <p></p> -->
           <div class="row">
-            <div class="col"><strong>Key</strong> Value</div>
-            <div class="col"><strong>Key</strong> Value</div>            
+            <div class="col"><strong>Experienced/Fresher</strong> Fresher</div>
+            <div class="col"><strong>Skills</strong> skills</div>   
+            <div class="col"><strong>Contact At: </strong> contact Details<br/> contact details 2</div>   
+            <div class="col"><strong>View Resume</strong> Resume Link</div>                                 
           </div>
         </li>
       </ul>
@@ -28,6 +31,91 @@
           <p class="center">No Data</p>
         </li>
       </ul>
+    </div>
+  </div>
+</div> -->
+<div class="container-fluid" style="background-color:white;height:100vh">
+  <nav aria-label="breadcrumb" style="padding-top:15px">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a [routerLink]="['/','jobs', 'post']">Post Notification</a></li>
+      <li class="breadcrumb-item"><a [routerLink]="['/','jobs','released']">Released Notifications</a></li>      
+      <li class="breadcrumb-item active" aria-current="page">Applicants</li>
+    </ol>
+  </nav>
+  <h3 class="p-2 mb-4 border-bottom">
+     <b>Applicants List</b>
+  </h3>
+  <div class="row" *ngIf="data">
+    <div id="loader" [ngStyle]="{'display': throbber}"></div>
+    <div class="col-md-6 col-xs-12 col-lg-6 col-xl-4 col-sm-12" *ngFor="let applicant of applicantsList">
+      <div class="card flex-md-row mb-4 shadow-md h-md-250">
+          <div class="card-body d-flex flex-column align-items-start">
+            <h4 class="d-inline-block text-primary mb-0">
+              <span *ngIf="applicant.userinfo[0]!= undefined && applicant.userinfo[0].personalDetails != undefined && applicant.userinfo[0].personalDetails.firstName != undefined">
+                <strong>{{ applicant.userinfo[0].personalDetails.firstName }}
+                  <span *ngIf="applicant.userinfo[0].personalDetails.lastName != undefined"> {{ applicant.userinfo[0].personalDetails.lastName }}</span>
+                </strong>
+              </span>
+              <span *ngIf="applicant.userinfo[0]== undefined || applicant.userinfo[0].personalDetails == undefined || applicant.userinfo[0].personalDetails.firstName == undefined">
+                <b>-</b>
+              </span>
+              </h4>
+            <h5 *ngIf="applicant.userinfo[0] != undefined && applicant.userinfo[0].experience != undefined && applicant.userinfo[0].experience.expType == 'fresher'" class="mb-2 text-warning">
+              Fresher
+            </h5>
+            <div *ngIf="applicant.userinfo[0] != undefined && applicant.userinfo[0].experience != undefined && applicant.userinfo[0].experience.expType == 'experienced'">
+              <h5 class="mb-1 text-success">Experienced</h5>
+              <div class="mb-1 text-muted small"><b>Past Experience: </b> {{ getExperience(applicant.userinfo[0].experience.experiences) }}</div>
+            </div>
+            <h5 *ngIf="applicant.userinfo[0] == undefined || applicant.userinfo[0].experience == undefined">
+              <b>-</b>
+            </h5>
+            <p class="card-text mb-1"><b>Skills: </b>
+              <span *ngIf="applicant.userinfo[0] != undefined && applicant.userinfo[0].technicalSkills != undefined && applicant.userinfo[0].technicalSkills.length > 0">
+                <span *ngFor="let skill of applicant.userinfo[0].technicalSkills;let i=index;">
+                  <span *ngIf="i==0">{{skill}}</span>
+                  <span *ngIf="i!=0">, {{skill}}</span>
+                </span>
+              </span>
+              <span *ngIf="applicant.userinfo[0] == undefined || applicant.userinfo[0].technicalSkills == undefined || applicant.userinfo[0].technicalSkills.length == 0">
+                <b>-</b>
+              </span>
+            </p>              
+            <p class="card-text mb-1">
+              <b>Contact Details:</b> <br/>
+              <i class="fas fa-phone"></i> : 
+              <span *ngIf="applicant.userinfo[0]!= undefined && applicant.userinfo[0].personalDetails != undefined && applicant.userinfo[0].personalDetails.phone != undefined">{{ applicant.userinfo[0].personalDetails.phone }}</span>
+              <span *ngIf="applicant.userinfo[0]== undefined || applicant.userinfo[0].personalDetails == undefined || applicant.userinfo[0].personalDetails.phone == undefined"><b>-</b></span>
+              <br/>
+              <i class="fas fa-envelope"></i> :
+              <span *ngIf="applicant.userinfo[0]!= undefined && applicant.userinfo[0].personalDetails != undefined && applicant.userinfo[0].personalDetails.mail != undefined">{{ applicant.userinfo[0].personalDetails.mail }}</span>
+              <span *ngIf="applicant.userinfo[0]== undefined || applicant.userinfo[0].personalDetails == undefined || applicant.userinfo[0].personalDetails.mail == undefined"><b>-</b></span>
+            </p>
+            <div *ngIf="applicant.userinfo[0] != undefined && applicant.userinfo[0].resume != undefined">
+              <a href="{{applicant.userinfo[0].resume}}" target="_blank" class="mb-2 text-info">View Resume</a>
+            </div>
+            <div *ngIf="applicant.userinfo[0] == undefined || applicant.userinfo[0].resume == undefined">
+              <b>-</b>
+            </div>
+            <div class="row">
+              <div class="">
+                <button class="btn btn-outline-primary btn-sm" role="button" (click)="openDialog(applicant)">Hire</button>
+              </div>
+              <div class="">
+                  <button class="btn btn-outline-success btn-sm" role="button" (click)="rejectApplicant(applicant)">Reject</button>             
+              </div>
+            </div>
+          </div>
+          <img class="card-img-right flex-auto d-none d-lg-block p-1 mt-3" alt="Thumbnail [200x250]"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOGDtb7Ywg5kR7kx0Ao5S59OmDuGcXosvhYf2egt-DNhK6pPLW" style="width: 220px; height: 280px;">
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!data">
+    <div class="card">
+      <div class="card-body">
+        <h4><b>No Applicants</b></h4>
+      </div>
     </div>
   </div>
 </div>

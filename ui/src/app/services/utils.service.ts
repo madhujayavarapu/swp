@@ -3,7 +3,8 @@ import { FlashMessagesService } from 'angular2-flash-messages';
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
 import { ToasterService, Toast } from 'angular2-toaster';
-
+import { RESUMEURL } from '../url';
+ 
 @Injectable({
   providedIn: 'root'
 })
@@ -24,6 +25,10 @@ export class UtilsService {
       animation: 'fade'
     }
     return obj;
+  }
+
+  formatResumeFilePath(fileName){
+    return RESUMEURL+fileName;
   }
 
   handleError(err){
@@ -49,16 +54,17 @@ export class UtilsService {
     const month = oneWeek*4;
     const year = month*12;
     
-    if(milliseconds >= year){
-      var suffix = milliseconds < (year*2) ? "year ago" : "years ago";
-      return Math.floor(milliseconds/year)+" "+suffix;
-    }else if(milliseconds >= month){
-      var suffix = milliseconds < (month*2) ? "month ago" : "months ago";
-      return Math.floor(milliseconds/year)+" "+suffix;
-    }else if(milliseconds >= oneWeek){
-      var suffix = milliseconds < (oneWeek*2) ? "week ago" : "weeks ago";
-      return Math.floor(milliseconds/oneWeek)+" "+suffix; 
-    }else if(milliseconds >= oneDay){
+    // if(milliseconds >= year){
+    //   var suffix = milliseconds < (year*2) ? "year ago" : "years ago";
+    //   return Math.floor(milliseconds/year)+" "+suffix;
+    // }else if(milliseconds >= month){
+    //   var suffix = milliseconds < (month*2) ? "month ago" : "months ago";
+    //   return Math.floor(milliseconds/year)+" "+suffix;
+    // }else if(milliseconds >= oneWeek){
+    //   var suffix = milliseconds < (oneWeek*2) ? "week ago" : "weeks ago";
+    //   return Math.floor(milliseconds/oneWeek)+" "+suffix; 
+    // }else 
+    if(milliseconds >= oneDay){
       var suffix = milliseconds < (oneDay*2) ? "day ago" : "days ago";
       return Math.ceil(milliseconds/oneDay)+" "+suffix;
     }else if(milliseconds >= hour){

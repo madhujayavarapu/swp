@@ -26,7 +26,6 @@ export class HireempComponent implements OnInit {
   }
 
   sendOffer(){
-    console.log("sending offer letter to candidate");
     let postData = {
       username: this.username,
       branch: this.branch,

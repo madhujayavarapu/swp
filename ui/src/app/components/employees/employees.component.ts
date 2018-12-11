@@ -27,8 +27,6 @@ export class EmployeesComponent implements OnInit {
     let postData = {
       "companyId": this.companyId
     }
-    console.log(postData);
-    
     this.authSrv.getEmpUnderCompany(postData).subscribe((res) => {
       if(res.success){
         this.employees = res.data;
@@ -39,6 +37,29 @@ export class EmployeesComponent implements OnInit {
     },(err) => {
       this.utilsSrv.handleError(err);
     })
+  }
+
+  fireEmployee(emp){
+    var result = confirm("Are you sure you want to fire <b>"+emp.empName+"</b> ?");
+    if(result){
+      console.log("fire emp ",emp);
+      let postData = {
+        userId: emp.userId,
+        companyId: emp.companyId
+      }
+      // this.authSrv.fireEmp().subscribe((res) => {
+      //   if(res.success){
+      //     this.utilsSrv.showToastMsg("success",res.msg, null);
+      //     this.getEmployees();
+      //   }else{
+      //     this.utilsSrv.showToastMsg("warning",res.msg,null);
+      //   }
+      // },(err) => {
+      //   this.utilsSrv.handleError(err);
+      // })
+    }else{
+      this.getEmployees();
+    }
   }
 
 

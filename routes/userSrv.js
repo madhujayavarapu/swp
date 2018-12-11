@@ -67,25 +67,6 @@ router.post('/register', (req, res, next) => {
     })
 })
 
-router.post('/addUserDetails', passport.authenticate('jwt',{session: false}), (req, res, next) => {
-
-    // let personalDetails = new 
-    let userDetails = new UserDetails({
-        personalDetails: req.body.personalDetails,
-        educationDetails: req.body.educationDetails,
-        technicalSkills: req.body.technicalSkills,
-        userId: req.body.userId
-    })
-    UserDetails.addUserDetails(userDetails, (err, result) => {
-        if(err)
-            console.log(err);
-        res.json({
-            success: true,
-            msg: "Details Saved"
-        })
-    })
-})
-
 router.post('/getUserDetails',passport.authenticate('jwt',{session: false}), (req, res, next) => {
     let userId = req.body.userId;
 
@@ -446,7 +427,7 @@ router.post('/availableJobs', passport.authenticate('jwt',{session: false}), (re
     })
 })
 
-router.post('/appliedJobs', (req, res, next) => {
+router.post('/appliedJobs', passport.authenticate('jwt',{session: false}), (req, res, next) => {
     let userId = req.body.userId;
     JobNotification.getAppliedJobs(userId, (err, result) => {
         if(err){
@@ -461,7 +442,7 @@ router.post('/appliedJobs', (req, res, next) => {
     })
 })
 
-router.post('/getEmpUnderCompany', (req, res, next) => {
+router.post('/getEmpUnderCompany', passport.authenticate('jwt',{session: false}), (req, res, next) => {
     let companyId = req.body.companyId;
     Employee.getEmpUnderCompany(companyId, (err, emps) => {
         if(err){
@@ -476,7 +457,7 @@ router.post('/getEmpUnderCompany', (req, res, next) => {
     })
 })
 
-router.post('/getUserProfileData', (req, res, next) => {
+router.post('/getUserProfileData', passport.authenticate('jwt',{session: false}), (req, res, next) => {
     let userId = req.body.userId;
     UserDetails.getUserDetails(userId, (err, userDetails) => {
         if(err){
@@ -494,7 +475,7 @@ router.post('/getUserProfileData', (req, res, next) => {
     })
 })
 
-router.post('/updatePersonalDetails', (req, res, next) => {
+router.post('/updatePersonalDetails', passport.authenticate('jwt',{session: false}), (req, res, next) => {
     let userId = req.body.userId;
     if(req.body.type == "PersonalDetails"){
         let personalDetails = req.body.personalDetails;
@@ -541,7 +522,7 @@ router.post('/updatePersonalDetails', (req, res, next) => {
    
 })
 
-router.post('/addExperience', (req, res, next) => {
+router.post('/addExperience', passport.authenticate('jwt',{session: false}), (req, res, next) => {
     let userId = req.body.userId;
     let experience = req.body.experience;
     UserDetails.addExperience(userId, experience, (err, isAdded) => {
@@ -557,7 +538,7 @@ router.post('/addExperience', (req, res, next) => {
     })
 })
 
-router.post('/updateExperience', (req, res, next) => {
+router.post('/updateExperience', passport.authenticate('jwt',{session: false}), (req, res, next) => {
     let userId = req.body.userId;
     let expId = req.body.expId;
     let exp = req.body.exp;
@@ -574,7 +555,7 @@ router.post('/updateExperience', (req, res, next) => {
     })
 })
 
-router.post('/deleteExperience', (req, res, next) => {
+router.post('/deleteExperience', passport.authenticate('jwt',{session: false}), (req, res, next) => {
     let userId = req.body.userId;
     let expId = req.body.expId;
     UserDetails.deleteExperience(userId, expId, (err, isDeleted) => {
@@ -590,7 +571,7 @@ router.post('/deleteExperience', (req, res, next) => {
     })
 })
 
-router.post('/updateEducation', (req, res, next) => {
+router.post('/updateEducation', passport.authenticate('jwt',{session: false}), (req, res, next) => {
     let userId = req.body.userId;
     let updatedDetails = req.body.updatedDetails;
     let type = req.body.type;

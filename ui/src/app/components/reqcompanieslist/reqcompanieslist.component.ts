@@ -45,13 +45,14 @@ export class ReqcompanieslistComponent implements OnInit {
     this.authSrv.getCompanyRequests().subscribe((res) => {
       console.log(res);
       if(!!res.success){
-        this.noData = false;
         this.requests = res.companies;
+        this.noData = res.companies.length > 0 ? false : true;
       }else{
         this.noData = true;
       }
     },(err) => {
       console.log(err);
+      this.noData = true;
     })
   }
 
