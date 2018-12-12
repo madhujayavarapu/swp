@@ -11,14 +11,24 @@ const companySchema = mongoose.Schema({
         required: true
     },
     awards: {
-        type: [String]
+        type: [String],
+        required: false
     },
     about: {
-        type: String,
+        type: [String],
         required: true
     },
     website: {
-        type: String
+        type: String,
+        required: true
+    },
+    gallery:{
+        type: [String],
+        required: false
+    },
+    address:{
+        type: [String],
+        required: true
     },
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
@@ -26,6 +36,10 @@ const companySchema = mongoose.Schema({
         unique: true
     },
     establishedAt: {
+        type: Date,
+        required: true
+    },
+    lastUpdated: {
         type: Date,
         required: true
     },

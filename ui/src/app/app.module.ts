@@ -18,6 +18,7 @@ import { AuthService } from './services/auth.service';
 import { ValidateService } from './services/validate.service';
 import { UtilsService } from './services/utils.service';
 import { LocationService } from './services/location.service';
+import { ConstantService } from './services/constant.service';
 
 import { appRoutes } from './app.routes';
 
@@ -97,7 +98,8 @@ import { EditprofileComponent } from './components/editprofile/editprofile.compo
     AuthGuard,
     ValidateService,
     UtilsService,
-    LocationService
+    LocationService,
+    ConstantService
   ],
   bootstrap: [AppComponent]
 })

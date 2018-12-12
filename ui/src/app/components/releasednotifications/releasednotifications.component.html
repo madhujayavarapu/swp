@@ -10,61 +10,83 @@
   </h3>
   <ul class="list-group" *ngIf="data">
     <div class="row">
-      <div class="col-md-6" *ngFor="let company of notifications; let i = index">
-        <!-- <li class="list-group-item list-group-item-default mb-2">
-          <div class="container"> -->
-            <div class="card mb-4" >
-              <div class="card-header bg-info">
-                <h4>
-                  <span class="pull-right postedAt">
-                    <!-- <small>Posted On:- {{ company.postedAt | date: "MMM dd, yyyy" }}</small> -->
-                    <small>Posted :- {{ utilsSrv.getDiffBwDates(company.postedAt) }}</small>                        
-                  </span>
-                </h4>
-              </div>
-              <div class="card-body">
-                <p><strong class="heading">Job Description:- </strong>{{ company.aboutJob }}</p>
-                <p><strong class="heading">Key Skills:- </strong> <span *ngFor="let x of company.requirements">{{x}} </span></p>
-                <div class="row">
-                  <div class="col"><strong class="heading">Location: </strong> {{company.location}}</div>
-                  <div class="col">
-                    <strong class="heading">Job Role:: </strong>
-                    <span *ngIf="company.jobRole == 'ud'">UI Developer</span>
-                    <span *ngIf="company.jobRole == 'bd'">Backend Developer</span>
-                    <span *ngIf="company.jobRole == 'tester'">Tester</span>
-                    <span *ngIf="company.jobRole == 'hr'">HR</span>
-                    <span *ngIf="company.jobRole == 'ba'">Bussiness Analyst</span>
-                  </div>
+      <div class="col-md-8">
+        <div class="row">
+          <div class="col-md-2">
+            Filter
+          </div>
+          <div class="col-md-10">
+            <li *ngFor="let company of notifications; let i = index" class="list-group-item list-group-item-default mb-2">
+              <h4 (click)="showDetailsOfPost(company)" style="cursor: pointer">
+                <span class="text-info" *ngIf="company.jobRole == 'ud'">UI Developer</span>
+                <span class="text-primary" *ngIf="company.jobRole == 'bd'">Backend Developer</span>
+                <span class="text-primary" *ngIf="company.jobRole == 'tester'">Tester</span>
+                <span class="text-primary" *ngIf="company.jobRole == 'hr'">HR</span>
+                <span class="text-primary" *ngIf="company.jobRole == 'ba'">Bussiness Analyst</span>
+                <span class="pull-right postedAt text-secondary">
+                  <small>Posted :- {{ utilsSrv.getDiffBwDates(company.postedAt) }}</small>                        
+                </span>
+              </h4>
+              <!-- <div class="card mb-4" (click)="showDetailsOfPost(company)">
+                <div class="card-header">
+                  
                 </div>
-                <div class="row">
-                  <div class="col">
-                    <strong class="heading">Job Type: </strong>
-                    <span *ngIf="company.jobType == 'full'">Full Time</span>
-                    <span *ngIf="company.jobType == 'internship'">Internship</span>
-                  </div>
-                  <div class="col" *ngIf="company.jobType == 'internship'">
-                    <strong class="heading">Duration: </strong> {{company.jobDuration}}
-                  </div>
-                  <div class="col"><strong class="heading">Salary: </strong>{{company.salary | currency:' ':false: '1.0-2'}}/-</div>
-                </div>
-              </div>
-              <div class="card-footer">
-                <div>
+                <div class="card-body">
                   <p>
-                    <small class="heading">Posted By:</small> {{company.postedBy}}
-                    <span class="pull-right">
-                      <button class="btn btn-primary btn-sm" (click)="appliedCandidates(company)">Applied Candidates</button>
-                      <button class="btn btn-info btn-sm" (click)="editPost(company)">Update</button>
-                      <button class="btn btn-danger btn-sm" (click)="deletePost(company)">Delete</button>
-                    </span>
+                    <span class="text-muted">Job: </span>
+                    <span *ngIf="company.jobType == 'full'">Full Time</span>
+                    <span *ngIf="company.jobType == 'internship'">Internship</span><br>
                   </p>
+                  <p>
+                      <small class="heading">Posted By:</small> {{company.postedBy}}
+                      <span class="pull-right">
+                        <button class="btn btn-primary btn-sm" (click)="appliedCandidates(company)">Applied Candidates</button>
+                        <!-- <button class="btn btn-info btn-sm" (click)="editPost(company)">Update</button> --
+                        <button class="btn btn-danger btn-sm" (click)="deletePost(company)">Delete</button>
+                      </span>
+                    </p>
                 </div>
-              </div>
-            </div>
-          <!-- </div>
-        </li> -->
+              </div> -->
+            </li>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="vl" *ngIf="!showDetails">
+          Details About Post Will Display here
+        </div>
+        <div class="vl p-2" *ngIf="showDetails">
+          <h4>
+            <span class="text-info" *ngIf="detailsData.jobRole == 'ud'">UI Developer</span>
+            <span class="text-primary" *ngIf="detailsData.jobRole == 'bd'">Backend Developer</span>
+            <span class="text-primary" *ngIf="detailsData.jobRole == 'tester'">Tester</span>
+            <span class="text-primary" *ngIf="detailsData.jobRole == 'hr'">HR</span>
+            <span class="text-primary" *ngIf="detailsData.jobRole == 'ba'">Bussiness Analyst</span>
+          </h4>
+          <p><span class="text-muted">Job Description:- </span>{{ detailsData.aboutJob }}</p>
+          <p>
+            <span class="text-muted">Key Skills:- </span> <span *ngFor="let x of detailsData.requirements">{{x}} </span><br>
+            <span class="text-muted">Location: </span>{{detailsData.location}} <br>
+            <span class="text-muted">Job: </span>
+            <span *ngIf="detailsData.jobType == 'full'">Full Time</span>
+            <span *ngIf="detailsData.jobType == 'internship'">Internship</span><br>
+            <span *ngIf="detailsData.jobType == 'internship'">
+              <span class="text-muted">Duration: </span>
+              {{detailsData.jobDuration}} <br> 
+            </span>
+            <span class="text-muted">Salary: </span>{{detailsData.salary | currency:' ':false: '1.0-2'}}/-<br/>
+            <span class="text-muted">Posted At: </span> {{ detailsData.postedAt | date: "MMM dd, yyyy"}}<br/>
+            <span class="text-muted">Posted By: </span> {{ detailsData.postedBy}} 
+          </p>
+          <p>
+              <button class="btn btn-primary btn-sm" (click)="appliedCandidates(detailsData)">Applied Candidates</button>
+              <!-- <button class="btn btn-info btn-sm" (click)="editPost(company)">Update</button> -->
+              <button class="btn btn-danger btn-sm" (click)="deletePost(detailsData)">Delete</button>
+          </p>
+        </div>
       </div>
     </div>
+    
   </ul>
   <ul class="list-group" *ngIf="!data">
     <li class="list-group-item">

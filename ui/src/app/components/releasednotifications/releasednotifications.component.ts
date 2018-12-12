@@ -12,6 +12,8 @@ export class ReleasednotificationsComponent implements OnInit {
 
   notifications: any[];
   data: Boolean = false;
+  showDetails = false;
+  detailsData: any;
 
   constructor(
     private router: Router,
@@ -46,9 +48,13 @@ export class ReleasednotificationsComponent implements OnInit {
     console.log("edit post");
   }
 
+  showDetailsOfPost(post){
+    this.showDetails = true;
+    this.detailsData = post;
+  }
+
   deletePost(company){
     console.log("delete post", company);
-    
   }
 
   appliedCandidates(company){
