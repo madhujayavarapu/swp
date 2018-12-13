@@ -37,19 +37,15 @@ require('./config/passport')(passport);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use("/resume/", express.static(__dirname + '/uploads/resumes'));
 
-const userSrv = require('./routes/user.service');
-const locationSrv = require('./routes/location.service');
 const fileUploadSrv = require('./routes/fileUpload.service');
-const constantSrv = require('./routes/constant.service');
+const routes = require('./routes/routes');
 
 app.get('/',(req, res) => {
     res.send("Invalid route");
 })
 
-app.use('/users',userSrv);
-app.use('/location',locationSrv);
-app.use('/file',fileUploadSrv);
-app.use('/constant',constantSrv);
+app.use('/api',routes);
+app.use('/api/profile',fileUploadSrv);
 
 // Start Server
 app.listen(PORT, () => {

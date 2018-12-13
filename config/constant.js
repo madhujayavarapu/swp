@@ -65,10 +65,12 @@ const pucBranch = [
     { key:"BiPC", value: "BiPC" }      
 ];
 
-module.exports.constants = {
+var constants = {
     jobRoles: jobRoles,
     skills: skills,
     experience: experience,
     districts: districts,
     jobLocations: jobLocations
 }
+
+module.exports = constants;

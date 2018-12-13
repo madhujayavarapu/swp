@@ -1,31 +1,76 @@
-const express = require('express');
+const expresss = require("express");
+const mongoose = require('mongoose');
+const router = expresss.Router();
 
-const commonSrv = require('./common.service');
-
+// Models
 const User = require('../models/user');
 const UserDetails = require('../models/userDetails');
 const Company = require('../models/company');
-const JobNotification = require('../models/jobNotification');
 const Employee = require('../models/employee');
+const JobNotification = require('../models/jobNotification');
 
-module.exports.getEmpUnderCompany = function(companyId){
-    Employee.getEmpUnderCompany(companyId, (err, emp) => {
+var service = {
+    acceptCompanyRequest: acceptCompanyRequest,
+    viewCompanyRequests: viewCompanyRequests,
+    getCompaniesList: getCompaniesList
+}
+
+module.exports = service;
+
+// This function is for accepting the company request..
+function acceptCompanyRequest(req, res, next){
+    let companyId = req.body.companyId;
+    let userId = req.body.userId;
+
+    Company.acceptCompanyRequest(companyId, (err, isUpdated) => {
         if(err){
-          return res.json({success:false,msg:"Something went wrong"});
+            res.json({success:false,msg:"something went wrong"});
         }else{
-            if(emp){
-                return res.json({success: true,data: emp});
+            if(isUpdated){
+                User.changeUserRole(userId, 2, (error, isRoleUpdated) => {
+                    if(err){
+                        res.json({success:false, msg:"Something wrong with updating user role"});
+                    }else{
+                        console.log(isRoleUpdated);
+                        
+                        if(isRoleUpdated){
+                            res.json({success: true,msg: "Accepted Company Request"});
+                        }else{
+                            res.json({success: true,msg: "Failed to update user role"});
+                        }
+                    }
+                })
             }else{
-                return res.json({success: false, msg: "Failed to Get Employees"});
+                res.json({success:false, msg: "Failed to accept"});
             }
         }
     })
 }
-
-module.exports.rejectApplicant = function(jobId, userId){
-    
-} 
-
-
-
-
+// It will fetch all the companies requests from db.
+function viewCompanyRequests(req, res, next){
+    Company.getCompanyRequests((err,result) => {
+        if(err){
+            res.json({success:false,msg:"something went wrong"});
+        }else{
+            if(result){
+                res.json({success:true,companies: result});
+            }else{
+                res.json({success:true,msg:"No requests"});
+            }
+        }
+    })
+}
+// It will fetch all the companies which are approved by Admin.
+function getCompaniesList(req, res, next){
+    Company.getCompaniesList((err,result) => {
+        if(err){
+            res.json({success:false,msg:"something went wrong"});
+        }else{
+            if(result){
+                res.json({success:true,companies: result});
+            }else{
+                res.json({success:true,msg:"No requests"});
+            }
+        }
+    })
+}

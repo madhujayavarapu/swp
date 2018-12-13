@@ -1,7 +1,10 @@
 const mongoose = require('mongoose');
+//const Transaction = require('mongoose-transactions');
+
+const User = require('./user');
 
 const companySchema = mongoose.Schema({
-    companyName: {
+    name: {
         type: String,
         required: true,
         unique: true
@@ -15,19 +18,15 @@ const companySchema = mongoose.Schema({
         required: false
     },
     about: {
-        type: [String],
+        type: String,
         required: true
     },
     website: {
         type: String,
         required: true
     },
-    gallery:{
-        type: [String],
-        required: false
-    },
     address:{
-        type: [String],
+        type: String,
         required: true
     },
     createdBy: {
@@ -39,47 +38,55 @@ const companySchema = mongoose.Schema({
         type: Date,
         required: true
     },
+    createdAt: {
+        type: Date,
+        required: true
+    },
     lastUpdated: {
         type: Date,
         required: true
     },
     isAccepted: {
         type: Boolean,
-        required: true,
+        required: false,
         default: false
     }
 })
 
 const Company = module.exports = mongoose.model('Companies',companySchema);
 
-module.exports.sendStartupRequest = function(newCompany, callback){
+module.exports.addRequestForCompany = function(newCompany, callback){
     newCompany.save(callback);
 }
 
-module.exports.getStartupRequests = function(callback){
+module.exports.getCompanyRequests = function(callback){
     var query = {isAccepted: false};
-    Company.find(query,callback)
+    Company.find(query,
+        {branches:1, awards: 1, name: 1, about: 1, website: 1, createdBy: 1, establishedAt: 1, address: 1, _id: 1}
+        ,callback)
 }
 
-module.exports.acceptStartupRequest = function(companyId, callback){
+module.exports.acceptCompanyRequest = function(companyId, callback){
     var query = {_id:mongoose.Types.ObjectId(companyId)};
-    Company.findOneAndUpdate(query, {isAccepted: true}, callback);
+    Company.findOneAndUpdate(query, {$set: {"isAccepted": true}},callback);
 }
 
 module.exports.getCompaniesList = function(callback){
     var query = {isAccepted: true};
-    Company.find(query, callback);
+    Company.find(query,
+        {branches:1, awards: 1, name: 1, about: 1, website: 1, createdBy: 1, establishedAt: 1, address: 1, _id: 1}
+        ,callback);
 }
 
 module.exports.getCompanyIdOfUser = function(userId, callback){
     var query = {createdBy: mongoose.Types.ObjectId(userId)};
-    // Company.findOne(query, {$project: {_id: 1}},callback);
-    Company.aggregate([
-        {$match: query},
-        {$project: {
-            _id: 1
-        }}
-    ]).exec(callback)
+    Company.findOne(query, {_id: 1},callback);
+    // Company.aggregate([
+    //     {$match: query},
+    //     {$project: {
+    //         _id: 1
+    //     }}
+    // ]).exec(callback)
 }
 
 module.exports.getBranchesUnderCompany = function(companyId, callback){

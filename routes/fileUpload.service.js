@@ -1,9 +1,9 @@
 const express = require('express');
+const router = express.Router();
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const fs = require('fs');
-const router = express.Router();
 const DIR = './uploads/resumes';
 const PROFILEPIC_DIR = './uploads/profile';
 const storage = multer.diskStorage({
@@ -14,14 +14,6 @@ const storage = multer.diskStorage({
         cb(null, new Date().toISOString()+ file.originalname);
     }
 })
-// const profileStorage = multer.diskStorage({
-//     destination: function(req, file, cb){
-//         cb(null, PROFILEPIC_DIR);
-//     },
-//     filename: function(req, file, cb){
-//         cb(null, new Date().toISOString()+ file.originalname);
-//     }
-// })
 const fileFilter = (req, file, cb) => {
     if(file.mimetype === "application/pdf" || file.mimetype === "application/msword" || file.mimetype === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"){
         cb(null, true);
@@ -30,14 +22,6 @@ const fileFilter = (req, file, cb) => {
     }
 }
 
-// const profileFilter = (req, file, cb) => {
-//     if(file.mimetype === "" || file.mimetype === "" || file.mimetype === ""){
-//         cb(null, true);
-//     }else{
-//         cb(null, false);
-//     }
-// }
-
 const upload = multer({
     storage: storage,
     limits:{
@@ -45,27 +29,19 @@ const upload = multer({
     },
     fileFilter: fileFilter
 });
-
-// const profilePicUpload = multer({
-//     storage: profileStorage,
-//     limits:{
-//         fileSize: 1024 * 1024 * 5
-//     },
-//     fileFilter: profileFilter
-// })
 const UserDetails = require('../models/userDetails');
 
-router.post('/updateProfile', passport.authenticate('jwt',{session: false}),  upload.single('resume'), (req, res, next) => {
+router.post('/create', passport.authenticate('jwt',{session: false}), upload.single('resume'), (req, res, next) => {
     // console.log(req.file);
     if(req.file == undefined){
        return res.json({success: false, message: "file format wrong"});
     }else{
-        let skills = JSON.parse(req.body.technicalInfo);
+        let skills = JSON.parse(JSON.stringify(req.body.technicalInfo));
         skills = skills.keySkills;
 
-        let educationalInfo = JSON.parse(req.body.educationalInfo);
-        let personalInfo = JSON.parse(req.body.personalInfo);
-        let experience = JSON.parse(req.body.experienceInfo);
+        let educationalInfo = JSON.parse(JSON.stringify(req.body.educationalInfo));
+        let personalInfo = JSON.parse(JSON.stringify(req.body.personalInfo));
+        let experience = JSON.parse(JSON.stringify(req.body.experienceInfo));
         let fileName = req.file.path.split('/');
         fileName = fileName.slice(-1).join();
 
@@ -77,7 +53,7 @@ router.post('/updateProfile', passport.authenticate('jwt',{session: false}),  up
             resume: fileName,
             userId: req.body.userId
         });
-        UserDetails.addUserDetails(newUserDetails, (err, isInserted) => {
+        UserDetails.createProfileForUser(newUserDetails, (err, isInserted) => {
             if(err){
                 res.json({success:false,msg: "something went wrong"});
             }else{
@@ -97,8 +73,6 @@ router.post('/uploadResume', passport.authenticate('jwt',{session: false}),  upl
     }else{
         let fileName = req.file.path.split('/');
         fileName = fileName.slice(-1).join();
-        console.log(fileName," is filename");
-
         let resume = fileName;
         let userId = req.body.userId;
 
@@ -115,7 +89,5 @@ router.post('/uploadResume', passport.authenticate('jwt',{session: false}),  upl
         })
     }
 })
-
-// router.post('/uploadProfilePic', upload.single(''))
 
 module.exports = router;

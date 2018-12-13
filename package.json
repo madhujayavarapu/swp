@@ -17,6 +17,7 @@
     "express": "*",
     "jsonwebtoken": "*",
     "mongoose": "*",
+    "mongoose-transactions": "^1.1.1",
     "multer": "^1.4.1",
     "nodemon": "^1.18.4",
     "passport": "*",

@@ -28,36 +28,52 @@ const UserDetailsSchema = mongoose.Schema({
 
 const UserDetails = module.exports = mongoose.model('UserDetails', UserDetailsSchema);
 
-module.exports.addUserDetails = function(newUserDetails, callback){
+var dbOperations = {
+    // createProfileForUser: createProfileForUser,
+    getUserProfile: getUserProfile,
+    updatePersonalDetails: updatePersonalDetails,
+    updateTechnicalSkills: updateTechnicalSkills,
+    updateExperience: updateExperience,
+    updateSpecificExperience: updateSpecificExperience,
+    deleteExperience: deleteExperience,
+    addExperience: addExperience,
+    updateSSC: updateSSC,
+    updatePUC: updatePUC,
+    updateUG: updateUG,
+    uploadResume: uploadResume
+}
+// module.exports = dbOperations;
+
+module.exports.createProfileForUser = function(newUserDetails, callback){
     newUserDetails.save(callback);
 }
 
-module.exports.getUserDetails = function(userId, callback){
+function getUserProfile(userId, callback){
     var query = {userId: mongoose.Types.ObjectId(userId)};
     UserDetails.find(query, callback);
 }
 
-module.exports.updatePersonalDetails = function(userId, personalDetails, callback){
+function updatePersonalDetails(userId, personalDetails, callback){
     var query = {userId: mongoose.Types.ObjectId(userId)};
     UserDetails.findOneAndUpdate(query, {$set: {personalDetails: personalDetails}},callback);
 }
 
-module.exports.updateTechnicalSkills = function(userId, technicalSkills, callback){
+function updateTechnicalSkills(userId, technicalSkills, callback){
     var query = {userId: mongoose.Types.ObjectId(userId)};
     UserDetails.findOneAndUpdate(query, {$set: {technicalSkills: technicalSkills}},callback);
 }
 
-module.exports.updateExperience = function(userId, experience, callback){
+function updateExperience(userId, experience, callback){
     var query = {userId: mongoose.Types.ObjectId(userId)};
     UserDetails.findOneAndUpdate(query, {$set: {experience: experience}},callback);
 }
 
-module.exports.updateExperienceDetails = function(userId, expId, exp, callback){
+function updateSpecificExperience(userId, expId, exp, callback){
     var query = {userId: mongoose.Types.ObjectId(userId), "experience.experiences._id": expId}
     UserDetails.findOneAndUpdate(query, {$set: {"experience.experiences.$": exp}}, callback);
 }
 
-module.exports.deleteExperience = function(userId, expId, callback){
+function deleteExperience(userId, expId, callback){
     var query = {userId: mongoose.Types.ObjectId(userId)}
     var bulk = UserDetails.collection.initializeOrderedBulkOp();
     bulk.find(query).updateOne({$pull: {"experience.experiences": {_id: expId}}});
@@ -65,27 +81,27 @@ module.exports.deleteExperience = function(userId, expId, callback){
     bulk.execute(callback);
 }
 
-module.exports.addExperience = function(userId, exp, callback){
+function addExperience(userId, exp, callback){
     var query = {userId: mongoose.Types.ObjectId(userId)};
     UserDetails.findOneAndUpdate(query, {$push: {"experience.experiences": exp}},callback)
 }
 
-module.exports.updateSSC = function(userId, updatedSSC, callback){
+function updateSSC(userId, updatedSSC, callback){
     var query = {userId: mongoose.Types.ObjectId(userId)};
     UserDetails.findOneAndUpdate(query, {$set: {"educationDetails.ssc": updatedSSC}}, callback);
 }
 
-module.exports.updatePUC = function(userId, updatedPUC, callback){
+function updatePUC(userId, updatedPUC, callback){
     var query = {userId: mongoose.Types.ObjectId(userId)};
     UserDetails.findOneAndUpdate(query, {$set: {"educationDetails.puc": updatedPUC}}, callback);
 }
 
-module.exports.updateUG = function(userId, updatedUG, callback){
+function updateUG(userId, updatedUG, callback){
     var query = {userId: mongoose.Types.ObjectId(userId)};
     UserDetails.findOneAndUpdate(query, {$set: {"educationDetails.ug": updatedUG}}, callback);
 }
 
-module.exports.uploadResume = function(userId, resume, callback){
+function uploadResume(userId, resume, callback){
     var query = {userId: mongoose.Types.ObjectId(userId)};
     UserDetails.findOneAndUpdate(query, {$set: {"resume": resume}}, callback);
 }
