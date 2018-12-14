@@ -15,8 +15,12 @@ export class CompanyAdminService {
     private authSrv: AuthService
   ) { }
 
-  sentCompanyRequest(requestData): Observable<any>{
-    return this.http.post(URL+"users/startupRequest",requestData,{headers: this.authSrv.getHeaders(true)}).pipe((map((res) => res.json())));
+  postJobNotifaction(requestData): Observable<any>{
+    return this.http.post(URL+"postJobNotification",requestData,{headers: this.authSrv.getHeaders(true)}).pipe((map((res) => res.json())));
+  }
+
+  getBranchesUnderCompany(postData): Observable<any>{
+    return this.http.post(URL+"getCompanyBranches",postData,{headers: this.authSrv.getHeaders(true)}).pipe((map((res) => res.json())));    
   }
 
 }

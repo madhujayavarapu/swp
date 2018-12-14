@@ -31,6 +31,7 @@ router.get('/getCompaniesList', passport.authenticate('jwt',{session: false}), a
 router.post('/acceptCompanyRequest', passport.authenticate('jwt',{session: false}), adminSrv.acceptCompanyRequest);
 
 // Company Admin Routes
+router.post('/getCompanyBranches', passport.authenticate('jwt',{session:false}), companyAdminSrv.getCompanyBranches)
 router.post('/postJobNotification',passport.authenticate('jwt',{session: false}), companyAdminSrv.postJobNotification);
 router.post('/getAllJobsPostedByCompany', passport.authenticate('jwt',{session: false}), companyAdminSrv.getAllJobsPostedByCompany);
 router.post('/deleteJobNotification', passport.authenticate('jwt',{session: false}), companyAdminSrv.deleteJobNotification);
@@ -52,5 +53,8 @@ router.get('/getCountriesUnderIND', commonSrv.getCountriesUnderIND);
 router.get('/getJobRoles',constantSrv.getJobRoles);
 router.get('/getJobLocations', constantSrv.getJobLocations);
 router.get('/getTechnicalSkills',constantSrv.getTechnicalSkills);
+router.get('/getEmpRoles',constantSrv.getEmpRoles);
+router.get('/getEducationQualification',constantSrv.getEducationQualification);
+router.get('/getPostNotificationConstants',constantSrv.getPostNotificationConstants);
 
 module.exports = router;

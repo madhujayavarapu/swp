@@ -47,7 +47,7 @@ export class ReqcompanyComponent implements OnInit {
       userId: this.userId
     }
     this.userSrv.checkPreviousRequest(postData).subscribe((res) => {
-      if(res.success){
+      if(res.success && res.data.length > 0){
         this.noPreviousRequests = false;
         this.utilsSrv.showToastMsg("info", res.msg, "Please wait for the response");
       }else{

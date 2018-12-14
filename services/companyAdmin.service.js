@@ -14,7 +14,8 @@ var service = {
     getAllJobsPostedByCompany: getAllJobsPostedByCompany,
     deleteJobNotification: deleteJobNotification,
     getApplicantsForJob: getApplicantsForJob,
-    rejectApplicant: rejectApplicant
+    rejectApplicant: rejectApplicant,
+    getCompanyBranches: getCompanyBranches
 }
 
 module.exports = service;
@@ -27,7 +28,8 @@ function postJobNotification(req, res, next){
         salary: req.body.salary,
         type: req.body.type,
         duration: req.body.duration,
-        qualification: req.body.qualification,
+        experience: req.body.experience,
+        qualification: JSON.stringify(req.body.qualification),
         requirements: req.body.requirements,
         location: req.body.location,
         about: JSON.stringify(req.body.about),
@@ -36,7 +38,8 @@ function postJobNotification(req, res, next){
         postedBy: req.body.postedBy,
         postedAt: date,
         lastUpdated: date,
-        contactDetails: JSON.stringify(req.body.contactDetails)
+        status: 1,
+        contactDetails: JSON.stringify(req.body.contact)
     })
     Jobs.checkNotificationExists(req.body.companyId, req.body.role, req.body.type, (err2, isExist) => {
         if(err2){
@@ -45,7 +48,7 @@ function postJobNotification(req, res, next){
             if(isExist.length == 0){
                 Jobs.postJobNotification(newJobNotification, (err, result) => {
                     if(err){
-                        res.json({success:false,msg:"something went wrong", err: err});
+                        res.json({success:false,msg:"something went wrong", error: err});
                     }else{
                         if(result){
                             res.json({success: true, msg: "Successfully posted job notification"});
@@ -124,6 +127,22 @@ function rejectApplicant(req, res, next){
                 res.json({success: true, msg: "Rejected Applicant"});
             }else{
                 res.json({success: false, msg: "Failed to Reject Applicant..Please try again"});
+            }
+        }
+    })
+}
+
+// This function is to get the branches of a company.
+function getCompanyBranches(req, res, next){
+    let companyId = req.body.companyId;
+    Company.getCompanyBranches(companyId, (err, branches) => {
+        if(err){
+            res.json({success:false,msg:"Something went wrong", error: err});
+        }else{
+            if(branches){
+                res.json({success: true, data: branches});
+            }else{
+                res.json({success: false, msg:"Failed to get branches"});
             }
         }
     })

@@ -23,8 +23,20 @@ export class ConstantService {
     return this.http.get(URL+"getJobLocations",{headers: this.authService.getHeaders(false)}).pipe((map((res) => res.json())));    
   }
 
+  getPostNotificationConstants(){
+    return this.http.get(URL+"getPostNotificationConstants",{headers: this.authService.getHeaders(false)}).pipe((map((res) => res.json())));        
+  }
+
   getTechnicalSkills(){
     return this.http.get(URL+"getTechnicalSkills",{headers: this.authService.getHeaders(false)}).pipe((map((res) => res.json())));        
+  }
+
+  getEmpRoles(){
+    return this.http.get(URL+"getEmpRoles",{headers: this.authService.getHeaders(false)}).pipe((map((res) => res.json())));            
+  }
+
+  getEducationQualification(){
+    return this.http.get(URL+"getEducationQualification",{headers: this.authService.getHeaders(false)}).pipe((map((res) => res.json())));                
   }
 
 }

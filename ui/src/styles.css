@@ -161,6 +161,12 @@ body{
 .mat-horizontal-content-container{
     height: 100vh;
 }
-.cdk-overlay-pane{margin-top:9%;}
+
 .vl{border-left: 1px solid gainsboro; height: 100%}
 .example-full-width{width: 100%;}
+.example-additional-selection {
+    opacity: 0.75;
+    font-size: 0.75em;
+    /* margin-top: 0; */
+    width: 100%;
+  }

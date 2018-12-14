@@ -47,9 +47,12 @@ const companySchema = mongoose.Schema({
         required: true
     },
     isAccepted: {
-        type: Boolean,
+        type: Number,
         required: false,
-        default: false
+        default: 1
+        // 1 means pending
+        // 2 means rejected by admin
+        // 3 means approved by admin.
     }
 })
 
@@ -94,13 +97,13 @@ module.exports.getCompanyIdOfUser = function(userId, callback){
     // ]).exec(callback)
 }
 
-module.exports.getBranchesUnderCompany = function(companyId, callback){
+module.exports.getCompanyBranches = function(companyId, callback){
     var query = {_id: mongoose.Types.ObjectId(companyId)};
     Company.aggregate([
         {$match: query},
         {$project: {
             branches: 1,
-            companyName: 1,
+            name: 1,
             _id: 0
         }}
     ]).exec(callback);

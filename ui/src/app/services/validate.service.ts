@@ -84,9 +84,10 @@ export class ValidateService {
   }
 
   validatePostJobNotificationForm(formData): boolean{
-    if(this.isEmpty(formData.description) || this.isEmpty(formData.salary) || formData.branch == "-1" || formData.empRole == "-1" || 
-    isNaN(parseInt(formData.salary)) || this.isEmpty(formData.requirements) || formData.empType == "-1" || (formData.empType == "internship" &&
-    formData.duration == -1)){
+    if(formData.about.length == 0 || this.isEmpty(formData.salary) || formData.location.length == 0 || formData.role == "-1" || 
+    isNaN(parseInt(formData.salary)) || formData.requirements.length == 0 || formData.type == "-1" || (formData.type == "internship" &&
+    formData.duration == -1) || formData.qualification.length == 0 || this.isEmpty(formData.contact
+    || formData.experience == "-1")){
       return false;
     }
     return true;

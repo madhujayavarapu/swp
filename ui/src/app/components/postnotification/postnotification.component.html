@@ -1,6 +1,6 @@
 <div class="row">
-    <div class="col-md-3"></div>
-    <div class="col-md-6 mb-4">
+    <div class="col-md-1"></div>
+    <div class="col-md-10 mb-4">
       <div class="card" style="margin-top:20px">
         <div class="card-header">
             <h2>Job Notification Form
@@ -9,27 +9,25 @@
         </div>
         <div class="card-body">
           <form>
-            <!-- <h2 class="text-center font-up font-bold deep-orange-text py-4">Sign up</h2> -->
+            <!-- Roles -->
             <div class="md-form">
               <i class="fas fa-user-tie prefix grey-text"></i>
-              <select class="form-control dropdown" name="empRole" [(ngModel)]="empRole">
+              <select class="form-control" name="jobRole" [(ngModel)]="jobRole">
                 <option value="-1">Select Role</option>
-                <option value="ud">UI Developer</option>
-                <option value="bd">Backend Developer</option>
-                <option value="tester">Tester</option>
-                <option value="hr">HR</option>
-                <option value="ba">Bussiness Analyst</option>
+                <option value="{{type.key}}" *ngFor="let type of empRoles">{{type.value}}</option>
               </select>
             </div>
+            <!-- Emp Type -->
             <div class="md-form">
               <i class="fas fa-arrow-alt-circle-right prefix grey-text"></i>
-              <select class="form-control dropdown" name="empType" [(ngModel)]="empType">
-                <option value="-1">Select Employement Type</option>
+              <select class="form-control dropdown" name="jobType" [(ngModel)]="jobType">
+                <option value="-1">Select Job Type</option>
                 <option value="full">Full Time</option>
                 <option value="internship">Internship</option>
               </select>
             </div>
-            <div class="md-form" *ngIf="empType=='internship'">
+            <!-- Duration -->
+            <div class="md-form" *ngIf="jobType=='internship'">
               <i class="fas fa-business-time prefix grey-text"></i>
               <select class="form-control dropdown" name="duration" [(ngModel)]="duration">
                 <option value="-1">Select Internship Duration</option>
@@ -38,25 +36,71 @@
                 <option value="1y">1 year</option>
               </select>
             </div>
+            <!-- Branches -->
             <div class="md-form">
               <i class="fas fa-map-marker-alt prefix grey-text"></i>
-              <select class="form-control dropdown" name="branch" [(ngModel)]="branch">
-                <option value="-1">Select Branch</option>
-                <option value="{{branch}}" *ngFor="let branch of branches">{{branch}}</option>
-              </select>
+              <div style="padding-left: 50px">
+                <mat-form-field class="example-full-width">
+                  <mat-select placeholder="Select Branches" name="selectedBranches" [(ngModel)]="selectedBranches" multiple>
+                    <mat-select-trigger>
+                      {{selectedBranches ? selectedBranches[0] : ''}}
+                      <span *ngIf="selectedBranches.length > 1" class="example-additional-selection">
+                        (+{{selectedBranches.length - 1}} {{selectedBranches.length === 2 ? 'other' : 'others'}})
+                      </span>
+                    </mat-select-trigger>
+                    <mat-option *ngFor="let branch of branches" [value]="branch">{{branch}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
             </div>
+            <!-- Salary -->
             <div class="md-form">
-              <!-- <i class="fas fa-rupee-sign prefix grey-text"></i> -->
               <i class="fas fa-coins prefix grey-text"></i>
               <input type="text" autocomplete="off" name="salary" [(ngModel)]="salary" placeholder="Salary per month" class="form-control">
             </div>
+            <!-- Experience -->
+            <div class="md-form">
+              <i class="fas fa-briefcase prefix grey-text"></i>
+              <select class="form-control" name="experience" [(ngModel)]="experience">
+                <option value="-1">Select Experience</option>
+                <option value="{{type.key}}" *ngFor="let type of experiences">{{type.value}}</option>
+              </select>
+            </div>
+            <!-- Requirements -->
             <div class="md-form">
               <i class="fas fa-certificate prefix grey-text"></i>
-              <input type="text" autocomplete="off" name="requirements" [(ngModel)]="requirements" placeholder="Requirements" class="form-control">
+              <div style="padding-left: 50px">
+                <ng-multiselect-dropdown
+                [placeholder]="'Select Requirements For this Job.(Key Skills)'"
+                [data]="skills"
+                name = "requirements"
+                [(ngModel)] = "requirements"
+                [settings]="dropdownSettings"
+                ></ng-multiselect-dropdown>
+              </div>
             </div>
+            <!-- Education Qualification -->
+            <div class="md-form">
+              <i class="fas fa-graduation-cap prefix grey-text"></i>
+              <div style="padding-left: 50px">
+                <ng-multiselect-dropdown
+                [placeholder]="'who can apply for this job.Select Educational Details'"
+                [data]="qualifications"
+                name = "qualification"
+                [(ngModel)] = "qualification"
+                [settings]="dropdownSettings"
+                ></ng-multiselect-dropdown>
+              </div>
+            </div>
+            <!-- Contact Details -->
+            <div class="md-form">
+              <i class="fas fa-phone prefix grey-text"></i>
+              <input type="text" [(ngModel)]="contactDetails" name="contactDetails" class="forma-control" placeholder="Enter Contact Details">
+            </div>
+            <!-- About -->
             <div class="md-form">
               <i class="fas fa-edit prefix grey-text"></i>
-              <textarea name="about" [(ngModel)]="description" rows="3" placeholder="Write something about you company" class="form-control"></textarea>
+              <textarea name="about" [(ngModel)]="about" rows="3" placeholder="Write something about this job" class="form-control"></textarea>
             </div>
             <div class="text-center">
               <button type="submit" (click)="postNotification()" class="btn btn-deep-orange">Post Notification</button>
