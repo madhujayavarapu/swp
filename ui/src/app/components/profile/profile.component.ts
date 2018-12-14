@@ -7,6 +7,8 @@ import { UtilsService } from '../../services/utils.service';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { EditprofileComponent } from '../editprofile/editprofile.component';
 import { RESUMEURL } from '../../url';
+import { CommonService } from '../../services/common.service';
+import { ConstantService } from '../../services/constant.service';
 
 @Component({
   selector: 'app-profile',
@@ -14,7 +16,7 @@ import { RESUMEURL } from '../../url';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  isLinear = true;
+  isLinear = false;
   panelOpenState = false;
   userId;
   isProfileSubmitted: Boolean = false;
@@ -31,23 +33,16 @@ export class ProfileComponent implements OnInit {
   dropdownList = [];
   fileList: FileList;
   // throb: String = "none";
-  dropdownSettings = {
-    singleSelection: false,
-    idField: 'id',
-    textField: 'name',
-    selectAllText: 'Select All',
-    unSelectAllText: 'UnSelect All',
-    itemsShowLimit: 'All',
-    allowSearchFilter: true,
-    enableCheckAll: false
-  };
+  dropdownSettings:Object;
 
   constructor(
     private formBuilder: FormBuilder,
     private locationSrv: LocationService,
     private authSrv: AuthService,
     private utilsSrv: UtilsService,
-    private dialog: MatDialog
+    private commonSrv: CommonService,
+    private dialog: MatDialog,
+    private constantSrv: ConstantService
   ) { }
 
   ngOnInit() {
@@ -73,9 +68,9 @@ export class ProfileComponent implements OnInit {
   }
 
   getCountriesInInd(){
+    
     this.locationSrv.getCountriesListInInd().subscribe((res) =>{
-      res = JSON.parse(res);
-      this.districts = res.RestResponse.result;
+      this.districts = res.data;
     },(err)=>{
       console.log(err);
     });
@@ -103,12 +98,13 @@ export class ProfileComponent implements OnInit {
     let postData = {
       userId: this.userId
     }
-    this.authSrv.getProfileData(postData).subscribe((res) => {
+    this.commonSrv.getUserProfile(postData).subscribe((res) => {
       if(res.success && res.data.length != 0){
         this.isProfileSubmitted = true;
         this.profileData = this.formatResumeFilePath(res.data[0]);
       }else{
         this.isProfileSubmitted = false;
+        this.getTechnicalSkills()
       }
     },(err) => {
       this.utilsSrv.handleError(err);
@@ -116,6 +112,7 @@ export class ProfileComponent implements OnInit {
   }
 
   inItData(){
+    this.dropdownSettings = this.utilsSrv.getMultiSelectDropdownSettings();
     this.maxDate = new Date();
     this.personalDetailsForm = this.formBuilder.group({
       firstName: "",
@@ -159,28 +156,22 @@ export class ProfileComponent implements OnInit {
     this.resumeForm = this.formBuilder.group({
       resume: ""
     })
-    this.dropdownList = [
-      { id: 'C', name: 'C' },
-      { id: 'Java', name: 'Java' },
-      { id: 'C++', name: 'C++' },
-      { id: 'Python', name: 'Python' },
-      { id: 'Angular Js', name: 'Angular Js'},
-      { id: 'C#', name: 'C#'},
-      { id: 'Web Development', name: 'Web Development'},
-      { id: 'Angular 2', name: 'Angular 2'},
-      {id: 'Javascript', name: 'Javascript'},
-      {id: 'Angular 4',name:'Angular 4'},
-      {id: 'Angular 5',name: 'Angular 5'},
-      {id: 'Angular 6',name:'Angular 6'},
-      {id: 'NodeJs',name: 'NodeJs'},
-      {id: 'Ruby', name: 'Ruby'},
-      {id: 'MySQL', name:'MySQL'},
-      {id: 'MongoDB', name:'MongoDB'}
-    ];
     this.expType = [
       {value: 'fresher', name: 'Fresher'},
       {value: 'experienced', name: 'Experienced'}
     ]
+  }
+
+  getTechnicalSkills(){
+    this.constantSrv.getTechnicalSkills().subscribe((res) => {
+      if(res.success){
+        this.dropdownList = res.data;
+      }else{
+        this.dropdownList = [];
+      }
+    },(err) => {
+      this.utilsSrv.handleError(err);
+    })
   }
 
   expTypeChanged(value){
@@ -222,7 +213,7 @@ export class ProfileComponent implements OnInit {
   }
 
   updateProfile(){
-    if(this.fileList.length > 0){
+    if(this.fileList != undefined && this.fileList.length > 0){
       this.personalDetailsForm.value.country = "INDIA";
       let personalInfo = JSON.stringify(this.personalDetailsForm.value);
       let technicalInfo = JSON.stringify(this.technicalFormGroup.value);
@@ -238,24 +229,19 @@ export class ProfileComponent implements OnInit {
       formData.append('experienceInfo',experienceInfo);
       formData.append('userId',this.userId);
       
-      this.authSrv.uploadProfileDetails(formData).subscribe((res) => {
+      this.commonSrv.createProfile(formData).subscribe((res) => {
         if(res.success){
           this.isProfileSubmitted = true;
           this.getUserProfile();
           this.utilsSrv.showToastMsg("success","Profile","Submitted");
         }else{
-          this.utilsSrv.showToastMsg("warning",res.msg,null);
+          this.utilsSrv.showToastMsg("info",res.msg,null);
         }
       },(err) => {
         this.utilsSrv.handleError(err);
       })
     }else{
-      let postData = {
-        personalInfo: this.personalDetailsForm.value,
-        educationalInfo: this.educationalDetailsForm.value,
-        technicalInfo: this.technicalFormGroup.value,
-        experinceInfo: this.experienceForm.value
-      }
+      this.utilsSrv.showToastMsg("info","Please Select your resume",null);
     }
   }
 

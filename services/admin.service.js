@@ -9,6 +9,9 @@ const Company = require('../models/company');
 const Employee = require('../models/employee');
 const JobNotification = require('../models/jobNotification');
 
+// Formatters
+const commonFormatter = require('../formatters/common.formatter')
+
 var service = {
     acceptCompanyRequest: acceptCompanyRequest,
     viewCompanyRequests: viewCompanyRequests,
@@ -53,7 +56,7 @@ function viewCompanyRequests(req, res, next){
             res.json({success:false,msg:"something went wrong"});
         }else{
             if(result){
-                res.json({success:true,companies: result});
+                res.json({success:true,companies: commonFormatter.formatCompaniesData(result)});
             }else{
                 res.json({success:true,msg:"No requests"});
             }

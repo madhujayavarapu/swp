@@ -69,7 +69,7 @@ function authenticateUser(req, res, next){
                                 res.json({success:false,msg:"something went wrong"});
                             }else{
                                 if(result){
-                                    user.entityId = result[0]._id;
+                                    user.entityId = result._id;
                                     res.json({success: true, token: 'JWT '+token,user: commonFormatter.formatUser(user)});
                                 }else{
                                     res.json({success: false, msg: "Failed to get Entity Id"});

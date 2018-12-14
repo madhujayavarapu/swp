@@ -27,6 +27,20 @@ export class UtilsService {
     return obj;
   }
 
+  getMultiSelectDropdownSettings(){
+    let dropdownSettings = {
+      singleSelection: false,
+      idField: 'key',
+      textField: 'value',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 'All',
+      allowSearchFilter: true,
+      enableCheckAll: false
+    };
+    return dropdownSettings;
+  }
+
   formatResumeFilePath(fileName){
     return RESUMEURL+fileName;
   }
@@ -37,6 +51,9 @@ export class UtilsService {
       this.authSrv.logout();
       this.router.navigate(['/login']);
     }else{
+      if(err.error != undefined){
+        console.log(err.error);
+      }
       this.showToastMsg("warning","Error","Something Went Wrong..Please try again");
     }
   }
@@ -53,17 +70,7 @@ export class UtilsService {
     const oneWeek = oneDay*7;
     const month = oneWeek*4;
     const year = month*12;
-    
-    // if(milliseconds >= year){
-    //   var suffix = milliseconds < (year*2) ? "year ago" : "years ago";
-    //   return Math.floor(milliseconds/year)+" "+suffix;
-    // }else if(milliseconds >= month){
-    //   var suffix = milliseconds < (month*2) ? "month ago" : "months ago";
-    //   return Math.floor(milliseconds/year)+" "+suffix;
-    // }else if(milliseconds >= oneWeek){
-    //   var suffix = milliseconds < (oneWeek*2) ? "week ago" : "weeks ago";
-    //   return Math.floor(milliseconds/oneWeek)+" "+suffix; 
-    // }else 
+
     if(milliseconds >= oneDay){
       var suffix = milliseconds < (oneDay*2) ? "day ago" : "days ago";
       return Math.ceil(milliseconds/oneDay)+" "+suffix;

@@ -59,6 +59,11 @@ module.exports.addRequestForCompany = function(newCompany, callback){
     newCompany.save(callback);
 }
 
+module.exports.checkAnyCompanyRequestSentByUser = function(userId, callback){
+    var query = {createdBy: mongoose.Types.ObjectId(userId)};
+    Company.find(query,{isAccepted: 0, lastUpdated: 0, createdBy: 0},callback);
+}
+
 module.exports.getCompanyRequests = function(callback){
     var query = {isAccepted: false};
     Company.find(query,

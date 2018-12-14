@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { UtilsService } from '../../services/utils.service';
+import { AdminService } from '../../services/admin.service';
 
 @Component({
   selector: 'app-reqcompanieslist',
@@ -16,8 +17,8 @@ export class ReqcompanieslistComponent implements OnInit {
   constructor(
     private router: Router,
     private authSrv: AuthService,
-    private utilsSrv: UtilsService
-
+    private utilsSrv: UtilsService,
+    private adminSrv: AdminService
   ) { }
 
   ngOnInit() {
@@ -29,7 +30,7 @@ export class ReqcompanieslistComponent implements OnInit {
       userId: company.createdBy,
       companyId: company._id
     }
-    this.authSrv.acceptCompanyRequest(postData).subscribe((res) => {
+    this.adminSrv.acceptCompanyRequest(postData).subscribe((res) => {
       if(!!res.success){
         this.utilsSrv.showFlashMsg("Accepted Request", "success");
         this.router.navigate(['/profile']);
@@ -41,11 +42,19 @@ export class ReqcompanieslistComponent implements OnInit {
     })
   }
 
+  formatResponse(data){
+    data.forEach(element => {
+      element.about = JSON.parse(element.about);
+      element.address = JSON.parse(element.address);
+    });
+    return data;
+  }
+
   getRequests(){
-    this.authSrv.getCompanyRequests().subscribe((res) => {
-      console.log(res);
+    this.adminSrv.getCompanyRequests().subscribe((res) => {
+      
       if(!!res.success){
-        this.requests = res.companies;
+        this.requests = this.formatResponse(res.companies);
         this.noData = res.companies.length > 0 ? false : true;
       }else{
         this.noData = true;

@@ -19,6 +19,11 @@ import { ValidateService } from './services/validate.service';
 import { UtilsService } from './services/utils.service';
 import { LocationService } from './services/location.service';
 import { ConstantService } from './services/constant.service';
+import { AdminService } from './services/admin.service';
+import { CompanyAdminService } from './services/companyAdmin.service';
+import { UserService } from './services/user.service';
+import { CommonService } from './services/common.service';
+
 
 import { appRoutes } from './app.routes';
 
@@ -99,7 +104,11 @@ import { EditprofileComponent } from './components/editprofile/editprofile.compo
     ValidateService,
     UtilsService,
     LocationService,
-    ConstantService
+    ConstantService,
+    CommonService,
+    AdminService,
+    CompanyAdminService,
+    UserService
   ],
   bootstrap: [AppComponent]
 })

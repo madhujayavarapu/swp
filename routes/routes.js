@@ -20,6 +20,7 @@ router.post('/login', loginSrv.authenticateUser);
 
 // Normal User Routes
 router.post('/sendRequestForCompany', passport.authenticate('jwt',{session: false}), userSrv.sendRequestForCompany);
+router.post('/checkAnyCompanyRequestSentByUser', passport.authenticate('jwt',{session: false}), userSrv.checkAnyCompanyRequestSentByUser);
 router.post('/getAllJobsForUser', userSrv.getAllJobsForUser);
 router.post('/getJobsAppliedByUser', userSrv.getJobsAppliedByUser)
 router.post('/applyForJob', userSrv.applyForJob);
@@ -45,10 +46,11 @@ router.post('/deleteExperience', passport.authenticate('jwt',{session: false}), 
 router.post('/updateEducation', passport.authenticate('jwt',{session: false}), profileSrv.updateEducation);
 
 // Common Routes
-router.post('/getCountriesUnderIND', commonSrv.getCountriesUnderIND);
+router.get('/getCountriesUnderIND', commonSrv.getCountriesUnderIND);
 
 // constants
-router.post('/getJobRoles',constantSrv.getJobRoles);
-router.post('/getJobLocations', constantSrv.getJobLocations);
+router.get('/getJobRoles',constantSrv.getJobRoles);
+router.get('/getJobLocations', constantSrv.getJobLocations);
+router.get('/getTechnicalSkills',constantSrv.getTechnicalSkills);
 
 module.exports = router;

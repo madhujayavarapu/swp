@@ -3,7 +3,8 @@ const constants = require('../config/constant');
 
 var service = {
     getJobLocations: getJobLocations,
-    getJobRoles: getJobRoles
+    getJobRoles: getJobRoles,
+    getTechnicalSkills: getTechnicalSkills
 }
 module.exports = service;
 
@@ -13,4 +14,8 @@ function getJobRoles(req, res, next){
 
 function getJobLocations(req, res, next){
     res.json({success: true, data: constants.jobLocations});
+}
+
+function getTechnicalSkills(req, res, next){
+    res.json({success: true, data: constants.skills});
 }

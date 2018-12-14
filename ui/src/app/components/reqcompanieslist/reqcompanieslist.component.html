@@ -5,12 +5,12 @@
         <b>Requests For Companies</b>
       </h3>
       <ul class="list-group" *ngIf="!noData">
-        <li class="list-group-item list-group-item-info mb-2" *ngFor="let company of requests">
-          <h2>
-            {{company.companyName}}
-            <span class="date pull-right"><strong>Established Date: </strong>{{ company.establishedAt | date: 'MMM dd, yyyy' }}</span>
+        <li class="list-group-item list-group-item-default mb-2" *ngFor="let company of requests">
+          <h2 class="text-primary">
+            <b>{{company.name}}</b>
+            <span class="date pull-right text-muted"><strong>Established Date: </strong>{{ company.establishedAt | date: 'MMM dd, yyyy' }}</span>
           </h2>
-          <p>{{ company.about }}</p>
+          <p *ngFor="let x of company.about">{{x}}</p>
           <div class="row">
             <div class="col">
               <strong>Branches: </strong>{{ company.branches }}
@@ -26,6 +26,7 @@
               <button class="btn btn-danger btn-md pull-right"><strong>Reject</strong></button>
             </div>
           </div>
+          <p *ngFor="let a of company.address" class="text-secondary">{{a}}</p>
         </li>
       </ul>
       <ul class="list-group" *ngIf="noData">

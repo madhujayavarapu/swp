@@ -34,14 +34,14 @@ const UserDetails = require('../models/userDetails');
 router.post('/create', passport.authenticate('jwt',{session: false}), upload.single('resume'), (req, res, next) => {
     // console.log(req.file);
     if(req.file == undefined){
-       return res.json({success: false, message: "file format wrong"});
+       return res.json({success: false, msg: "file format wrong"});
     }else{
-        let skills = JSON.parse(JSON.stringify(req.body.technicalInfo));
+        let skills = JSON.parse(req.body.technicalInfo);
         skills = skills.keySkills;
 
-        let educationalInfo = JSON.parse(JSON.stringify(req.body.educationalInfo));
-        let personalInfo = JSON.parse(JSON.stringify(req.body.personalInfo));
-        let experience = JSON.parse(JSON.stringify(req.body.experienceInfo));
+        let educationalInfo = JSON.parse(req.body.educationalInfo);
+        let personalInfo = JSON.parse(req.body.personalInfo);
+        let experience = JSON.parse(req.body.experienceInfo);
         let fileName = req.file.path.split('/');
         fileName = fileName.slice(-1).join();
 

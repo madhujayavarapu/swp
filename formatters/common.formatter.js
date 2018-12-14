@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 var service = {
     formatUser: formatUser,
     generateResponse: generateResponse,
-    getAvailableJobsForUser: getAvailableJobsForUser
+    getAvailableJobsForUser: getAvailableJobsForUser,
+    formatCompaniesData: formatCompaniesData
 }
 
 module.exports = service;
@@ -44,4 +45,12 @@ function getAvailableJobsForUser(jobs, appliedJobIds){
         }
     });
     return AvailableJobs;
+}
+
+function formatCompaniesData(data){
+    data.forEach(record => {
+        record.about = JSON.parse(record.about);
+        record.address = JSON.parse(record.address);
+    })
+    return data;
 }

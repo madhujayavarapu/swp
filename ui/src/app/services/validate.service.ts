@@ -68,8 +68,9 @@ export class ValidateService {
   }
 
   validateCompanyRequest(company): boolean{
-    if(this.isEmpty(company.companyName) || this.isEmpty(company.website) || this.isEmpty(company.about) || this.isEmpty(company.createdBy)
-      || !this.checkArray(company.awards) || !this.checkArray(company.branches) || !this.validateUrl(company.website)){
+    if(this.isEmpty(company.name) || this.isEmpty(company.website) || !this.checkArray(JSON.parse(company.about)) || this.isEmpty(company.createdBy)
+      || !this.checkArray(company.awards) || !this.checkArray(company.branches) || !this.validateUrl(company.website)
+    || !this.checkArray(JSON.parse(company.address))){
       return false;
     }
     return true;

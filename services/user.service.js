@@ -13,6 +13,7 @@ const commonFormatter = require('../formatters/common.formatter');
 
 var service = {
     sendRequestForCompany: sendRequestForCompany,
+    checkAnyCompanyRequestSentByUser: checkAnyCompanyRequestSentByUser,
     getAllJobsForUser: getAllJobsForUser,
     applyForJob: applyForJob,
     getJobsAppliedByUser: getJobsAppliedByUser
@@ -46,6 +47,21 @@ function sendRequestForCompany(req, res, next){
                 res.json({success: true, msg: "Failed to Send request"});
             }
         } 
+    })
+}
+
+// This function will check if any company request sent by user earlier.
+function checkAnyCompanyRequestSentByUser(req, res, next){
+    Company.checkAnyCompanyRequestSentByUser(req.body.userId, (err, isExist) => {
+        if(err){
+            res.json({success: false, msg: "Something went wrong", error: err});
+        }else{
+            if(isExist){
+                res.json({success: true, msg: "User already sent a request", data:isExist});
+            }else{
+                res.json({success: false, msg: "No Requests made by user"});
+            }
+        }
     })
 }
 

@@ -20,7 +20,11 @@ export class ConstantService {
   }
 
   getJobLocations(){
-    return this.http.get(URL+"constant/getJobLocations",{headers: this.authService.getHeaders(false)}).pipe((map((res) => res.json())));    
+    return this.http.get(URL+"getJobLocations",{headers: this.authService.getHeaders(false)}).pipe((map((res) => res.json())));    
+  }
+
+  getTechnicalSkills(){
+    return this.http.get(URL+"getTechnicalSkills",{headers: this.authService.getHeaders(false)}).pipe((map((res) => res.json())));        
   }
 
 }

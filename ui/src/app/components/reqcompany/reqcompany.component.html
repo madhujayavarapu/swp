@@ -1,38 +1,68 @@
-<div class="row">
-  <div class="col-md-3"></div>
-  <div class="col-md-6 mb-4">
+<div class="row" *ngIf="noPreviousRequests">
+  <div class="col-md-1"></div>
+  <div class="col-md-10 col-offset-2 mb-4">
       <div class="card" style="margin-top:10px">
         <div class="card-body">
           <form (submit)="sendRequest()">
             <h4 class="text-center font-up font-bold deep-orange-text py-4">Request for Company</h4>
-            <div class="md-form">
-              <i class="fa fa-user prefix grey-text"></i>
-              <input type="text" autocomplete="off" name="companyName" [(ngModel)]="companyName" placeholder="Enter Company Name" class="form-control">
-            </div>
-            <div class="md-form">
-              <i class="fa fa-lock prefix grey-text"></i>
-              <input type="text" name="website" [(ngModel)]="website" placeholder="Enter Website URL" class="form-control">
+
+            <!-- Company Name -->
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Enter Company Name" autocomplete="off" name="companyName" [(ngModel)]="companyName" required>
+            </mat-form-field><br/><br/>
+
+            <!-- Branches -->
+            <div class="example-full-width">
+              <ng-multiselect-dropdown
+                [placeholder]="'Select Branches'"
+                [data]="locations"
+                name = "branches"
+                [(ngModel)] = "branches"
+                [settings]="dropdownSettings"
+              ></ng-multiselect-dropdown>
+            </div><br/>
+
+            <!-- Awards -->
+            <div class="row" *ngFor="let x of awards; let i = index; let last = last;">
+              <div class="col-md-10">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Enter Award {{i+1}}" [disabled] = "!last" name="{{x.name}}" [(ngModel)]="x.award">
+                </mat-form-field>
+              </div>
+              <div class="col-md-2">
+                <button type="button" class="btn btn-primary p-2" *ngIf="last" (click)="addAwardTextFiled()"><i class="fas fa-plus"></i></button>
+                <button type="button" class="btn btn-danger p-2" *ngIf="last && i!= 0" (click)="popAwardTextFiled()"><i class="fas fa-minus"></i></button>                
+              </div>
             </div>
 
-            <div class="md-form">
-              <i class="fas fa-code-branch prefix grey-text"></i>
-              <input type="text" name="branch" [(ngModel)]="branch" placeholder="Enter Branch" class="form-control">
-              <i class="fas fa-plus btn-primary btn-sm pull-right" (click)="addBranchInput()"></i>
-            </div>
-            <div class="md-form">
-              <i class="fas fa-award prefix grey-text"></i>
-              <input type="text" name="award" [(ngModel)]="award" placeholder="Enter Awards if any" class="form-control">
+            <div class="row">
+              <div class="col-md-8">
+                <!-- Webiste -->
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Enter Company Webiste" autocomplete="off" name="website" [(ngModel)]="website" required>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4">
+                <!-- Established Date -->
+                <mat-form-field color="accent" class="example-full-width">
+                  <input matInput [max]="maxDate" [matDatepicker]="picker" name="establishedAt" [(ngModel)]="establishedAt" placeholder="Established Date">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker disabled="false"></mat-datepicker>
+                </mat-form-field>
+              </div>
             </div>
 
-            <div class="md-form">
-                <i class="fas fa-font prefix grey-text"></i>
-                <textarea name="about" [(ngModel)]="about" rows="3" placeholder="Write something about you company" class="form-control"></textarea>
-            </div>
-            <div class="md-form">
-              <i class="fas fa-building prefix grey-text"></i>
-              <!-- <i class="fas fa-address-card prefix grey-text"></i> -->
-              <textarea name="address" [(ngModel)]="address" rows="5" placeholder="Address" class="form-control"></textarea>
-            </div>
+            <!-- Address -->
+            <mat-form-field class="example-full-width">
+              <textarea matInput placeholder="Address" rows="4" name="address" [(ngModel)]="address"></textarea>
+            </mat-form-field><br/>
+
+            <!-- About Company -->
+            <mat-form-field class="example-full-width">
+              <textarea matInput placeholder="Write something about you company" rows="3" name="about" [(ngModel)]="about"></textarea>
+            </mat-form-field><br/>
+
+            <!-- Submit -->
             <div class="text-center">
               <button type="submit" class="btn btn-deep-orange">Send Request</button>
             </div>
@@ -40,4 +70,7 @@
         </div>
       </div>
     </div>
+</div>
+<div class="row" *ngIf="!noPreviousRequests">
+  <h4 class="text-info">You already sent a request. Please wait for response</h4>
 </div>

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { UtilsService } from '../../services/utils.service';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { CommonService } from '../../services/common.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-findjob',
@@ -17,11 +19,13 @@ export class FindjobComponent implements OnInit {
   constructor(
     private utilsSrv: UtilsService,
     private authSrv: AuthService,
+    private userSrv: UserService,
+    private commonSrv: CommonService,
     private router: Router
   ) { }
 
   ngOnInit() {
-    this.getAvailableJobs();
+    // this.getAvailableJobs();
     this.checkProfileExists();
   }
   currentDate = new Date();
@@ -30,7 +34,7 @@ export class FindjobComponent implements OnInit {
     let postData = {
       userId : this.authSrv.getDetailsOfUser('userId')
     }
-    this.authSrv.getAvailableJobs(postData).subscribe((res) => {
+    this.userSrv.findJobsForUser(postData).subscribe((res) => {
       if(res.success){
         this.jobsList = res.data;
         this.data = this.jobsList.length == 0 ? false : true;
@@ -48,7 +52,7 @@ export class FindjobComponent implements OnInit {
     let postData = {
       userId: this.authSrv.getDetailsOfUser('userId')
     }
-    this.authSrv.getProfileData(postData).subscribe((res) => {
+    this.commonSrv.getUserProfile(postData).subscribe((res) => {
       if(res.success){
         if(res.data.length == 0){
           this.utilsSrv.showToastMsg("warning","You Can't Apply For Jobs","Please Update Profile First");
@@ -56,6 +60,7 @@ export class FindjobComponent implements OnInit {
           this.canApply = false;
         }else{
           this.canApply = true;
+          this.getAvailableJobs();
         }
       }else{
         this.utilsSrv.showToastMsg("warning",res.msg,"Please Update Profile First");
@@ -73,7 +78,7 @@ export class FindjobComponent implements OnInit {
       jobId: company._id
     }
     if(this.canApply){
-      this.authSrv.applyForJob(postData).subscribe((res) => {
+      this.userSrv.applyForJob(postData).subscribe((res) => {
         if(res.success){
           this.utilsSrv.showToastMsg("success","Apply for Job", res.msg);
           this.getAvailableJobs();

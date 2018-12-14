@@ -31,8 +31,8 @@
             <div class="col-md-4">
               <mat-form-field class="example-full-width">
                 <mat-select placeholder="State" formControlName="state" name="state">
-                  <mat-option *ngFor="let district of districts" [value]="district.abbr">
-                    {{district.name}}
+                  <mat-option *ngFor="let district of districts" [value]="district.key">
+                    {{district.value}}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
@@ -212,10 +212,6 @@
               formControlName="keySkills"
               [settings]="dropdownSettings"
               ></ng-multiselect-dropdown>
-              <!-- (onSelect)="onItemSelect($event)"
-              (onSelectAll)="onSelectAll($event)"
-            
-            </ng-multiselect-dropdown> -->
           </div><br/>
           <p style="color:red">*Add projects and Certificates also here..</p>
           <div>

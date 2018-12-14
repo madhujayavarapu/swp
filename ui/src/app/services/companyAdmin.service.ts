@@ -8,14 +8,15 @@ import { AuthService } from './auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class LocationService {
+export class CompanyAdminService {
 
   constructor(
     private http: Http,
-    private authService: AuthService
+    private authSrv: AuthService
   ) { }
 
-  getCountriesListInInd(): Observable<any>{
-    return this.http.get(URL+"getCountriesUnderIND",{headers: this.authService.getHeaders(true)}).pipe((map((res) => res.json())));
+  sentCompanyRequest(requestData): Observable<any>{
+    return this.http.post(URL+"users/startupRequest",requestData,{headers: this.authSrv.getHeaders(true)}).pipe((map((res) => res.json())));
   }
+
 }

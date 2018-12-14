@@ -29,5 +29,5 @@ function getAllJobs(req, res, next){
 }
 
 function getCountriesUnderIND(req, res, next){
-    
+    res.json({success:true, data: [{key: "Andhra Pradesh", value: "Andhra Pradesh"}]});
 }
