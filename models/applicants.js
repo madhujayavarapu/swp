@@ -12,20 +12,20 @@ const ApplicantsSchema = mongoose.Schema({
 
 const Applicants  = module.exports = mongoose.model("Applicants",ApplicantsSchema);
 
-var dbOperations = {
-    addApplicant: addApplicant,
-    getApplicantsForJob: getApplicantsForJob,
-    getAllJobsAppliedByUser: getAllJobsAppliedByUser,
-    getAllJobIdsAppliedByUser: getAllJobIdsAppliedByUser,
-    rejectApplicant: rejectApplicant
-}
-module.exports = dbOperations;
+// var dbOperations = {
+//     addApplicant: addApplicant,
+//     getApplicantsForJob: getApplicantsForJob,
+//     getAllJobsAppliedByUser: getAllJobsAppliedByUser,
+//     getAllJobIdsAppliedByUser: getAllJobIdsAppliedByUser,
+//     rejectApplicant: rejectApplicant
+// }
+// module.exports = dbOperations;
 
-function addApplicant(newApplicant, callback){
+module.exports.addApplicant = function(newApplicant, callback){
     newApplicant.save(callback);
 }
 
-function getApplicantsForJob(jobId, callback){
+module.exports.getApplicantsForJob = function(jobId, callback){
     var query = {jobId: mongoose.Types.ObjectId(jobId),"status": 1};
     Applicants.aggregate([
         {$match: query},
@@ -34,7 +34,7 @@ function getApplicantsForJob(jobId, callback){
     ]).exec(callback);
 }
 // Change collection from user to userdetails
-function getAllJobsAppliedByUser(userId, callback){
+module.exports.getAllJobsAppliedByUser = function(userId, callback){
     var query = {userId: mongoose.Types.ObjectId(userId)};
     Applicants.aggregate([
         {$match: query},
@@ -56,12 +56,12 @@ function getAllJobsAppliedByUser(userId, callback){
         {$unwind :"$jobs"}
     ]).exec(callback);
 }
-function getAllJobIdsAppliedByUser(userId, callback){
+module.exports.getAllJobIdsAppliedByUser = function(userId, callback){
     var query = {userId: mongoose.Types.ObjectId(userId)};
     Applicants.find(query, {_id:0,jobId:1},callback);
 }
 
-function rejectApplicant(applicantId, callback){
+module.exports.rejectApplicant = function(applicantId, callback){
     var query = {"_id": mongoose.Types.ObjectId(applicantId)};
     Applicants.findOneAndUpdate(query, {$set: {"status": 2}}, callback);
 }

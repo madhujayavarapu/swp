@@ -169,4 +169,8 @@ body{
     font-size: 0.75em;
     /* margin-top: 0; */
     width: 100%;
-  }
+}
+.job-details{
+    font-size: 15px;
+    font-weight: 400;
+}

@@ -22,12 +22,12 @@
               <i class="fas fa-arrow-alt-circle-right prefix grey-text"></i>
               <select class="form-control dropdown" name="jobType" [(ngModel)]="jobType">
                 <option value="-1">Select Job Type</option>
-                <option value="full">Full Time</option>
-                <option value="internship">Internship</option>
+                <option value="Full Time">Full Time</option>
+                <option value="Internship">Internship</option>
               </select>
             </div>
             <!-- Duration -->
-            <div class="md-form" *ngIf="jobType=='internship'">
+            <div class="md-form" *ngIf="jobType=='Internship'">
               <i class="fas fa-business-time prefix grey-text"></i>
               <select class="form-control dropdown" name="duration" [(ngModel)]="duration">
                 <option value="-1">Select Internship Duration</option>
