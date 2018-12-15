@@ -3,7 +3,7 @@
     <div class="card-body">
       <ul class="list-group" *ngIf="data">
         <div class="row">
-          <div class="col-md-2">
+          <!-- <div class="col-md-2">
             <div class="card filter-container">
               <p>Filters will come here</p>
               <div class="card-content">
@@ -13,13 +13,13 @@
                 </form>
               </div>
             </div>
-          </div>
-          <div class="col-md-5">
+          </div> -->
+          <div class="col-md-6">
             <!-- <li class="list-group-item list-group-item-default mb-2">
               <div class="container"> -->
                 <p class="text-danger">*Note: Click on the card to see full detials about that job</p>
                 <div class="card mb-4" *ngFor="let company of jobsList; let i = index">
-                  <div class="card-body active" (click)="viewJobDetails(company)">
+                  <div class="card-body" [class.activeCard]="(company.role == detailsForJob.role && company.type == detailsForJob.type)" (click)="viewJobDetails(company)">
                     <h4 class="text-primary">
                       <strong>{{ company.role }}/{{ company.type }}</strong>
                       <small class="pull-right postedAt text-muted">Posted :- {{ utilsSrv.getDiffBwDates(company.postedAt) }}</small>
@@ -52,7 +52,7 @@
               <!-- </div>
             </li> -->
           </div>
-          <div class="col-md-5">
+          <div class="col-md-6 mt-2">
             <div class="card">
               <div class="card-body">
                 <h4 class="text-primary">

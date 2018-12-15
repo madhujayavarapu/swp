@@ -157,8 +157,8 @@ export class ProfileComponent implements OnInit {
       resume: ""
     })
     this.expType = [
-      {value: 'fresher', name: 'Fresher'},
-      {value: 'experienced', name: 'Experienced'}
+      {value: 'Fresher', name: 'Fresher'},
+      {value: 'Experienced', name: 'Experienced'}
     ]
   }
 
@@ -175,7 +175,7 @@ export class ProfileComponent implements OnInit {
   }
 
   expTypeChanged(value){
-    this.showExperienceForm = value == 'experienced' ? true : false;    
+    this.showExperienceForm = value == 'Experienced' ? true : false;    
   }
 
   uploadResume(event){
@@ -212,12 +212,31 @@ export class ProfileComponent implements OnInit {
     return educationInfo;
   }
 
+  formatExperienceDetailsToPostdata(data){
+    var obj = {};
+    if(data.expType == "Experienced"){
+      obj["expType"] = "Experienced";
+      let exp = {
+        _id: 1,
+        companyName: data.companyName,
+        role: data.role,
+        duration: data.companyDuration
+      };
+      obj["experiences"] = [];
+      obj["experiences"].push(exp);
+    }else{
+      obj["expType"] = "Fresher";
+      obj["experiences"] = [];
+    }
+    return obj;
+  }
+
   updateProfile(){
     if(this.fileList != undefined && this.fileList.length > 0){
       this.personalDetailsForm.value.country = "INDIA";
       let personalInfo = JSON.stringify(this.personalDetailsForm.value);
       let technicalInfo = JSON.stringify(this.technicalFormGroup.value);
-      let experienceInfo = JSON.stringify(this.experienceForm.value);
+      let experienceInfo = JSON.stringify(this.formatExperienceDetailsToPostdata(this.experienceForm.value));
       let educationInfo = JSON.stringify(this.formatEducationDetails(this.educationalDetailsForm.value));
 
       const file: File = this.fileList[0];

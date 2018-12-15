@@ -86,6 +86,7 @@ export class FindjobComponent implements OnInit {
 
   viewJobDetails(job){
     this.detailsForJob = job;
+    window.scrollTo(0, 0);
   }
 
   applyForJob(job){

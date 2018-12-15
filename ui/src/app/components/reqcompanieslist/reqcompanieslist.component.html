@@ -5,29 +5,43 @@
         <b>Requests For Companies</b>
       </h3>
       <ul class="list-group" *ngIf="!noData">
-        <li class="list-group-item list-group-item-default mb-2" *ngFor="let company of requests">
-          <h2 class="text-primary">
-            <b>{{company.name}}</b>
-            <span class="date pull-right text-muted"><strong>Established Date: </strong>{{ company.establishedAt | date: 'MMM dd, yyyy' }}</span>
-          </h2>
-          <p *ngFor="let x of company.about">{{x}}</p>
-          <div class="row">
-            <div class="col">
-              <strong>Branches: </strong>{{ company.branches }}
-            </div>
-            <div class="col">
-              <strong>Awards: </strong>{{ company.awards }}
-            </div>
-            <div class="col">
-              <strong>Website: </strong><a href="http://{{company.website}}" target="blank">{{ company.website }}</a>
-            </div>
-            <div class="col">
+        <div class="row">
+          <div class="col-md-4 d-flex align-items-stretch" *ngFor="let company of requests">
+            <li class="list-group-item list-group-item-default mb-2">
+              <h2 class="text-primary">
+                <strong>{{company.name}}</strong>
+                <span class="date pull-right text-muted" style="font-size:14px;"><strong>Established Date: </strong>{{ company.establishedAt | date: 'MMM dd, yyyy' }}</span>
+              </h2>
+              <p *ngFor="let x of company.about">{{x}}</p>
+              <dl class="row">
+                <dt class="col-sm-4">Website</dt>
+                <dd class="col-sm-8">
+                  <a href="http://{{company.website}}" target="blank">{{ company.website }}</a>
+                </dd>
+                <dt class="col-sm-4">Branches</dt>
+                <dd class="col-sm-8">
+                  <span *ngFor="let branch of company.branches;let first=first;let last = last">
+                    {{branch}}
+                  </span>
+                </dd>
+                <dt class="col-sm-4">Awards</dt>
+                <dd class="col-sm-8">
+                  <span *ngFor="let award of company.awards;let first=first;let last = last">
+                    {{award}}
+                  </span>
+                </dd>
+                <dt class="col-sm-4">Address</dt>
+                <dd class="col-sm-8">
+                  <span *ngFor="let a of company.address;let first=first;let last = last">
+                    {{a}}<br/>
+                  </span>
+                </dd>
+              </dl>
               <button class="btn btn-success btn-md pull-right" (click)="acceptRequest(company)"><strong>Accept</strong></button>
               <button class="btn btn-danger btn-md pull-right"><strong>Reject</strong></button>
-            </div>
+            </li>
           </div>
-          <p *ngFor="let a of company.address" class="text-secondary">{{a}}</p>
-        </li>
+        </div>
       </ul>
       <ul class="list-group" *ngIf="noData">
         <li class="list-group-item">

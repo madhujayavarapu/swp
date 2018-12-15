@@ -122,13 +122,13 @@ export class EditprofileComponent implements OnInit {
     }else if(this.data.type == "Experience"){
       this.showExperienceForm = true;
       this.expType = this.data.data.expType;
-      this.isExperienced = this.expType == "experienced" ? true : false;
-      if(this.expType == "fresher" && this.expType != undefined){
+      this.isExperienced = this.expType == "Experienced" ? true : false;
+      if(this.expType == "Fresher" && this.expType != undefined){
         this.firstExperience = true;
         this.companyDuration = "";
         this.companyName = "";
         this.role = "";
-      }else if(this.expType == "experienced" || this.expType == undefined){
+      }else if(this.expType == "Experienced" || this.expType == undefined){
         this.firstExperience = false;
         this.companyName = this.data.data.companyName;
         this.role = this.data.data.role;
@@ -191,9 +191,9 @@ export class EditprofileComponent implements OnInit {
   }
 
   changedExpType(){
-    this.isExperienced = this.expType == "experienced" ? true : false;
+    this.isExperienced = this.expType == "Experienced" ? true : false;
     this.companyDuration = this.isExperienced ? "-1" : "";
-    if(this.expType == "fresher"){
+    if(this.expType == "Fresher"){
       this.companyDuration = "";
       this.companyName = "";
       this.role = "";

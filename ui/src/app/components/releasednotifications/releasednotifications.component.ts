@@ -62,6 +62,7 @@ export class ReleasednotificationsComponent implements OnInit {
   showDetailsOfPost(post){
     this.showDetails = true;
     this.detailsForJob = post;
+    window.scrollTo(0, 0);
   }
 
   deletePost(company){

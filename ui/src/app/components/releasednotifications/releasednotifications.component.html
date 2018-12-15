@@ -10,13 +10,13 @@
   </h3>
   <ul class="list-group" *ngIf="data">
     <div class="row">
-      <div class="col-md-2">
+      <!-- <div class="col-md-2">
         Filter
-      </div>
-      <div class="col-md-6 jobs-container">
+      </div> -->
+      <div class="col-md-6">
         <!-- <div class="row">
           <div class="col-md-10"> -->
-            <li *ngFor="let company of notifications; let i = index" class="list-group-item list-group-item-default mb-2 mt-2">
+            <li *ngFor="let company of notifications; let i = index" class="list-group-item list-group-item-default mb-2 mt-2" [class.activeCard]="(detailsForJob != undefined && company.role == detailsForJob.role && company.type == detailsForJob.type)">
               <h4 (click)="showDetailsOfPost(company)" style="cursor: pointer">
                 {{company.role}}
                 <span class="pull-right postedAt text-secondary">
@@ -27,7 +27,7 @@
           <!-- </div>
         </div> -->
       </div>
-      <div class="col-md-4">
+      <div class="col-md-6">
         <div class="vl p-2" *ngIf="!showDetails">
           <p class="text-muted">Details About Post Will Display here</p>
         </div>

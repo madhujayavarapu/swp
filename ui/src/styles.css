@@ -180,3 +180,8 @@ body{
     overflow:auto;
     background-color:beige
 }
+.activeCard{
+    /* fuchsia color */
+    border: 1px solid blueviolet;
+    border-left: 3px solid blueviolet;
+}

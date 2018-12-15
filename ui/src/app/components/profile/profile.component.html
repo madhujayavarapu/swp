@@ -401,14 +401,14 @@
           <div class="card">
             <div class="card-body">
               <h3><b>Experience:</b>
-                <span *ngIf="(profileData.experience.expType == 'fresher' || profileData.experience.experiences.length == 0)" class="pull-right" (click)="editData(profileData.experience, 'Experience')"><i class="fas fa-edit"></i></span>
+                <span *ngIf="(profileData.experience.expType == 'Fresher' || profileData.experience.experiences.length == 0)" class="pull-right" (click)="editData(profileData.experience, 'Experience')"><i class="fas fa-edit"></i></span>
               </h3>
               <div *ngIf="profileData.experience != null">
-                <div *ngIf="(profileData.experience.expType == 'fresher' || profileData.experience.experiences.length == 0)">
+                <div *ngIf="(profileData.experience.expType == 'Fresher' || profileData.experience.experiences.length == 0)">
                   No Experience.. 
                   Fresher
                 </div>
-                <div *ngIf="(profileData.experience.expType == 'experienced' && profileData.experience.experiences.length > 0)">
+                <div *ngIf="(profileData.experience.expType == 'Experienced' && profileData.experience.experiences.length > 0)">
                   <!-- Experienced -->
                   <mat-expansion-panel *ngFor="let exp of profileData.experience.experiences">
                     <mat-expansion-panel-header>

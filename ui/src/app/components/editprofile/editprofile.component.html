@@ -90,8 +90,8 @@
           <form *ngIf="data.type == 'Experience' && firstExperience">
             <div class="md-form">
               <select class="form-control dropdown" name="expType" (change)="changedExpType()" [(ngModel)]="expType">
-                <option value="fresher">Fresher</option>
-                <option value="experienced">Experienced</option>
+                <option value="Fresher">Fresher</option>
+                <option value="Experienced">Experienced</option>
               </select>
             </div>
             <div *ngIf="isExperienced">

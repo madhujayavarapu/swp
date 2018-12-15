@@ -46,12 +46,12 @@ export class LoginComponent implements OnInit {
               this.router.navigate(['/profile']);
             }
           }else{
-            this.utilsSrv.showToastMsg("info","Result",res.msg);
-            this.utilsSrv.reloadCurrentState()
+            this.utilsSrv.showToastMsg("warning","Login Result",res.msg);
+            // this.utilsSrv.reloadCurrentState()
           }
         },(err) => {
-          this.utilsSrv.showToastMsg("info","error","Error");
-          this.utilsSrv.reloadCurrentState();
+          this.utilsSrv.showToastMsg("warning","error",err.msg);
+          // this.utilsSrv.reloadCurrentState();
         })
     }else{
       this.utilsSrv.showToastMsg("warning","Fill Details First",null);
