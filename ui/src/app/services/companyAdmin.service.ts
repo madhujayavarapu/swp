@@ -23,4 +23,12 @@ export class CompanyAdminService {
     return this.http.post(URL+"getCompanyBranches",postData,{headers: this.authSrv.getHeaders(true)}).pipe((map((res) => res.json())));    
   }
 
+  releasedJobNotifications(postData): Observable<any>{
+    return this.http.post(URL+"getAllJobsPostedByCompany",postData,{headers: this.authSrv.getHeaders(true)}).pipe((map((res) => res.json())));    
+  }
+
+  getApplicantsForjob(postData): Observable<any>{
+    return this.http.post(URL+"getApplicantsForJob",postData,{headers: this.authSrv.getHeaders(true)}).pipe((map((res) => res.json())));        
+  }
+
 }

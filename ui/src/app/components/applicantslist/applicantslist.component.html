@@ -1,39 +1,3 @@
-<!-- <div class="container-fluid" style="margin-top: 10px;">
-  <div class="card">
-    <div class="card-header bg-default">
-      <h4>
-        <strong style="color:white">Applicants List</strong>
-        <a class="btn btn-primary btn-md pull-right" href="jobs/released">Released Notifications</a>
-      </h4>
-    </div>
-    <div class="card-body">
-      <ul class="list-group" *ngIf="data">
-        <div id="loader" [ngStyle]="{'display': throbber}"></div>
-        <li class="list-group-item list-group-item-default mb-2" *ngFor="let applicant of applicantsList">
-          <h4>
-            <b>
-              {{ applicant.userinfo[0].username }}
-            </b>
-            <button class="btn btn-info btn-md pull-right" (click)="viewProfile(applicant)">View Profile</button>
-            <button class="btn btn-warning btn-md pull-right" (click)="rejectApplicant(applicant)">Reject</button>
-            <button class="btn btn-success btn-md pull-right" (click)="openDialog(applicant)">Accept</button>
-          </h4>
-          <div class="row">
-            <div class="col"><strong>Experienced/Fresher</strong> Fresher</div>
-            <div class="col"><strong>Skills</strong> skills</div>   
-            <div class="col"><strong>Contact At: </strong> contact Details<br/> contact details 2</div>   
-            <div class="col"><strong>View Resume</strong> Resume Link</div>                                 
-          </div>
-        </li>
-      </ul>
-      <ul class="list-group" *ngIf="!data">
-        <li class="list-group-item list-group-item-default mb-2">
-          <p class="center">No Data</p>
-        </li>
-      </ul>
-    </div>
-  </div>
-</div> -->
 <div class="container-fluid" style="background-color:white;height:100vh">
   <nav aria-label="breadcrumb" style="padding-top:15px">
     <ol class="breadcrumb">
@@ -42,7 +6,7 @@
       <li class="breadcrumb-item active" aria-current="page">Applicants</li>
     </ol>
   </nav>
-  <h3 class="p-2 mb-4 border-bottom">
+  <h3 class="mt-2 mb-2 border-bottom">
      <b>Applicants List</b>
   </h3>
   <div class="row" *ngIf="data">
@@ -51,50 +15,50 @@
       <div class="card flex-md-row mb-4 shadow-md h-md-250">
           <div class="card-body d-flex flex-column align-items-start">
             <h4 class="d-inline-block text-primary mb-0">
-              <span *ngIf="applicant.userinfo[0]!= undefined && applicant.userinfo[0].personalDetails != undefined && applicant.userinfo[0].personalDetails.firstName != undefined">
-                <strong>{{ applicant.userinfo[0].personalDetails.firstName }}
-                  <span *ngIf="applicant.userinfo[0].personalDetails.lastName != undefined"> {{ applicant.userinfo[0].personalDetails.lastName }}</span>
+              <span *ngIf="applicant.firstName != undefined">
+                <strong>{{ applicant.firstName }}
+                  <span *ngIf="applicant.lastName != undefined"> {{ applicant.lastName }}</span>
                 </strong>
               </span>
-              <span *ngIf="applicant.userinfo[0]== undefined || applicant.userinfo[0].personalDetails == undefined || applicant.userinfo[0].personalDetails.firstName == undefined">
-                <b>-</b>
+              <span *ngIf="applicant.firstName == undefined">
+                <b>{{applicant.username}}</b>
               </span>
               </h4>
-            <h5 *ngIf="applicant.userinfo[0] != undefined && applicant.userinfo[0].experience != undefined && applicant.userinfo[0].experience.expType == 'fresher'" class="mb-2 text-warning">
+            <h5 *ngIf="applicant.experience != undefined && applicant.experience.expType == 'fresher'" class="mb-2 text-warning">
               Fresher
             </h5>
-            <div *ngIf="applicant.userinfo[0] != undefined && applicant.userinfo[0].experience != undefined && applicant.userinfo[0].experience.expType == 'experienced'">
+            <div *ngIf="applicant.experience != undefined && applicant.experience.expType == 'experienced'">
               <h5 class="mb-1 text-success">Experienced</h5>
-              <div class="mb-1 text-muted small"><b>Past Experience: </b> {{ getExperience(applicant.userinfo[0].experience.experiences) }}</div>
+              <div class="mb-1 text-muted small"><b>Past Experience: </b> {{ getExperience(applicant.experience.experiences) }}</div>
             </div>
-            <h5 *ngIf="applicant.userinfo[0] == undefined || applicant.userinfo[0].experience == undefined">
+            <h5 *ngIf="applicant.experience == undefined">
               <b>-</b>
             </h5>
             <p class="card-text mb-1"><b>Skills: </b>
-              <span *ngIf="applicant.userinfo[0] != undefined && applicant.userinfo[0].technicalSkills != undefined && applicant.userinfo[0].technicalSkills.length > 0">
-                <span *ngFor="let skill of applicant.userinfo[0].technicalSkills;let i=index;">
+              <span *ngIf="applicant.technicalSkills != undefined && applicant.technicalSkills.length > 0">
+                <span *ngFor="let skill of applicant.technicalSkills;let i=index;">
                   <span *ngIf="i==0">{{skill}}</span>
                   <span *ngIf="i!=0">, {{skill}}</span>
                 </span>
               </span>
-              <span *ngIf="applicant.userinfo[0] == undefined || applicant.userinfo[0].technicalSkills == undefined || applicant.userinfo[0].technicalSkills.length == 0">
+              <span *ngIf="applicant.technicalSkills == undefined || applicant.technicalSkills.length == 0">
                 <b>-</b>
               </span>
             </p>              
             <p class="card-text mb-1">
               <b>Contact Details:</b> <br/>
               <i class="fas fa-phone"></i> : 
-              <span *ngIf="applicant.userinfo[0]!= undefined && applicant.userinfo[0].personalDetails != undefined && applicant.userinfo[0].personalDetails.phone != undefined">{{ applicant.userinfo[0].personalDetails.phone }}</span>
-              <span *ngIf="applicant.userinfo[0]== undefined || applicant.userinfo[0].personalDetails == undefined || applicant.userinfo[0].personalDetails.phone == undefined"><b>-</b></span>
+              <span *ngIf="applicant.phone != undefined">{{ applicant.phone }}</span>
+              <span *ngIf="applicant.phone == undefined"><b>-</b></span>
               <br/>
               <i class="fas fa-envelope"></i> :
-              <span *ngIf="applicant.userinfo[0]!= undefined && applicant.userinfo[0].personalDetails != undefined && applicant.userinfo[0].personalDetails.mail != undefined">{{ applicant.userinfo[0].personalDetails.mail }}</span>
-              <span *ngIf="applicant.userinfo[0]== undefined || applicant.userinfo[0].personalDetails == undefined || applicant.userinfo[0].personalDetails.mail == undefined"><b>-</b></span>
+              <span *ngIf="applicant.mail != undefined">{{ applicant.mail }}</span>
+              <span *ngIf="applicant.mail == undefined"><b>-</b></span>
             </p>
-            <div *ngIf="applicant.userinfo[0] != undefined && applicant.userinfo[0].resume != undefined">
-              <a href="{{applicant.userinfo[0].resume}}" target="_blank" class="mb-2 text-info">View Resume</a>
+            <div *ngIf="applicant.resume != undefined">
+              <a href="{{applicant.resume}}" target="_blank" class="mb-2 text-info">View Resume</a>
             </div>
-            <div *ngIf="applicant.userinfo[0] == undefined || applicant.userinfo[0].resume == undefined">
+            <div *ngIf="applicant.resume == undefined">
               <b>-</b>
             </div>
             <div class="row">

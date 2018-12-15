@@ -12,15 +12,6 @@ const ApplicantsSchema = mongoose.Schema({
 
 const Applicants  = module.exports = mongoose.model("Applicants",ApplicantsSchema);
 
-// var dbOperations = {
-//     addApplicant: addApplicant,
-//     getApplicantsForJob: getApplicantsForJob,
-//     getAllJobsAppliedByUser: getAllJobsAppliedByUser,
-//     getAllJobIdsAppliedByUser: getAllJobIdsAppliedByUser,
-//     rejectApplicant: rejectApplicant
-// }
-// module.exports = dbOperations;
-
 module.exports.addApplicant = function(newApplicant, callback){
     newApplicant.save(callback);
 }
@@ -29,8 +20,20 @@ module.exports.getApplicantsForJob = function(jobId, callback){
     var query = {jobId: mongoose.Types.ObjectId(jobId),"status": 1};
     Applicants.aggregate([
         {$match: query},
-        {$lookup:{from:'users',localField:'userId',foreignField:'_id',as:'applicants'}},
-        {$project:{"applicants.username":1,"applicants.role":1}}
+        {$lookup:{from:'userdetails',localField:'userId',foreignField:'userId',as:'userInfo'}},
+        {$lookup: {from:'users',localField:'userId',foreignField:'_id',as: "login"}},
+        {$project:{
+            "userInfo.resume":1,
+            "userInfo.personalDetails.firstName":1,
+            "userInfo.personalDetails.lastName":1,
+            "userInfo.personalDetails.mail":1,
+            "userInfo.personalDetails.phone":1,
+            "userInfo.experience": 1, 
+            "userInfo.technicalSkills":1,
+            "login.username": 1,
+            "userId": 1
+            }
+        }
     ]).exec(callback);
 }
 // Change collection from user to userdetails

@@ -77,7 +77,7 @@
             <ng-multiselect-dropdown
             [name] = "keySkills"
             [placeholder]="'Key Skills'"
-            [data]="dropdownList"
+            [data]="skills"
             [(ngModel)] ="keySkills"
             [settings]="data.settings"
             ></ng-multiselect-dropdown>
@@ -188,6 +188,7 @@
             <div class="md-form">
               <input type="file" name="resume" [(ngModel)]="resume" accept=".docx,.pdf" (change)="fileChanged($event)" placeholder="Upload Resume">
             </div>
+            <p class="text-muted">*You can Upload Resume with .pdf, .doc, .docx extensions</p>
             <button class="btn btn-md btn-primary pull-right" (click)="uploadResume()">Update</button>
             <button class="btn btn-md btn-danger pull-right" (click)="close()">Close</button>
           </form>

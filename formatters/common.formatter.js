@@ -3,7 +3,8 @@ var service = {
     formatUser: formatUser,
     generateResponse: generateResponse,
     getAvailableJobsForUser: getAvailableJobsForUser,
-    formatCompaniesData: formatCompaniesData
+    formatCompaniesData: formatCompaniesData,
+    formatApplicantsInfo: formatApplicantsInfo
 }
 
 module.exports = service;
@@ -53,4 +54,22 @@ function formatCompaniesData(data){
         record.address = JSON.parse(record.address);
     })
     return data;
+}
+
+function formatApplicantsInfo(data){
+    var finalArr = [];
+    data.forEach(record => {
+        var obj = {};
+        obj.applicantId = record._id;
+        obj.username = record.login.username;
+        obj.resume = record.userInfo[0].resume;
+        obj.experience = record.userInfo[0].experience;
+        obj.firstName = record.userInfo[0].personalDetails.firstName;
+        obj.lastName = record.userInfo[0].personalDetails.lastName;
+        obj.mail = record.userInfo[0].personalDetails.mail;
+        obj.phone = record.userInfo[0].personalDetails.phone;
+        obj.technicalSkills = record.userInfo[0].technicalSkills;
+        finalArr.push(obj);
+    })
+    return finalArr;
 }

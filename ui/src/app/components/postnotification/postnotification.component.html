@@ -92,16 +92,17 @@
                 ></ng-multiselect-dropdown>
               </div>
             </div>
-            <!-- Contact Details -->
-            <div class="md-form">
-              <i class="fas fa-phone prefix grey-text"></i>
-              <input type="text" [(ngModel)]="contactDetails" name="contactDetails" class="forma-control" placeholder="Enter Contact Details">
-            </div>
             <!-- About -->
             <div class="md-form">
               <i class="fas fa-edit prefix grey-text"></i>
               <textarea name="about" [(ngModel)]="about" rows="3" placeholder="Write something about this job" class="form-control"></textarea>
             </div>
+            <!-- Contact Details -->
+            <div class="md-form">
+              <i class="fas fa-phone prefix grey-text"></i>
+              <input type="text" [(ngModel)]="contactDetails" name="contactDetails" class="forma-control" placeholder="Enter Contact Details">
+            </div>
+
             <div class="text-center">
               <button type="submit" (click)="postNotification()" class="btn btn-deep-orange">Post Notification</button>
             </div>

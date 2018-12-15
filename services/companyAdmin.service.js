@@ -9,6 +9,9 @@ const Employee = require('../models/employee');
 const Jobs = require('../models/jobNotification');
 const Applicants = require('../models/applicants');
 
+// Common Fomatter
+const commonFormatter = require('../formatters/common.formatter');
+
 var service = {
     postJobNotification: postJobNotification,
     getAllJobsPostedByCompany: getAllJobsPostedByCompany,
@@ -106,10 +109,10 @@ function getApplicantsForJob(req, res, next){
     let jobId = req.body.jobId;
     Applicants.getApplicantsForJob(jobId, (err, applicants) => {
         if(err){
-            res.json({success: false, msg: "Something Went Wrong"});
+            res.json({success: false, msg: "Something Went Wrong", error: err});
         }else{
             if(applicants){
-                res.json({success: true, data: applicants});
+                res.json({success: true, data: commonFormatter.formatApplicantsInfo(applicants)});
             }else{
                 res.json({success: false, msg: "Failed to retrieve applicants"});
             }

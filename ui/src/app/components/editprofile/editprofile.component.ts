@@ -5,6 +5,8 @@ import { AuthService } from '../../services/auth.service';
 import { UtilsService } from '../../services/utils.service';
 import { IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts } from 'angular-2-dropdown-multiselect';
 import { Router } from '@angular/router';
+import { CommonService } from '../../services/common.service';
+import { ConstantService } from '../../services/constant.service';
 
 export interface dataObject{
   type: String,
@@ -41,7 +43,7 @@ export class EditprofileComponent implements OnInit {
   pincode: String;
 
   // skills
-  dropdownList =  [];
+  skills =  [];
   keySkills: any[];
 
   // Experinece
@@ -69,6 +71,8 @@ export class EditprofileComponent implements OnInit {
   constructor(
     private authSrv: AuthService,
     private utilsSrv: UtilsService,
+    private commonSrv: CommonService,
+    private constantSrv: ConstantService,
     private router: Router,
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<EditprofileComponent>,
@@ -82,6 +86,16 @@ export class EditprofileComponent implements OnInit {
 
   close(): void {
     this.dialogRef.close();
+  }
+
+  getTechnicalSkills(){
+    this.constantSrv.getTechnicalSkills().subscribe((res) => {
+      if(res.success){
+        this.skills = res.data;
+      }else{
+        this.skills = [];
+      }
+    })
   }
 
   initData(){
@@ -103,24 +117,7 @@ export class EditprofileComponent implements OnInit {
       this.pincode = this.personalInfo["pincode"];
     }else if(this.data.type == "Skills"){
       this.showSkillsForm = true;
-      this.dropdownList = [
-        { id: 'C', name: 'C' },
-        { id: 'Java', name: 'Java' },
-        { id: 'C++', name: 'C++' },
-        { id: 'Python', name: 'Python' },
-        { id: 'Angular Js', name: 'Angular Js'},
-        { id: 'C#', name: 'C#'},
-        { id: 'Web Development', name: 'Web Development'},
-        { id: 'Angular 2', name: 'Angular 2'},
-        {id: 'Javascript', name: 'Javascript'},
-        {id: 'Angular 4',name:'Angular 4'},
-        {id: 'Angular 5',name: 'Angular 5'},
-        {id: 'Angular 6',name:'Angular 6'},
-        {id: 'NodeJs',name: 'NodeJs'},
-        {id: 'Ruby', name: 'Ruby'},
-        {id: 'MySQL', name:'MySQL'},
-        {id: 'MongoDB', name:'MongoDB'}
-      ];
+      this.getTechnicalSkills();
       this.keySkills = this.data.data;
     }else if(this.data.type == "Experience"){
       this.showExperienceForm = true;
@@ -177,12 +174,9 @@ export class EditprofileComponent implements OnInit {
           this.utilsSrv.showToastMsg("success", "Uploaded Resume",null);
           this.close();
         }else{
-          console.log("coming into false condition");
-          console.log(res);
           this.utilsSrv.showToastMsg("warning",res.msg,null);
         }
       },(err) => {
-        console.log("err",err);
         if(err.status == 401){
           this.utilsSrv.showToastMsg("warning","Please Login First",null);
           this.authSrv.logout();
@@ -235,8 +229,7 @@ export class EditprofileComponent implements OnInit {
       expId: this.data.data._id,
       exp: exp
     }
-    console.log(postData);
-    this.authSrv.updateExperience(postData).subscribe((res) => {
+    this.commonSrv.updateExperience(postData).subscribe((res) => {
       if(res.success){
         this.utilsSrv.showToastMsg("success", res.msg, null);
         this.close();
@@ -297,7 +290,7 @@ export class EditprofileComponent implements OnInit {
       postData = {};
     }
     
-    this.authSrv.updatePersonalDetails(postData).subscribe((res) => {
+    this.commonSrv.updateProfile(postData).subscribe((res) => {
       let css = res.success == true ? "success" : "warning";
       this.utilsSrv.showToastMsg(css, res.msg, null);
       if(res.success){
@@ -319,8 +312,7 @@ export class EditprofileComponent implements OnInit {
       userId: this.userId,
       experience: obj
     }
-    console.log(postData); 
-    this.authSrv.addExperienceToProfile(postData).subscribe((res) =>{
+    this.commonSrv.addExperienceToProfile(postData).subscribe((res) =>{
       if(res.success){
         this.utilsSrv.showToastMsg("success", res.msg, null);
         this.close();
@@ -349,9 +341,8 @@ export class EditprofileComponent implements OnInit {
       userId: this.userId,
       updatedDetails: updatedDetails,
       type: this.data.type
-    }
-    console.log(postData); 
-    this.authSrv.updateEducation(postData).subscribe((res) => {
+    } 
+    this.commonSrv.updateEducation(postData).subscribe((res) => {
       if(res.success){
         this.utilsSrv.showToastMsg("success", res.msg, null);
         this.close();

@@ -265,6 +265,8 @@
         <form [formGroup]="resumeForm">
           <ng-template matStepLabel>Resume</ng-template>
           <input type="file" formControlName="resume" accept=".docx,.pdf" (change)="uploadResume($event)" placeholder="Upload Resume">
+          <br/><br/>
+          <p class="text-muted">*You can Upload Resume with .pdf, .doc, .docx extensions</p>
           <div>
             <button class="btn btn-info btn-md pull-right" matStepperNext>Next</button>
             <button class="btn btn-default btn-md pull-right" matStepperPrevious>Back</button>

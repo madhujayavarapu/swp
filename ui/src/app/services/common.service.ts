@@ -27,4 +27,28 @@ export class CommonService {
     return this.http.post(URL+"profile/create",formData, {headers: headers}).pipe((map((res) => res.json())));          
   }
 
+  updateProfile(postData): Observable<any>{
+    return this.http.post(URL+"updateProfile", postData, {headers: this.authSrv.getHeaders(true)}).pipe((map((res) => res.json())));          
+  }
+
+  updateExperience(postData): Observable<any>{
+    return this.http.post(URL+"updateExperience", postData, {headers: this.authSrv.getHeaders(true)}).pipe((map((res) => res.json())));              
+  }
+
+  addExperienceToProfile(postData): Observable<any>{
+    return this.http.post(URL+"addExperience", postData, {headers: this.authSrv.getHeaders(true)}).pipe((map((res) => res.json())));                  
+  }
+
+  updateEducation(postData): Observable<any>{
+    return this.http.post(URL+"updateEducation", postData, {headers: this.authSrv.getHeaders(true)}).pipe((map((res) => res.json())));                      
+  }
+
+  uploadResume(formData): Observable<any>{
+    let token = this.authSrv.getToken();
+    let headers = new Headers();
+    headers.append('Authorization',token)
+    return this.http.post(URL+"profile/uploadResume",formData, {headers: headers}).pipe((map((res) => res.json())));    
+  }
+
+
 }

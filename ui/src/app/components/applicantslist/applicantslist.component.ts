@@ -4,6 +4,7 @@ import { AuthService } from '../../services/auth.service';
 import { UtilsService } from '../../services/utils.service';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import { AcceptjobrequestComponent } from '../acceptjobrequest/acceptjobrequest.component';
+import { CompanyAdminService } from '../../services/companyAdmin.service';
 
 @Component({
   selector: 'app-applicantslist',
@@ -21,6 +22,7 @@ export class ApplicantslistComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private authSrv: AuthService,
+    private companyAdminSrv: CompanyAdminService,
     private utilsSrv: UtilsService,
     private dialog: MatDialog
   ) { }
@@ -71,8 +73,8 @@ export class ApplicantslistComponent implements OnInit {
 
   formatUsersData(data){
     data.forEach(record => {
-      if(record.userinfo != undefined && record.userinfo.length > 0 && record.userinfo[0].resume != undefined){
-        record.userinfo[0].resume = this.utilsSrv.formatResumeFilePath(record.userinfo[0].resume);
+      if(record.resume != undefined){
+        record.resume = this.utilsSrv.formatResumeFilePath(record.resume);
       }
     });
     return data;
@@ -89,7 +91,7 @@ export class ApplicantslistComponent implements OnInit {
       jobId: this.jobId
     };
     this.throbber = "block";
-    this.authSrv.getAppliedCandidateForjob(postData).subscribe((res) => {
+    this.companyAdminSrv.getApplicantsForjob(postData).subscribe((res) => {
       if(res.success){
         this.applicantsList = this.formatUsersData(res.data);
         this.data = this.applicantsList.length == 0 ? false : true;

@@ -101,7 +101,7 @@ function updateExperience(req, res, next){
     let userId = req.body.userId;
     let expId = req.body.expId;
     let exp = req.body.exp;
-    UserDetails.updateExperienceDetails(userId, expId, exp, (err, isUpdated) => {
+    UserDetails.updateSpecificExperience(userId, expId, exp, (err, isUpdated) => {
         if(err){
             return res.json({success: false, msg: "something went wrong", error: err});
         }else{

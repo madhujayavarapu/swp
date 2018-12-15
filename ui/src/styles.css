@@ -163,6 +163,7 @@ body{
 }
 
 .vl{border-left: 1px solid gainsboro; height: 100%}
+.cdk-overlay-pane{margin-top:9%;}
 .example-full-width{width: 100%;}
 .example-additional-selection {
     opacity: 0.75;
@@ -173,4 +174,9 @@ body{
 .job-details{
     font-size: 15px;
     font-weight: 400;
+}
+.jobs-container{
+    height: 580px;
+    overflow:auto;
+    background-color:beige
 }
