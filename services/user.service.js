@@ -68,8 +68,6 @@ function checkAnyCompanyRequestSentByUser(req, res, next){
 // It will fetch all the jobs which are not applied by user.
 function getAllJobsForUser(req, res, next){
     let userId = req.body.userId;
-    console.log(userId," is userId");
-    
     Applicants.getAllJobIdsAppliedByUser(userId, (err, jobIds) => {
         if(err){
             return res.json({success: false, msg: "Something went wrong"});

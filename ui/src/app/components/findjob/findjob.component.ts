@@ -48,7 +48,7 @@ export class FindjobComponent implements OnInit {
     this.userSrv.findJobsForUser(postData).subscribe((res) => {
       if(res.success){
         this.jobsList = this.formatJobsList(res.data);
-        this.detailsForJob = this.jobsList[0];
+        // this.detailsForJob = this.jobsList[0];
         this.data = this.jobsList.length == 0 ? false : true;
       }else{
         this.utilsSrv.showToastMsg("warning","Find Jobs",res.msg);
@@ -58,6 +58,10 @@ export class FindjobComponent implements OnInit {
       this.utilsSrv.handleError(err);
       this.data = false
     })
+  }
+
+  back(){
+    this.detailsForJob = undefined;
   }
 
   checkProfileExists(){
