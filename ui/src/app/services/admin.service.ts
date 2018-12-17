@@ -22,5 +22,9 @@ export class AdminService {
   acceptCompanyRequest(postData):Observable<any>{
     return this.http.post(URL+"acceptCompanyRequest", postData, {headers: this.authSrv.getHeaders(true)}).pipe((map((res) => res.json())));    
   }
+
+  // getThumbnailData(): Observable<any>{
+  //   return this.http.get(URL+"getThumbnailData", {headers: this.authSrv.getHeaders(true)}).pipe((map((res) => res.json())));    
+  // }
   
 }

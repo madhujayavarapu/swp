@@ -14,13 +14,13 @@
               </div>
             </div>
           </div>
-          <div class="col-md-9" *ngIf="detailsForJob == undefined">
+          <div class="col-md-9" *ngIf="detailsForJob == undefined" style="height:620px;overflow:auto">
                   <!-- [class.activeCard]="(company.role == detailsForJob.role && company.type == detailsForJob.type)" -->
             <p class="text-danger">*Note: Click on the Role to see full detials about that job</p>
             <div class="card mb-4" *ngFor="let company of jobsList; let i = index">
               <div class="card-body">
                 <h4 class="text-primary">
-                  <strong (click)="viewJobDetails(company)">{{ company.role }}/{{ company.type }}</strong>
+                 <span  style="cursor:pointer"><strong (click)="viewJobDetails(company)">{{ company.role }}/{{ company.type }}</strong></span>
                   <small class="pull-right postedAt text-muted">Posted :- {{ utilsSrv.getDiffBwDates(company.postedAt) }}</small>
                 </h4>
                 <h5 class="text-success" style="margin-bottom:0"><b>{{company.companyName}}</b></h5>
@@ -36,7 +36,7 @@
                 
                 <p class="text-secondary job-details" style="margin-bottom: 0;">Location: {{company.location}}</p>
                 <span class="text-info">Salary:{{company.salary | currency:' ':false: '1.0-2'}}/-</span>
-                <button class="btn btn-success btn-sm pull-right" (click)="applyForThisJob(company)">Apply</button>
+                <button class="btn btn-success btn-sm pull-right" (click)="applyForJob(company)">Apply</button>
               </div>
             </div>
           </div>

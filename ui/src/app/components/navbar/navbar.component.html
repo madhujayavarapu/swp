@@ -37,6 +37,12 @@
 <!-- <div  style="margin-top:70px"> -->
   <nav *ngIf="authSrv.isLoggedIn()" class="navbar navbar-expand-lg bg-light fixed rounded-0 m-0 p-0">
     <ul class="nav nav-pills justify-content nav-fill nav-pills-rose">
+
+      <!-- <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/dashboard']" [routerLinkActive]="['active']"
+         [routerLinkActiveOptions]="{exact:true}" href="">Dashboard</a>
+      </li> -->
+
       <!-- normal user functionalities -->
       <li class="nav-item" *ngIf="user.role == 3">
         <a class="nav-link" [routerLink]="['/findJob']" [routerLinkActive]="['active']"
