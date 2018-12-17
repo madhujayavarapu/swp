@@ -18,7 +18,9 @@ var service = {
     deleteJobNotification: deleteJobNotification,
     getApplicantsForJob: getApplicantsForJob,
     rejectApplicant: rejectApplicant,
-    getCompanyBranches: getCompanyBranches
+    getCompanyBranches: getCompanyBranches,
+    closeJobNotification: closeJobNotification,
+    shortListApplicant: shortListApplicant
 }
 
 module.exports = service;
@@ -107,7 +109,9 @@ function deleteJobNotification(req, res, next){
 //  Note: we won't get the applicants who are already rejected.
 function getApplicantsForJob(req, res, next){
     let jobId = req.body.jobId;
-    Applicants.getApplicantsForJob(jobId, (err, applicants) => {
+    let applicantsType = req.body.type;
+    let status = applicantsType == "shortlisted" ? 3 : 1;
+    Applicants.getApplicantsForJob(jobId, status, (err, applicants) => {
         if(err){
             res.json({success: false, msg: "Something Went Wrong", error: err});
         }else{
@@ -146,6 +150,37 @@ function getCompanyBranches(req, res, next){
                 res.json({success: true, data: branches});
             }else{
                 res.json({success: false, msg:"Failed to get branches"});
+            }
+        }
+    })
+}
+
+// This function is to close the job notification released by that company.
+function closeJobNotification(req, res, next){
+    let jobId = req.body.jobId;
+    Jobs.closeJobNotification(jobId, (err, isClosed) => {
+        if(err){
+            res.json({success: false, msg: "Something went wrong", error: err});
+        }else{
+            if(isClosed){
+                res.json({success: true, msg:"Job Notification Closed"});
+            }else{
+                res.json({success: false, msg: "Failed to Close Job Notification.Please Try Again."});
+            }
+        }
+    })
+}
+
+function shortListApplicant(req, res, next){
+    let applicantId = req.body.applicantId;
+    Applicants.shortListApplicant(applicantId, (err, isShortlisted) => {
+        if(err){
+            res.json({success: false, msg: "Something went wrong", error: err});
+        }else{
+            if(isShortlisted){
+                res.json({success: true, msg: "Shortlisted Applicant"});
+            }else{
+                res.json({success: false, msg: "Failed to Shorlist the applicant..Please Try Again"});
             }
         }
     })

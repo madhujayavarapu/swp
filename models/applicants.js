@@ -8,6 +8,11 @@ const ApplicantsSchema = mongoose.Schema({
     userId: {type: mongoose.Schema.Types.ObjectId, required: true},
     companyId: {type: mongoose.Schema.Types.ObjectId, required: true},
     status: {type: Number, required: false, default: 1}
+    /*
+    * status 1: request sent
+    * status 2: rejected applicant
+    * status 3: accepted applicant
+    */
 })
 
 const Applicants  = module.exports = mongoose.model("Applicants",ApplicantsSchema);
@@ -16,8 +21,8 @@ module.exports.addApplicant = function(newApplicant, callback){
     newApplicant.save(callback);
 }
 
-module.exports.getApplicantsForJob = function(jobId, callback){
-    var query = {jobId: mongoose.Types.ObjectId(jobId),"status": 1};
+module.exports.getApplicantsForJob = function(jobId, status, callback){
+    var query = {jobId: mongoose.Types.ObjectId(jobId),"status": status};
     Applicants.aggregate([
         {$match: query},
         {$lookup:{from:'userdetails',localField:'userId',foreignField:'userId',as:'userInfo'}},
@@ -67,4 +72,9 @@ module.exports.getAllJobIdsAppliedByUser = function(userId, callback){
 module.exports.rejectApplicant = function(applicantId, callback){
     var query = {"_id": mongoose.Types.ObjectId(applicantId)};
     Applicants.findOneAndUpdate(query, {$set: {"status": 2}}, callback);
+}
+
+module.exports.shortListApplicant = function(applicantId, callback){
+    var query = {"_id": mongoose.Types.ObjectId(applicantId)};
+    Applicants.findByIdAndUpdate(query, {$set: {"status": 3}}, callback);
 }

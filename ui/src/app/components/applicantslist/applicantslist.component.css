@@ -2,3 +2,10 @@
     min-height: 325px;
     max-height: 400px;
 }
+.example-margin {
+    margin: 10px;
+}
+.checkbox-text{
+    font-weight: 600;
+    font-size: 20px;
+}

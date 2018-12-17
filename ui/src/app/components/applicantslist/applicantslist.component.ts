@@ -17,6 +17,10 @@ export class ApplicantslistComponent implements OnInit {
   applicantsList: any[];
   data: Boolean = false;
   throbber = "none";
+  color = 'primary';
+  applicantsType: String;
+  disabled = false;
+  type = true;
 
   constructor(
     private router: Router,
@@ -25,10 +29,16 @@ export class ApplicantslistComponent implements OnInit {
     private companyAdminSrv: CompanyAdminService,
     private utilsSrv: UtilsService,
     private dialog: MatDialog
-  ) { }
+  ) { 
+    this.router.routeReuseStrategy.shouldReuseRoute = function(){
+      return false;
+    }
+  }
 
   ngOnInit() {
     this.jobId = this.route.snapshot.params['jobId'];
+    this.applicantsType = this.route.snapshot.params['type'];
+    this.type = this.applicantsType == "shortlisted" ? true : false;
     this.getApplicants();
   }
 
@@ -71,6 +81,28 @@ export class ApplicantslistComponent implements OnInit {
     })
   }
 
+  changeType(){
+    this.applicantsType = this.type ? "shortlisted" : "applicants";
+    this.router.navigate(['/', 'jobs', 'applicants',this.jobId, this.applicantsType]);
+  }
+
+  shortListApplicant(user){
+    this.throbber = "block";
+    let postData = {
+      applicantId: user.applicantId
+    }
+    this.companyAdminSrv.shortListApplicant(postData).subscribe((res) => {
+      if(res.success){
+        this.utilsSrv.showToastMsg("success", res.msg, null);
+        this.getApplicants();
+      }else{
+        this.utilsSrv.showToastMsg("warning",res.msg,null);
+      }
+    },(err) => {
+      this.utilsSrv.handleError(err);
+    })
+  }
+
   formatUsersData(data){
     data.forEach(record => {
       if(record.resume != undefined){
@@ -88,7 +120,8 @@ export class ApplicantslistComponent implements OnInit {
 
   getApplicants(){
     let postData = {
-      jobId: this.jobId
+      jobId: this.jobId,
+      type: this.applicantsType
     };
     this.throbber = "block";
     this.companyAdminSrv.getApplicantsForjob(postData).subscribe((res) => {

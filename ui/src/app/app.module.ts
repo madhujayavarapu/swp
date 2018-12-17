@@ -9,8 +9,9 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 import { FlashMessagesModule, FlashMessagesService } from 'angular2-flash-messages';
 import { ToasterContainerComponent, ToasterModule, ToasterService, ToasterConfig } from 'angular2-toaster';
-import {MatDialogModule, MatFormFieldModule, MatStepperModule,MatSelectModule,MatCardModule,MatExpansionModule,
-  MatButtonModule,MatInputModule,MatDatepickerModule,MatNativeDateModule,MatRadioModule } from '@angular/material';
+// import {MatDialogModule, MatFormFieldModule, MatStepperModule,MatSelectModule,MatCardModule,MatExpansionModule,
+//   MatButtonModule,MatInputModule,MatDatepickerModule,MatNativeDateModule,MatRadioModule } from '@angular/material';
+import { MaterialModule } from './material.module';
 
 import { AuthGuard } from './guards/auth.guard';
 
@@ -80,23 +81,12 @@ import { EditprofileComponent } from './components/editprofile/editprofile.compo
     MultiselectDropdownModule,
     NgMultiSelectDropDownModule.forRoot(),
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatRadioModule,
-    MatSelectModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatInputModule,
-    MatExpansionModule,
-    MatCardModule,
-    MatButtonModule,
-    MatDialogModule,
-    MatStepperModule,
+    MaterialModule,
     RouterModule.forRoot(appRoutes),
     FlashMessagesModule,
     ToasterModule.forRoot()
   ],
-  providers: [
-    MatDatepickerModule,    
+  providers: [   
     FlashMessagesService,
     ToasterService,
     AuthService,

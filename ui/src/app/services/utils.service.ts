@@ -50,10 +50,9 @@ export class UtilsService {
       this.showToastMsg("warning","Please Login First",null);
       this.authSrv.logout();
       this.router.navigate(['/login']);
+    }else if(err.error != undefined){
+      this.showToastMsg("warning", "MongoError", err.msg);
     }else{
-      if(err.error != undefined){
-        console.log(err.error);
-      }
       this.showToastMsg("warning","Error","Something Went Wrong..Please try again");
     }
   }

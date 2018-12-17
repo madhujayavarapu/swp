@@ -65,12 +65,24 @@ export class ReleasednotificationsComponent implements OnInit {
     window.scrollTo(0, 0);
   }
 
-  deletePost(company){
-    console.log("delete post", company);
+  closePost(post){
+    let postData = {
+      jobId: post._id
+    }
+    this.companyAdminSrv.closeJobNotification(postData).subscribe((res) => {
+      if(res.success){
+        this.utilsSrv.showToastMsg("success","Closed Notification", null);
+        this.getReleasedNotifications();
+      }else{
+        this.utilsSrv.showToastMsg("warning",res.msg, null);
+      }
+    },(err) => {
+      this.utilsSrv.handleError(err);
+    });
   }
 
   appliedCandidates(company){
-    this.router.navigate(['jobs/applicants',company._id]);
+    this.router.navigate(['jobs/applicants',company._id, 'applicants']);
   }
 
 }

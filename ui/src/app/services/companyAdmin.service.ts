@@ -31,4 +31,12 @@ export class CompanyAdminService {
     return this.http.post(URL+"getApplicantsForJob",postData,{headers: this.authSrv.getHeaders(true)}).pipe((map((res) => res.json())));        
   }
 
+  closeJobNotification(postData): Observable<any>{
+    return this.http.post(URL+"closeJobNotification",postData,{headers: this.authSrv.getHeaders(true)}).pipe((map((res) => res.json())));            
+  }
+
+  shortListApplicant(postData): Observable<any>{
+    return this.http.post(URL+"shortListApplicant",postData,{headers: this.authSrv.getHeaders(true)}).pipe((map((res) => res.json())));                
+  }
+
 }

@@ -21,9 +21,9 @@ router.post('/login', loginSrv.authenticateUser);
 // Normal User Routes
 router.post('/sendRequestForCompany', passport.authenticate('jwt',{session: false}), userSrv.sendRequestForCompany);
 router.post('/checkAnyCompanyRequestSentByUser', passport.authenticate('jwt',{session: false}), userSrv.checkAnyCompanyRequestSentByUser);
-router.post('/getAllJobsForUser', userSrv.getAllJobsForUser);
-router.post('/getJobsAppliedByUser', userSrv.getJobsAppliedByUser)
-router.post('/applyForJob', userSrv.applyForJob);
+router.post('/getAllJobsForUser',  passport.authenticate('jwt',{session: false}), userSrv.getAllJobsForUser);
+router.post('/getJobsAppliedByUser',  passport.authenticate('jwt',{session: false}), userSrv.getJobsAppliedByUser)
+router.post('/applyForJob',  passport.authenticate('jwt',{session: false}), userSrv.applyForJob);
 
 // Admin Routes
 router.get('/viewCompanyRequests', passport.authenticate('jwt',{session: false}), adminSrv.viewCompanyRequests);
@@ -36,7 +36,9 @@ router.post('/postJobNotification',passport.authenticate('jwt',{session: false})
 router.post('/getAllJobsPostedByCompany', passport.authenticate('jwt',{session: false}), companyAdminSrv.getAllJobsPostedByCompany);
 router.post('/deleteJobNotification', passport.authenticate('jwt',{session: false}), companyAdminSrv.deleteJobNotification);
 router.post('/getApplicantsForJob', passport.authenticate('jwt',{session: false}), companyAdminSrv.getApplicantsForJob);
-router.post('/rejectApplicant', passport.authenticate('jwt',{session: false}), companyAdminSrv.rejectApplicant)
+router.post('/rejectApplicant', passport.authenticate('jwt',{session: false}), companyAdminSrv.rejectApplicant);
+router.post('/closeJobNotification', passport.authenticate('jwt',{session: false}), companyAdminSrv.closeJobNotification);
+router.post('/shortListApplicant', passport.authenticate('jwt',{session: false}), companyAdminSrv.shortListApplicant);
 
 // Profile Routes
 router.post('/getUserProfile', passport.authenticate('jwt',{session: false}), profileSrv.getUserProfile);

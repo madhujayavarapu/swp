@@ -31,7 +31,7 @@ export const appRoutes:Routes = [
     { path: 'jobs/post',canActivate: [AuthGuard], component: PostnotificationComponent, data: {"roles": [2]}},
     { path: 'findJob',canActivate: [AuthGuard], component: FindjobComponent, data: {"roles": [3]}},
     { path: 'jobs/released',canActivate: [AuthGuard], component: ReleasednotificationsComponent, data: {"roles": [2]}},
-    { path: 'jobs/applicants/:jobId',canActivate: [AuthGuard],component: ApplicantslistComponent, data: {"roles": [2]}},
+    { path: 'jobs/applicants/:jobId/:type',canActivate: [AuthGuard],component: ApplicantslistComponent, data: {"roles": [2]}},
     {path: 'dashboard',canActivate: [AuthGuard], component: DashboardComponent, data: {"roles": [1,2,3,5]}},
 
     {path: '**',redirectTo:'login', pathMatch:'full'}

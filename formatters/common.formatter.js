@@ -42,7 +42,12 @@ function getAvailableJobsForUser(jobs, appliedJobIds){
             }
         })
         if(!applied){
-            AvailableJobs.push(job);
+            var obj = job;
+            if(obj.login.length != 0){
+                obj.username = job.login[0].username;
+            }
+            delete obj['login'];
+            AvailableJobs.push(obj);
         }
     });
     return AvailableJobs;

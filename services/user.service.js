@@ -70,12 +70,12 @@ function getAllJobsForUser(req, res, next){
     let userId = req.body.userId;
     Applicants.getAllJobIdsAppliedByUser(userId, (err, jobIds) => {
         if(err){
-            return res.json({success: false, msg: "Something went wrong"});
+            return res.json({success: false, msg: "Something went wrong",error: err});
         }else{
             if(jobIds){
                 Jobs.getAllJobNotifications((err, jobs) => {
                     if(err){
-                        return res.json({success:false, msg:"Something went wrong"});
+                        return res.json({success:false, msg:"Something went wrong",error: err});
                     }else{
                         if(jobs){
                             return res.json({success:true, data:commonFormatter.getAvailableJobsForUser(jobs, jobIds)});
