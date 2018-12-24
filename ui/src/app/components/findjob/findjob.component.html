@@ -1,6 +1,7 @@
 <div class="container-fluid" style="margin-top: 10px">
   <div class="card">
     <div class="card-body">
+      <div id="loader" [ngStyle]="{'display': throbber ? 'block' : 'none'}"></div>
       <ul class="list-group" *ngIf="data">
         <div class="row">
           <div class="col-md-3">

@@ -16,7 +16,7 @@ import { ConstantService } from '../../services/constant.service';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  isLinear = false;
+  isLinear = true;
   panelOpenState = false;
   userId;
   isProfileSubmitted: Boolean = false;

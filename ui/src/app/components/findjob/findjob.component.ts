@@ -15,6 +15,7 @@ export class FindjobComponent implements OnInit {
   jobsList: any[];
   data: Boolean = false;
   canApply:Boolean = false;
+  throbber: Boolean = false;
 
   detailsForJob: any;
 
@@ -50,13 +51,16 @@ export class FindjobComponent implements OnInit {
         this.jobsList = this.formatJobsList(res.data);
         // this.detailsForJob = this.jobsList[0];
         this.data = this.jobsList.length == 0 ? false : true;
+        this.throbber = false;
       }else{
         this.utilsSrv.showToastMsg("warning","Find Jobs",res.msg);
         this.data = false;
+        this.throbber = false;
       }
     },(err) => {
       this.utilsSrv.handleError(err);
-      this.data = false
+      this.data = false;
+      this.throbber = false;
     })
   }
 
@@ -65,6 +69,7 @@ export class FindjobComponent implements OnInit {
   }
 
   checkProfileExists(){
+    this.throbber = true;
     let postData = {
       userId: this.authSrv.getDetailsOfUser('userId')
     }
@@ -80,10 +85,12 @@ export class FindjobComponent implements OnInit {
         }
       }else{
         this.utilsSrv.showToastMsg("warning",res.msg,"Please Update Profile First");
+        this.throbber = false;
         this.canApply = false;
       }
     },(err) => {
       this.utilsSrv.handleError(err);
+      this.throbber = false;
       this.canApply = false;
     })
   }
@@ -94,6 +101,7 @@ export class FindjobComponent implements OnInit {
   }
 
   applyForJob(job){
+    this.throbber = true;
     let postData = {
       userId: this.authSrv.getDetailsOfUser('userId'),
       jobId: job._id,
@@ -116,6 +124,7 @@ export class FindjobComponent implements OnInit {
     }else{
       this.utilsSrv.showToastMsg("warning","You Can't Apply For Jobs","Please Update Profile First");
       this.router.navigate(['/profile']);
+      this.throbber = false;
     }
   }
 

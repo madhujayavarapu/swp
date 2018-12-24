@@ -40,19 +40,15 @@ export class RegisterComponent implements OnInit {
             this.router.navigate(['/login']);
           }else{
             this.utilsSrv.showToastMsg("danger",res.msg,null);
-            this.utilsSrv.reloadCurrentState();
           }
         },(err) => {
           this.utilsSrv.showToastMsg("warning",err.msg, null);
-          this.utilsSrv.reloadCurrentState();
         })
       }else{
         this.utilsSrv.showToastMsg("warning","Password doesn't match",null);
-        this.utilsSrv.reloadCurrentState();
       }
     }else{
       this.utilsSrv.showToastMsg("danger","Fill Details First",null);
-      this.utilsSrv.reloadCurrentState();
     }
   }
 
